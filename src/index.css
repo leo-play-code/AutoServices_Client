@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+
+
+
+html,body,#root,.app{
+    height: 100%;
+    width: 100%;
+    font-family: "Rubik",sans-serif;
+}
+
+.CkeditorInput p{
+    margin-top: 0;
+    margin-bottom: 0rem;
+}
+.CkeditorInput a{
+    color:inherit
+}
+.hidden {
+    display: none;
+}
+/* dark */
+.ckeditor-dark{
+    --ck-color-base-background: #333;
+}
+
+/* :root {
+    --ck-z-default: 10555 !important;
+    --ck-z-modal: calc(var(--ck-z-default) + 10555) !important;
+} */
