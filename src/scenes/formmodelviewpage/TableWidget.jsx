@@ -569,7 +569,7 @@ export const TableWidget = forwardRef(({
     },[forms,filter,shownum])
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{minHeight:WindowHeight*0.85}}>
+            <TableContainer sx={{maxHeight:WindowHeight*0.85}}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                     <TableRow
