@@ -686,7 +686,7 @@ export const TableWidget = forwardRef(({
                                 }else if (field !== "blank"){
                                     var cell = (<span 
                                         className="CkeditorInput"
-                                        dangerouslySetInnerHTML={createMarkup(data[key].replaceAll('\n','<br>'))}
+                                        dangerouslySetInnerHTML={createMarkup(data[key])}
                                     >
                                     </span>)
                                 }
