@@ -123,7 +123,7 @@ export const PostBody = ({
         }else{
             var bodyitem = (<span 
                 className="CkeditorInput"
-                dangerouslySetInnerHTML={createMarkup(data['data'][key])}
+                dangerouslySetInnerHTML={createMarkup(data['data'][key].replaceAll('\n','<br>'))}
             >
             </span>)
         }
