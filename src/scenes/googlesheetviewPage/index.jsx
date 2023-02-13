@@ -109,7 +109,7 @@ const GooglesheetPage = () =>{
                         <Box
                             sx={{
                                 maxHeight:WindowHeight*0.85,
-                                overflow:"scroll"
+                                // overflow:"scroll"
                             }}
                             position={isNonMobileScreens?"fixed":""}
                             width={isNonMobileScreens?((screen==="full")?WindowWidth*0.95:WindowWidth*0.70):"inherit"}

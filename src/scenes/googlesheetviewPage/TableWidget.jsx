@@ -12,6 +12,9 @@ import { Box, useTheme } from '@mui/material';
 import { ColumnDefault } from '../../state';
 import { createMarkup } from '../../components/CkeditorInput';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Table_Pro from '../../components/Table_Pro';
+import { useSelector } from 'react-redux';
+
 export const NumberCovertLetter = (value) =>{
     var temp = ""
     if (value>26){
@@ -40,10 +43,161 @@ const  getByValue = (map, searchValue)=>{
 }
   
 
+// export const TableWidget = forwardRef(({
+//     SheetData
+// },ref)=>{
+//     const TopRef = useRef();
+//     var column = 0
+//     const titlelist = []
+//     const columndict = {}
+//     const theme = useTheme();
+//     const alt  = theme.palette.background.alt;
+//     var countrow = 1
+//     for (const num in SheetData){
+//         if (SheetData[num].length>column){
+//             column = (SheetData[num].length)
+//         }
+//         columndict[countrow] = SheetData[num]
+//         countrow+=1
+//     }
+//     for (var i=1 ; i<=column ;i++){
+//         const temp =NumberCovertLetter(i)
+//         titlelist.push(temp)
+//     }
+//     useEffect(()=>{
+        
+//     },[])
+    
+
+//     return(
+//         <TableContainer component={Paper} sx={{
+//             overflow: "initial",
+//         }}
+//         >
+//             <Table 
+//                 sx={{ 
+//                     minWidth: 650, 
+                    
+//                 }}
+//                 stickyHeader
+//             >
+//                 <TableHead                    
+//                     ref={TopRef} 
+//                 >
+//                     <TableRow
+//                         sx={{
+//                             position:"relative"
+//                         }}
+//                     >
+//                         <TableCell>
+
+//                         </TableCell>
+                 
+//                         {
+//                             titlelist.map((title)=>{
+//                                 return(
+//                                     <TableCell
+//                                         key={title}
+//                                         sx={{
+//                                             backgroundColor:"#85C1E9",
+
+//                                         }}
+                                        
+//                                     >
+//                                         <FlexBetween>
+//                                         <Box>
+//                                             {title}
+//                                         </Box>
+//                                         <FilterAltIcon 
+//                                             fontSize='small'
+//                                             sx={{
+//                                                 color:"#616A6B"
+//                                             }}
+//                                         />
+//                                         </FlexBetween>
+
+//                                     </TableCell>
+//                                 )
+//                             })
+//                         }
+//                     </TableRow>
+//                 </TableHead>
+//                 <TableBody>
+//                     {
+                        
+//                         Object.entries(columndict).map(([key,value])=>{
+//                             const body = []
+//                             var count = 0
+                            
+//                             body.push(
+//                                 <TableCell
+//                                     key={NumberCovertLetter(count)+'key'}
+//                                     sx={{
+//                                         backgroundColor:"#52BE80"
+//                                     }}
+//                                 >
+//                                     {key}
+//                                 </TableCell>
+//                             )
+//                             for(const num in value){
+//                                 var cell = (<span 
+//                                     className="CkeditorInput"
+//                                     dangerouslySetInnerHTML={createMarkup(value[num])}
+//                                 >
+//                                 </span>)
+//                                 const item = (
+//                                     <TableCell
+//                                         key={NumberCovertLetter(count)+key}
+//                                         sx={{
+//                                             fontWeight:"500",
+//                                         }}
+//                                     >
+//                                         {cell}
+//                                     </TableCell>
+//                                 )
+//                                 body.push(item)
+//                                 count+=1
+//                             }
+//                             while (count<column){
+//                                 const item = (
+//                                     <TableCell
+//                                         key={NumberCovertLetter(count)+key}
+//                                     >
+                                        
+//                                     </TableCell>
+//                                 )
+//                                 body.push(item)
+//                                 count+=1
+//                             }
+//                             return(
+//                                 <TableRow
+//                                     key = {key}
+//                                     sx={{
+//                                         '&:last-child td, &:last-child th': { border: 0 },
+//                                         cursor:"default",
+//                                         backgroundColor:alt,
+                                        
+//                                     }}
+//                                 >
+//                                     {body}
+//                                 </TableRow>
+//                             )
+//                         })
+//                     }
+                        
+//                 </TableBody>
+//             </Table>
+//         </TableContainer>
+//     )
+// })
+
+
+
 export const TableWidget = forwardRef(({
     SheetData
 },ref)=>{
     const TopRef = useRef();
+    const WindowHeight = useSelector((state)=>state.height);
     var column = 0
     const titlelist = []
     const columndict = {}
@@ -61,129 +215,21 @@ export const TableWidget = forwardRef(({
         const temp =NumberCovertLetter(i)
         titlelist.push(temp)
     }
+    console.log('titlelist',titlelist)
+
     useEffect(()=>{
         
     },[])
     
 
     return(
-        <TableContainer component={Paper} sx={{
-            overflow: "initial",
-        }}
-        >
-            <Table 
-                sx={{ 
-                    minWidth: 650, 
-                    
-                }}
-                stickyHeader
-            >
-                <TableHead                    
-                    ref={TopRef} 
-                >
-                    <TableRow
-                        sx={{
-                            position:"relative"
-                        }}
-                    >
-                        <TableCell>
-
-                        </TableCell>
-                 
-                        {
-                            titlelist.map((title)=>{
-                                return(
-                                    <TableCell
-                                        key={title}
-                                        sx={{
-                                            backgroundColor:"#85C1E9",
-
-                                        }}
-                                        
-                                    >
-                                        <FlexBetween>
-                                        <Box>
-                                            {title}
-                                        </Box>
-                                        <FilterAltIcon 
-                                            fontSize='small'
-                                            sx={{
-                                                color:"#616A6B"
-                                            }}
-                                        />
-                                        </FlexBetween>
-
-                                    </TableCell>
-                                )
-                            })
-                        }
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        
-                        Object.entries(columndict).map(([key,value])=>{
-                            const body = []
-                            var count = 0
-                            
-                            body.push(
-                                <TableCell
-                                    key={NumberCovertLetter(count)+'key'}
-                                    sx={{
-                                        backgroundColor:"#52BE80"
-                                    }}
-                                >
-                                    {key}
-                                </TableCell>
-                            )
-                            for(const num in value){
-                                var cell = (<span 
-                                    className="CkeditorInput"
-                                    dangerouslySetInnerHTML={createMarkup(value[num])}
-                                >
-                                </span>)
-                                const item = (
-                                    <TableCell
-                                        key={NumberCovertLetter(count)+key}
-                                        sx={{
-                                            fontWeight:"500",
-                                        }}
-                                    >
-                                        {cell}
-                                    </TableCell>
-                                )
-                                body.push(item)
-                                count+=1
-                            }
-                            while (count<column){
-                                const item = (
-                                    <TableCell
-                                        key={NumberCovertLetter(count)+key}
-                                    >
-                                        
-                                    </TableCell>
-                                )
-                                body.push(item)
-                                count+=1
-                            }
-                            return(
-                                <TableRow
-                                    key = {key}
-                                    sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
-                                        cursor:"default",
-                                        backgroundColor:alt,
-                                        
-                                    }}
-                                >
-                                    {body}
-                                </TableRow>
-                            )
-                        })
-                    }
-                        
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Box >
+            <Table_Pro 
+                columns={titlelist}
+                rows = {columndict}
+                column = {column}
+                sx={{maxHeight:WindowHeight*0.85}}
+            />
+        </Box>
     )
 })
