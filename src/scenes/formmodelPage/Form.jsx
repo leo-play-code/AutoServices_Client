@@ -204,7 +204,7 @@ const FormModel = ({formname})=>{
             }else{
                 const {label,field} = formdict['schema'][key]
                 if (field !== 'ckeditor'){
-                    newValues[key] = values[key].replaceAll('\n','<br />');
+                    newValues[key] = values[key];
                 }else{
                     newValues[key] = values[key];
                 }
