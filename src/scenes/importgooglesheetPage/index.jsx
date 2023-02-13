@@ -241,8 +241,12 @@ const Step3 = ({toggleNextStep,toggleLastStep}) =>{
                 if (data['result']){
                     setDetectbool(true)
                     setUrlerror(false)
-                }else if(data['error'].includes('Doc')){
-                    setUrlerrortext("此 Google Sheet 已經上傳了")
+                }else if(data['error']){
+                    if (data['error'].includes('Doc')){
+                        setUrlerrortext("此 Google Sheet 已經上傳了")
+                    }else{
+                        setUrlerrortext("其他問題")
+                    }
                     setUrlerror(true)
                     setDetectbool(false)
                 }
