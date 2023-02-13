@@ -42,6 +42,7 @@ const FormModelViewPage = () =>{
 
 
     const handleScroll = (element)=>{
+        // console.log('handle scroll')
         try{
             if (element.scrollTop+tableRef.current.offsetHeight>=element.scrollHeight*0.85){
                 tablechildRef.current.updateShownum();
@@ -132,7 +133,7 @@ const FormModelViewPage = () =>{
                         > 
                             <Box
                                 sx={{
-                                    // maxHeight:WindowHeight*0.85,
+                                    maxHeight:WindowHeight*0.85,
                                     overflow:"scroll"
                                 }}
                                 position={isNonMobileScreens?"fixed":""}
