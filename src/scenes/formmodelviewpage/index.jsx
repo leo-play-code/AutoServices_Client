@@ -132,7 +132,7 @@ const FormModelViewPage = () =>{
                         > 
                             <Box
                                 sx={{
-                                    maxHeight:WindowHeight*0.85,
+                                    // maxHeight:WindowHeight*0.85,
                                     overflow:"scroll"
                                 }}
                                 position={isNonMobileScreens?"fixed":""}
@@ -146,7 +146,7 @@ const FormModelViewPage = () =>{
                                         formname = {formname} 
                                         formlist = {forms}
                                         ref = {tablechildRef}
-                                        
+                                        WindowHeight= {WindowHeight}
                                     />}
                             </Box>
                             <Box
