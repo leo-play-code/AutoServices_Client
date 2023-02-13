@@ -23,7 +23,6 @@ const FilterWidget = ({
         const temp =NumberCovertLetter(i)
         titlelist.push(temp)
     }
-    console.log('titlelist',titlelist)
     return(
         <Box>
             <FlexBetween

@@ -201,7 +201,6 @@ export const UserSearchDropdown = ({
             size = {size}
             autoHighlight
             onChange={(event, newValue) => {
-                console.log('newvalue',newValue)
                 try{
                     setFieldValue(name,newValue['Name'])
                 }catch{

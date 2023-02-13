@@ -47,7 +47,6 @@ export const FormProfileWidget = ({
     const dispatch = useDispatch();
     const token = useSelector((state)=>state.token)
     const getCount = async() =>{
-        console.log('formmodels',formmodels,'get count')
         const data = await GetFormDataCount(token,formmodel['_id'])
         const tempformmodel = {...formmodel}
         tempformmodel['count'] = data['count']
