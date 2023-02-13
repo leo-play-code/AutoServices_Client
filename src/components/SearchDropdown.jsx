@@ -15,7 +15,26 @@ import { StoreContext } from '../state/store';
 const filter = createFilterOptions();
 
 
-
+export const NormalSearchDropdown = ({
+    fulldata,
+    name,
+    sx,
+    setFieldValue,
+    disabled
+}) => {
+    return (
+        <Autocomplete
+            disablePortal
+            options={fulldata.map((option)=>option.name)}
+            sx={sx}
+            onChange={(event, newValue) => {
+                setFieldValue(name,newValue)
+            }}
+            renderInput={(params) => <TextField {...params} label={name} />}
+            disabled = {disabled}
+        />
+    );
+  }
 
 export const SearchDropdown=({
     sx,

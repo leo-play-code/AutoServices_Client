@@ -115,7 +115,7 @@ const SheetItem = ({searchvalue,sheetlist}) =>{
         borderRadius:"5px"
     }
     useEffect(()=>{
-        const newform = sheetlist.filter(each=>each.toLowerCase().replaceAll(' ','').includes(searchvalue.toLowerCase().replaceAll(' ','')))
+        const newform = sheetlist.filter(each=>each['name'].toLowerCase().replaceAll(' ','').includes(searchvalue.toLowerCase().replaceAll(' ','')))
         setSheetfilter(newform)
     },[searchvalue])
     return(
@@ -124,10 +124,10 @@ const SheetItem = ({searchvalue,sheetlist}) =>{
             sheetfilter.map(
                 form=>
                     <FlexBetween
-                        key={form}
+                        key={form['_id']}
                         mt="0.25rem" 
                         sx={dropdownItemStyle}
-                        onClick={()=>{navigate(`/googlesheet/${form}/view`)}}
+                        onClick={()=>{navigate(`/googlesheet/${form['_id']}/view`)}}
                     >   
                         <FlexBetween
                             gap="1.5rem"
@@ -148,7 +148,7 @@ const SheetItem = ({searchvalue,sheetlist}) =>{
                             <Typography
                                 fontWeight="700"
                             >
-                                {form}
+                                {form['name']}
                             </Typography>
                         </FlexBetween>
                     </FlexBetween>   
@@ -189,9 +189,13 @@ const SheetItem = ({searchvalue,sheetlist}) =>{
 
 const Navbar = ({
 })=>{
-    const {storeformmodels} = useContext(StoreContext);
+    const {storeformmodels,storegooglelist} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
-    const sheetlist = ['test','testcase'];
+    const sheetlist = [];
+    const [googlelist,setGooglelist] = storegooglelist;
+    for (const num in googlelist){
+        sheetlist.push(googlelist[num])
+    }
 
     const formlist = [];
     for (const num in formmodels){

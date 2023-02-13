@@ -34,7 +34,7 @@ function App() {
                     <CssBaseline />
                         <Routes>
                             <Route path="/" element={<LoginPage/>} />
-                            <Route path="/googlesheet/:sheetname/view" element={isAuth ?<GooglesheetPage />:<Navigate to="/" />} />
+                            <Route path="/googlesheet/:docID/view" element={isAuth ?<GooglesheetPage />:<Navigate to="/" />} />
                             <Route path="/googlesheet/create" element={isAuth ? <ImportgooglesheetPage />:<Navigate to="/" />}  />
                             <Route path="/home" element={isAuth ?<HomePage />:<Navigate to="/" />} />
                             <Route path="/form/:formname" element={isAuth ?<FormModelPage />:<Navigate to="/" />} />

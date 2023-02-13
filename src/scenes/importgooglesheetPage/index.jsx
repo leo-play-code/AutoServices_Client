@@ -29,15 +29,20 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import FlexBetweenTop from '../../components/FlexBetweenTop';
 import { useTheme } from '@emotion/react';
 import { useSelector } from 'react-redux';
-import { useState,useEffect } from "react";
+import { useState,useEffect,useContext } from "react";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CheckIcon from '@mui/icons-material/Check';
+import { setnewGoogleSheet } from "../../state";
+
 
 import importGIF from "../../assets/完整介紹影片.gif"
-
-
-
+import {GoogleSheetDetectData, GoogleSheetGetData , GoogleSheetSaveData,GoogleSheetAllList} from "../../api/googlesheet";
+import CheckIcon from '@mui/icons-material/Check';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
+import checkimage from "../../assets/check.png";
+import { StoreContext } from '../../state/store';
+import { useDispatch } from 'react-redux';
 const Step1 = ({toggleNextStep,toggleLastStep}) =>{
     const googleaccount = "googlesheetapi@charged-audio-376300.iam.gserviceaccount.com"
     const [copybool,setCopybool] = useState(false);
@@ -152,7 +157,7 @@ const Step2 = ({toggleNextStep,toggleLastStep}) =>{
             >
                 <img 
                     src={importGIF} 
-                    alt="教學" 
+                    alt="教學"
                     width="500"
                 />
             </Box>
@@ -183,31 +188,74 @@ const Step2 = ({toggleNextStep,toggleLastStep}) =>{
     )
 }
 const Step3 = ({toggleNextStep,toggleLastStep}) =>{
+    const {storegooglelist} = useContext(StoreContext);
+    const [googlelist,setGooglelist] = storegooglelist;
+    const token = useSelector((state)=>state.token)
     const [url,setUrl] = useState("");
-    const [savebool,setSavebool] = useState(true);
+    const [detectbool,setDetectbool] = useState(false);
     const [name,setName] = useState("");
+    const [namebool,setNamebool] = useState(false);
     const [urlerror,setUrlerror] = useState(false);
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-    const CheckUrl = () =>{
+    const [savebool,setSavebool] = useState(false);
+    const [urlerrortext,setUrlerrortext] = useState("辨識失敗")
+    const dispatch = useDispatch();
+    const toggleSave = async() =>{
+        setSavebool('loading')
+        var urlsplit = url
+        urlsplit = urlsplit.split("/d/")
+        urlsplit = urlsplit[1]
+        urlsplit = urlsplit.split('/edit#gid=');
+        const data = await GoogleSheetSaveData(token,urlsplit[0],urlsplit[1],{"name":name})
+        if (!data['error']){
+            setSavebool(true)
+            toggleNextStep()
+            dispatch(
+                setnewGoogleSheet({
+                    newgooglesheet:data
+                })
+            )
+            const tempgooglelist = [...googlelist];
+            tempgooglelist.push(data);
+            setGooglelist(tempgooglelist);
+                
+        }else{
+            if (data['error'].includes('name')){
+                setNamebool(true)
+            }
+        }
+    }
+    const CheckUrl = async() =>{
+        setUrlerror(false)
+        setDetectbool('loading')
         try{
             var urlsplit = url
             urlsplit = urlsplit.split("/d/")
             urlsplit = urlsplit[1]
             urlsplit = urlsplit.split('/edit#gid=');
             if (urlsplit.length!=2){
+                setUrlerrortext("辨識失敗")
                 setUrlerror(true)
+                setDetectbool(false)
             }else{
-
+                const data = await GoogleSheetDetectData(token,urlsplit[0],urlsplit[1]);
+                if (data['result']){
+                    setDetectbool(true)
+                    setUrlerror(false)
+                }else if(data['error'].includes('Doc')){
+                    setUrlerrortext("此 Google Sheet 已經上傳了")
+                    setUrlerror(true)
+                    setDetectbool(false)
+                }
             }
         }catch{
+            setUrlerrortext("辨識失敗")
             setUrlerror(true)
+            setDetectbool(false)
         }
-        
-
     }   
     useEffect(()=>{
         
-    },[url])
+    },[urlerror])
     return (
         <Box
             width="540px"
@@ -233,22 +281,64 @@ const Step3 = ({toggleNextStep,toggleLastStep}) =>{
                     fullWidth
                     size = "small"
                     color="info"
+                    disabled={(typeof detectbool !== 'string')&&detectbool}
+                    error={urlerror}
                 />
-                <Button
-                    variant="contained"
-                    onClick= {
-                        ()=>{
-                            CheckUrl()
-                        }
-                    }
-                >
-                    辨識
-                </Button>
+                {
+                    (detectbool==='loading')&&(
+                        <CircularProgress 
+                            size={30}
+                        />
+                    )
+                }
+
+                {
+                    (detectbool===true)&&(
+                        <CheckIcon 
+                            color="success"
+                            fontSize="large"
+                        />
+                    )
+                }
+
+                {
+                    (detectbool===false)&&(
+                        <Button
+                            variant="contained"
+                            onClick= {
+                                ()=>{
+                                    CheckUrl()
+                                }
+                            }
+                        >
+                            辨識
+                        </Button>
+                    )
+                }
+
+                
         
             </FlexBetween>
-            <FlexBetween>
-                
-            </FlexBetween>
+            {urlerror&&(
+                <FlexBetween>
+                    <Box
+                        mt="0.2rem"
+                        ml="0.5rem"
+                    >
+                        <Typography
+                            color="#E74C3C"
+                            sx={{
+                                fontSize:"0.1rem"
+                            }}
+                            fontWeight={"500"}
+                        >
+                            {urlerrortext}
+                        </Typography>
+                </Box>
+                </FlexBetween>
+            )}
+
+
             <FlexBetween
                 mt="1rem"
             >
@@ -256,55 +346,26 @@ const Step3 = ({toggleNextStep,toggleLastStep}) =>{
                     fontWeight={"500"}
                     fontSize="1rem"
                 >
-                    是否要儲存此Google Sheet 連結 ?
+                    幫你的Google Sheet 取名吧 !
                 </Typography>
-                
             </FlexBetween>
             <FlexBetween
-                sx={{
-                    position:"relative"
-                }}
+                mt="1rem"
             >
-                <Checkbox
-
-                    onChange={(e)=>setSavebool(!savebool)}
-                    {...label}
-                    defaultChecked
-                    sx={{ '& .MuiSvgIcon-root': { fontSize: 20 },
-                        position:"relative",
-                        right:"0.65rem"
-                    }}
+                <TextField 
+                    placeholder="名字"
+                    onChange={e=>{setName(e.target.value)}}
+                    fullWidth
+                    size = "small"
+                    color="info"
+                    required = {true}
+                    error = {namebool}
+                    helperText={namebool&&"名字錯誤,不可空白,或是名字已被使用,我懶得做兩次搜尋自己猜是哪個問題"}
                 />
             </FlexBetween>
-            {
-                savebool&&(
-                    <>
-                        <FlexBetween
-                            mt="0.5rem"
-                        >
-                            <Typography
-                                fontWeight={"500"}
-                                fontSize="1rem"
-                            >
-                                為你的Google Sheet 取名吧 !
-                            </Typography>
-                        </FlexBetween>
-                        <FlexBetween
-                            mt="1rem"
-                        >
-                            <TextField 
-                                placeholder="名字"
-                                onChange={e=>{setName(e.target.value)}}
-                                fullWidth
-                                size = "small"
-                                color="info"
-                            />
-                        </FlexBetween>
-                    </>
-                )
-            }
+
             <FlexBetween
-                mt="8rem"
+                mt="12.5rem"
             >
                 <Box>
 
@@ -318,26 +379,98 @@ const Step3 = ({toggleNextStep,toggleLastStep}) =>{
                     >
                         上一步
                     </Button>
-                    <Button
-                        variant="contained"
-                        onClick={toggleNextStep}
-                    >
-                        確認
-                    </Button>
+                    {
+                        (savebool==='loading')?(
+                            <CircularProgress 
+                                size={30}
+                            />
+                        ):(
+                            <Button
+                                variant="contained"
+                                onClick={()=>toggleSave()}
+                                disabled ={(( detectbool === 'loading' || detectbool === false)||name.replaceAll(' ','')==='')?true:false}
+                            >
+                                確認
+                            </Button>
+                        )
+                    }
+                    
                 </FlexBetween>
             </FlexBetween>
       
         </Box>
     )
 }
+const Step4 = ({toggleNextStep,toggleLastStep}) =>{
+    const navigate = useNavigate();
+    const newgooglesheet = useSelector((state)=>state.newgooglesheet);
+    const toggleFoward = async() =>{
+        navigate(`/googlesheet/${newgooglesheet['_id']}/view`)   
+    }
+    return(
+        <Box
+            width="540px"
+        >
+            <FlexBetween>
+                <FlexBetween
+                    gap="1.5rem"
+                >
+                    <Typography
+                        fontWeight={"500"}
+                        fontSize="1rem"
+                    >
+                       恭喜你成功建立新的Google Sheet 表單連結 !!
+                    </Typography>
+                </FlexBetween>
+            </FlexBetween>
+            <Box
+                sx={{
+                    
+                }}
+                ml="10rem"
+                mt="5rem"
+            >
+                <img 
+                    src={checkimage} 
+                    alt="完成" 
+                    width="200"
+                />
+            </Box>
+            <FlexBetween
+                mt="4rem"
+            >
+                <Box>
 
+                </Box>
+                <FlexBetween
+                    gap="0.5rem"
+                >
+                    <Button
+                        variant="contained"
+                        onClick={()=>navigate("/home")}
+                        color = "success"
+                    >
+                        完成
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={()=>toggleFoward()}
+                    >
+                        前往
+                    </Button>
+                    
+                </FlexBetween>
+            </FlexBetween>
+        </Box>
+    )
+}
 
 const Step = ({steporder,toggleNextStep,toggleLastStep})=>{
     const StepMap = new Map([
         [1,<Step1 toggleNextStep={toggleNextStep} toggleLastStep={toggleLastStep}/>],
         [2,<Step2 toggleNextStep={toggleNextStep} toggleLastStep={toggleLastStep}/>],
         [3,<Step3 toggleNextStep={toggleNextStep} toggleLastStep={toggleLastStep}/>],
-        [4,<Step3 toggleNextStep={toggleNextStep} toggleLastStep={toggleLastStep}/>],
+        [4,<Step4 toggleNextStep={toggleNextStep} toggleLastStep={toggleLastStep}/>],
     ])
     const windowHeight = useSelector((state)=>state.width)
 
@@ -385,7 +518,7 @@ const ImportgooglesheetPage = () =>{
                     }}
               >
                 <ListItemButton
-                    onClick={()=>setSelectstep(step['pri'])}
+                    // onClick={()=>setSelectstep(step['pri'])}
                     sx={{
                         cursor:"default",
                     }}

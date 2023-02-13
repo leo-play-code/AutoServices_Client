@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
 import { GetAllFormModel } from "../api/formmodel";
 import {setFetchBool} from ".";
+import { GoogleSheetAllList } from "../api/googlesheet";
 export const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {  
@@ -12,11 +13,13 @@ export const StoreProvider = ({ children }) => {
     const [userlist,setUserlist] = useState([]);
     const [userforms,setUserforms] = useState([]);
     const [formmodels,setFormmodels] = useState([]);
+    const [googlelist,setGooglelist] = useState([]);
     const store ={
         storeforms: [forms, setForms],
         storeUserlist : [userlist,setUserlist],
         storeuserforms : [userforms,setUserforms],
         storeformmodels : [formmodels,setFormmodels],
+        storegooglelist : [googlelist,setGooglelist],
     };
     return (
         <StoreContext.Provider value={store}>
@@ -29,11 +32,12 @@ export const StoreProvider = ({ children }) => {
 export const FetchToStore = ({children}) =>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const token = useSelector((state)=>state.token)
-    const {storeuserforms,storeUserlist,storeforms,storeformmodels} = useContext(StoreContext);
+    const {storeuserforms,storeUserlist,storeforms,storeformmodels,storegooglelist} = useContext(StoreContext);
     const [userforms,setUserforms] = storeuserforms;
     const [forms,setForms] = storeforms;
     const [userlist,setUserlist] = storeUserlist;
     const [formmodels,setFormmodels] = storeformmodels;
+    const [googlelist,setGooglelist] = storegooglelist;
 
     const dispatch = useDispatch();
 
@@ -68,12 +72,13 @@ export const FetchToStore = ({children}) =>{
                 GetUserAllFormData(token,_id),
                 GetAllUser(token),
                 GetAllFormModel(token),
-                GetFormModelPart(token,"63c9dbf2c5f4e1a3919c12a5",0,30)
+                GetFormModelPart(token,"63c9dbf2c5f4e1a3919c12a5",0,30),
+                GoogleSheetAllList(token)
             ])
         ).map((r) => r);
   
         // and waiting a bit more - fetch API is cumbersome
-        const [userforms, userlist,formmodels,forms] = await Promise.all(
+        const [userforms, userlist,formmodels,forms,googlelist] = await Promise.all(
             result
         );
         // when the data is ready, save it to state
@@ -81,6 +86,7 @@ export const FetchToStore = ({children}) =>{
         setUserlist(userlist);
         setFormmodels(formmodels);
         setForms(forms)
+        setGooglelist(googlelist)
     };
     // console.log('userform length',userforms);
     // console.log('userlist length',userlist.length);
