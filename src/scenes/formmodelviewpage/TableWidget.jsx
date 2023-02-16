@@ -11,7 +11,7 @@ import { maxHeight } from '@mui/system';
 import { createMarkup } from '../../components/CkeditorInput';
 import { ColorTag } from '../../components/ColorTag';
 import { useState, useEffect,useContext,useRef,useImperativeHandle,forwardRef } from 'react';
-import { useMediaQuery, Typography,Button, IconButton,Tooltip,Box } from '@mui/material';
+import { useMediaQuery, Typography,Button, IconButton,Tooltip,Box ,Divider, InputBase} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTheme } from '@emotion/react';
@@ -24,6 +24,8 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import DeleteModalWidget from '../widgets/DeleteModalWidget';
 import { StoreContext } from '../../state/store';
 import { setLocalforms } from '../../state';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import { UpdateFormData } from '../../api/formdata';
 
 
 export const DragComponents = ({compnonent,sx}) =>{
@@ -72,7 +74,11 @@ export const DragComponents = ({compnonent,sx}) =>{
 
 export const TableWidget = forwardRef(({
     formname,
+    changeNumber,
+    mousePosition
 },ref)=>{
+    const user = useSelector((state)=>state.user);
+    const token = useSelector((state)=>state.token);
     const {storeformmodels,storeforms} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
     const localforms = useSelector((state)=>state.forms);
@@ -96,6 +102,15 @@ export const TableWidget = forwardRef(({
     const [loadingbool,setLoadingbool] = useState(false);
     const [scrolltoTop,setScrolltoTop] = useState(false);
     const linkcolor = theme.palette.other.link;
+
+    // click on table
+    const [rowToEdit, setRowToEdit] = useState(null);
+    const [dataEdit,setDataEdit] = useState("");
+    const [oringaldata,setOriginalData] = useState("");
+    const [rowToClick,setRowToClick] = useState(null);
+    
+    // right click componenets
+    
     // top ref
     const TopRef = useRef();
     // width set
@@ -117,13 +132,18 @@ export const TableWidget = forwardRef(({
     useImperativeHandle(ref, () => ({
 
         updateShownum() {
-
             var newshownum = shownum+20;
             setShownum(newshownum);
             if (newshownum>=filterformfull.length){
                 setLoadingbool(false)   
             }
+        },
+
+        getnumber(){
+            return showlist.length
         }
+
+        
     }));
     const DeleteForm = (id)=>{
         const tempfilterformfull = filterformfull.filter((form)=>form['_id']!== id);
@@ -168,7 +188,7 @@ export const TableWidget = forwardRef(({
                 }
                 UpdateShowlist(filterform)
                 
-
+                changeNumber(filterform.length)
             }catch{
                 setFilterformfull(forms);
                 setShowlist(forms.slice(0,20))
@@ -178,13 +198,33 @@ export const TableWidget = forwardRef(({
                     setScrolltoTop(true)
                 }
                 UpdateShowlist(forms)
-                
+                changeNumber(forms.length)
             }
             setLoadingbool(false)
         }
     }
 
-
+    const UpdateJira = (e,key)=>{
+        // console.log('key',key,'rowtoEdit',rowToEdit)
+        if (e.nativeEvent.button === 0) {
+            mousePosition(null,null,"")
+        }
+        if (rowToEdit !== key){
+            if (rowToEdit !== null){
+                const formid = rowToEdit.replaceAll('-pin','')
+                console.log('forms',forms)
+                const tempforms = [...forms]
+                const tempform = tempforms.filter((tempform)=>tempform['_id']===formid)[0]
+                tempform['data']['pin'] = dataEdit
+                UpdateFormData(token,tempform['data'],user['_id'],formid)
+                setForms(tempforms)
+                setRowToEdit(null)
+            }
+            
+        }
+        setRowToClick(key)
+        
+    }
     const UpdateShowlist = (filterformfull)=>{
         if (filterformfull.length>0){
             setShowlist(filterformfull.slice(0,shownum))
@@ -195,251 +235,364 @@ export const TableWidget = forwardRef(({
         }
     }
 
+    const handleClick = (e,value) => {
+        // 右鍵功能
+        // console.log('e.nativeEvent.button',e.button)
+        if (e.nativeEvent.button === 0) {
+            console.log('Left click');
+        } else if (e.nativeEvent.button === 2) {
+            // console.log('Right click',e.clientX,e.clientY);
+            mousePosition(e.clientX,e.clientY,value)
+            // console.log(value)
+        }
+    };
     useEffect(()=>{
         UpdateShowlist(filterformfull)
         if (forms.length>0 ){
             FilterFormList()
         }
+
         
     },[forms,filter,shownum])
     return (
-        <TableContainer component={Paper} sx={{
-            overflow: "initial",
-        }}
+        
+        <Paper>
+            <TableContainer component={Paper} sx={{
+                overflow: "initial",
+            }}
 
-        >
-            <Table 
-                sx={{ 
-                    minWidth: 650, 
-                    
-                }}
-                stickyHeader
-                
             >
-                <TableHead                    
-                    ref={TopRef} 
-                >
-                    <TableRow
-                        sx={{
-                            position:"relative"
-                        }}
-                    >
-                        <TableCell
+                <Table 
+                    sx={{ 
+                        minWidth: 650, 
                         
-                        >
-                            <FlexBetween>
-                                <Box></Box>
-                                <Box
-                                    color="rgb(224, 224, 224)"
-                                    sx={{
-                                        // cursor:"col-resize",
-                                        position:"relative",
-                                        left:"1rem"
-                                    }}
-                                >|</Box>
-                            </FlexBetween>
-
-                        </TableCell>
-                        {Object.entries(formmodel['schema']).map(([key,value])=>{
-                            const {field,label} = value;
-                            if (field !== 'blank'){
-                                return  <TableCell key={key}
-                                            sx={{
-                                                minWidth:tempwidthdict[key]
-                                            }}
-                                        >
-                                            <FlexBetween>
-                                                <Box>{label}</Box>
-                                            </FlexBetween>
-                                        </TableCell>
-                            }
-                        })}
-                        <TableCell>
-                            <FlexBetween>
-                                <Box>
-                                訊息
-                                </Box>
-                                <Box
-                                    color="rgb(224, 224, 224)"
-                                    sx={{
-                                        // cursor:"col-resize",
-                                        position:"relative",
-                                        left:"1rem"
-                                    }}
-                                >|</Box>
-                            </FlexBetween>
-                        </TableCell>
-                        <TableCell>刪除</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody
+                    }}
+                    stickyHeader
                     
                 >
-                    {
-                        showlist.map((rowdata)=>{
-                            const {_id,data} = rowdata;
-                            const body = []
-                            body.push(
-                                <TableCell
-                                    key = {_id+"_edit"}
-                                    
-                                >
-                                    <Tooltip
-                                        title="編輯"
-                                    >
-                                    <IconButton
-                                        // onClick={()=>window.open(webpath+`formdata/${_id}`)}
-                                        onClick = {()=>{
-                                            const tempforms = [...localforms].filter((form)=>form['_id']!=_id);
-                                            tempforms.push(rowdata);
-                                            dispatch(
-                                                setLocalforms({
-                                                    forms:tempforms
-                                                })
-                                            )
-
-                                            navigate(`/formdata/${_id}`)
-                                        }}
-                                    >
-                                        <EditIcon 
-                                            sx={{
-                                                color:'#2ECC71'
-                                            }}
-                                        />
-                                    </IconButton>
-                                    </Tooltip>
-                                    
-                                </TableCell>
-                            )
-                            for (const key in formmodel['schema']){
-                                
-                                const {field,fulldata} = formmodel['schema'][key]
-                                
-                                if (field === "select-color"){
-                                   
-                                    const color = data[key]
-                                    const value = fulldata[data[key]]
-                                    var cell = (
-                                        <ColorTag 
-                                            color={color}
-                                            value={value}
-                                        />
-                                    )
-                                }else if (field !== "blank"){
-                                    var cell = (<span 
-                                        className="CkeditorInput"
-                                        dangerouslySetInnerHTML={createMarkup(data[key].replaceAll('\n','<br>'))}
-                                    >
-                                    </span>)
-                                }
-                                if (field !== "blank"){
-                                    const item = <TableCell
-                                        key={_id+key}
-                                        // sx={{fontWeight:"500",fontSize:"1rem"}}
+                    <TableHead                    
+                        ref={TopRef} 
+                    >
+                        <TableRow
+                            sx={{
+                                position:"relative"
+                            }}
+                        >
+                            <TableCell
+                            
+                            >
+                                <FlexBetween>
+                                    <Box></Box>
+                                    <Box
+                                        color="rgb(224, 224, 224)"
                                         sx={{
-                                            fontWeight:"500",
-                                            "&>span>p>a":{
-                                                color:linkcolor
-                                            }
-                                    
+                                            // cursor:"col-resize",
+                                            position:"relative",
+                                            left:"1rem"
                                         }}
-                                    >
-                                        {cell}
-                                    </TableCell>
-                                    body.push(item)
-                                }
-                               
-                            }
-                            body.push(
-                                <TableCell
-                                    key={_id+"_comment"}
-                                >
-                                    <BasicModal 
-                                        title={
-                                            <Tooltip title="回覆">
-                                            <FlexBetween
-                                                gap="0.5rem"
+                                    >|</Box>
+                                </FlexBetween>
+
+                            </TableCell>
+                            {Object.entries(formmodel['schema']).map(([key,value])=>{
+                                const {field,label} = value;
+                                if (field !== 'blank'){
+                                    return  <TableCell key={key}
                                                 sx={{
-                                                    "&:hover":{
-                                                        cursor:"pointer",
-                                                        color:"#28B463",
-                                                        transition: "all .1s ease",
-                                                    }
+                                                    minWidth:tempwidthdict[key],
+                                                    
                                                 }}
                                             >
-                                                    <ChatBubbleOutlineIcon />
-                                                    <Typography
-                                                        fontWeight="500"
-                                                    >
-                                                        {rowdata['comments'].length}
-                                                    </Typography>
-                                            </FlexBetween>
+                                                <FlexBetween>
+                                                    <Box>{label}</Box>
+                                                </FlexBetween>
+                                            </TableCell>
+                                }
+                            })}
+                            <TableCell>
+                                <FlexBetween>
+                                    <Box>
+                                    訊息
+                                    </Box>
+                                    <Box
+                                        color="rgb(224, 224, 224)"
+                                        sx={{
+                                            // cursor:"col-resize",
+                                            position:"relative",
+                                            left:"1rem"
+                                        }}
+                                    >|</Box>
+                                </FlexBetween>
+                            </TableCell>
+                            <TableCell>刪除</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody
+                        
+                    >
+                        {
+                            showlist.map((rowdata)=>{
+                                const {_id,data} = rowdata;
+                                const body = []
+                                body.push(
+                                    <TableCell
+                                        key = {_id+"_edit"}
+                                        
+                                    >
+                                        <Tooltip
+                                            title="編輯"
+                                        >
+                                        <IconButton
+                                            // onClick={()=>window.open(webpath+`formdata/${_id}`)}
+                                            onClick = {()=>{
+                                                navigate(`/formdata/${_id}`)
+                                            }}
+                                        >
+                                            <EditIcon 
+                                                sx={{
+                                                    color:'#2ECC71'
+                                                }}
+                                            />
+                                        </IconButton>
                                         </Tooltip>
-                                        }
-                                        body={
-                                            <>
-                                                <CommentWidget 
-                                                    formdata = {rowdata}
-                                                    commentwidthrate = {0.55}
-                                                    ckwidth = {isNonmobile?"700px":windowwidth*0.7}
-                                                />
-                                            </>
-                                        }
-                                    />
-                                </TableCell>
-                            )
-                            body.push(
-                                <TableCell
-                                    key = {_id+"_delete"}
-                                >
-                                    <DeleteModalWidget 
-                                        formdata = {rowdata}
-                                        title = {
-                                            <Tooltip
-                                                title ="刪除"
-                                            >
-                                                <IconButton>
-                                                    <DeleteIcon 
-                                                        sx= {{
-                                                            color:"#E74C3C"
-                                                        }}
-                                                    />  
-                                                </IconButton>
-                                            </Tooltip>
-                                        }
-                                        otherfunc = {
-                                            ()=>DeleteForm(_id)
-                                        }
-                                    />
-                                </TableCell>
-                            )
-                            return (
-                            <TableRow
-                                onClick={()=>{
-                                    if (selectrow === _id){
-                                        setSelectrow("")
-                                    }else{
-                                        setSelectrow(_id)
+                                    </TableCell>
+                                )
+                                for (const key in formmodel['schema']){
+                                    
+                                    const {label,field,fulldata} = formmodel['schema'][key]
+                                    
+                                    if (field === "select-color"){
+                                    
+                                        const color = data[key]
+                                        const value = fulldata[data[key]]
+                                        var cell = (
+                                            <ColorTag 
+                                                color={color}
+                                                value={value}
+                                            />
+                                        )
+                                    }else if (field !== "blank"){
+                                        var cell = (<span 
+                                            className="CkeditorInput"
+                                            dangerouslySetInnerHTML={createMarkup(data[key].replaceAll('\n','<br>'))}
+                                        >
+                                        </span>)
                                     }
-                                }}
-                                key={_id}
-                                sx={{ 
-                                    '&:last-child td, &:last-child th': { border: 0 },
-                                    cursor:"default",
-                                    backgroundColor:(selectrow===_id)?
-                                        cardcolor
-                                        :alt
-                                }}
-                            >
-                                {body}
-                            </TableRow>)
-                        })
-                    }
+                                    if (field !== "blank"){
+                                        if (key === "pin"){
+                                            if ((_id+"-"+key) === rowToEdit && rowToClick === (_id+"-"+key)){
+                                                var item = <TableCell
+    
+                                                    key={_id+"-"+key}
+                                                    // sx={{fontWeight:"500",fontSize:"1rem"}}
+                                                    sx={{
+                                                        fontWeight:"500",
+                                                        "&>span>p>a":{
+                                                            color:linkcolor
+                                                        },
+                                                        border:"solid #5DADE2",
+                                                        boxShadow: "0px 2px 2px 0px"
+                                                
+                                                    }}
+                                                    onContextMenu={(e)=>handleClick(e,data[key])}
+                                                >
+                                                    <InputBase 
+                                                        sx={{
+                                                            fontWeight:"500",
+                                                            fontSize:"0.8rem"
+                                                        }}
+                                                        value={dataEdit} 
+                                                        rows ={5} 
+                                                        multiline={true}  
+                                                        onChange={(e)=>setDataEdit(e.target.value)}    
+                                                    />
+    
+                                                </TableCell>
+                                            }else if(rowToClick === (_id+"-"+key)){
+                                                var item = <TableCell
+                                                    onDoubleClick= {()=>{
+                                                        setRowToEdit(_id+"-"+key);
+                                                        setDataEdit(data[key]);
+                                                        setOriginalData(data[key])
+                                                    }}
+                                                    onClick = {(e)=>{
+                                                        UpdateJira(e,_id+"-"+key)
+                                                    }}
+                                                    onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
+                                                    key={_id+"-"+key}
+                                                    sx={{
+                                                        fontWeight:"500",
+                                                        "&>span>p>a":{
+                                                            color:linkcolor
+                                                        },
+                                                        border:"solid #5DADE2",
+                                                        boxShadow: "0px 2px 2px 0px"
+                                                    }}
+                                                >
+                                                    {cell}
+                                                </TableCell>
+                                            }
+                                            
+                                            else{
+                                                var item = <TableCell
+                                                    onDoubleClick= {()=>{
+                                                        setRowToEdit(_id+"-"+key);
+                                                        setDataEdit(data[key]);
+                                                        setOriginalData(data[key])
+                                                    }}
+                                                    onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
+                                                    onClick = {(e)=>{
+                                                        UpdateJira(e,_id+"-"+key)
+                                                    }}
+                                                    key={_id+"-"+key}
+                                                    sx={{
+                                                        fontWeight:"500",
+                                                        "&>span>p>a":{
+                                                            color:linkcolor
+                                                        }
+                                                
+                                                    }}
+                                                >
+                                                    {cell}
+                                                </TableCell>
+                                            }
+                                        }else{
+                                            if (rowToClick === _id+"-"+key){
+                                                var item = <TableCell
+                                                    onClick = {(e)=>{
+                                                        UpdateJira(e,_id+"-"+key)
+                                                    }}
+                                                    onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
+                                                    key={_id+"-"+key}
+                                                    sx={{
+                                                        fontWeight:"500",
+                                                        "&>span>p>a":{
+                                                            color:linkcolor
+                                                        },
+                                                        border:"solid #5DADE2",
+                                                        boxShadow: "0px 2px 2px 0px"
+                                                    }}
+                                                >
+                                                    {cell}
+                                                </TableCell>
+                                            }else{
+                                                var item = <TableCell
+                                                    key={_id+"-"+key}
+                                                    onClick = {(e)=>{
+                                                        UpdateJira(e,_id+"-"+key)
+                                                    }}
+                                                    onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
+                                                    sx={{
+                                                        fontWeight:"500",
+                                                        "&>span>p>a":{
+                                                            color:linkcolor
+                                                        },
+                                                        
+                                                    }}
+                                                >
+                                                    {cell}
+                                                </TableCell>
+                                            }
+                                            
+                                        }
+                                        
+                                        
+                                        body.push(item)
+                                    }
+                                
+                                }
+                                body.push(
+                                    <TableCell
+                                        key={_id+"_comment"}
+                                    >
+                                        <BasicModal 
+                                            title={
+                                                <Tooltip title="回覆">
+                                                <FlexBetween
+                                                    gap="0.5rem"
+                                                    sx={{
+                                                        "&:hover":{
+                                                            cursor:"pointer",
+                                                            color:"#28B463",
+                                                            transition: "all .1s ease",
+                                                        }
+                                                    }}
+                                                >
+                                                        <ChatBubbleOutlineIcon />
+                                                        <Typography
+                                                            fontWeight="500"
+                                                        >
+                                                            {rowdata['comments'].length}
+                                                        </Typography>
+                                                </FlexBetween>
+                                            </Tooltip>
+                                            }
+                                            body={
+                                                <>
+                                                    <CommentWidget 
+                                                        formdata = {rowdata}
+                                                        commentwidthrate = {0.55}
+                                                        ckwidth = {isNonmobile?"700px":windowwidth*0.7}
+                                                    />
+                                                </>
+                                            }
+                                        />
+                                    </TableCell>
+                                )
+                                body.push(
+                                    <TableCell
+                                        key = {_id+"_delete"}
+                                    >
+                                        <DeleteModalWidget 
+                                            formdata = {rowdata}
+                                            title = {
+                                                <Tooltip
+                                                    title ="刪除"
+                                                >
+                                                    <IconButton>
+                                                        <DeleteIcon 
+                                                            sx= {{
+                                                                color:"#E74C3C"
+                                                            }}
+                                                        />  
+                                                    </IconButton>
+                                                </Tooltip>
+                                            }
+                                            otherfunc = {
+                                                ()=>DeleteForm(_id)
+                                            }
+                                        />
+                                    </TableCell>
+                                )
+                                return (
+                                <TableRow
+                                    onClick={()=>{
+                                        if (selectrow === _id){
+                                            setSelectrow("")
+                                        }else{
+                                            setSelectrow(_id)
+                                        }
+                                    }}
+                                    key={_id}
+                                    sx={{ 
+                                        '&:last-child td, &:last-child th': { border: 0 },
+                                        cursor:"default",
+                                        backgroundColor:(selectrow===_id)?
+                                            cardcolor
+                                            :alt
+                                    }}
+                                >
+                                    {body}
+                                </TableRow>)
+                            })
+                        }
 
-                </TableBody>
+                    </TableBody>
+            
+                </Table>
+            </TableContainer>
+        </Paper>
         
-            </Table>
-        </TableContainer>
     );
 })
 
@@ -477,7 +630,7 @@ export const TableWidget = forwardRef(({
 //     const TopRef = useRef();
 //     // width set
 
-
+//     const scroller = useRef();
 
 //     useImperativeHandle(ref, () => ({
 
@@ -532,8 +685,6 @@ export const TableWidget = forwardRef(({
 //                     setScrolltoTop(true)
 //                 }
 //                 UpdateShowlist(filterform)
-                
-
 //             }catch{
 //                 setFilterformfull(forms);
 //                 setShowlist(forms.slice(0,20))
@@ -559,19 +710,37 @@ export const TableWidget = forwardRef(({
 //             setScrolltoTop(false)
 //         }
 //     }
-
+//     const handleScroll = (element)=>{
+//         console.log('handle scroll')
+//         // try{
+//         //     if (element.scrollTop+tableRef.current.offsetHeight>=element.scrollHeight*0.85){
+//         //         tablechildRef.current.updateShownum();
+//         //     }
+//         // }catch{}  
+//     }
 //     useEffect(()=>{
 //         UpdateShowlist(filterformfull)
 //         if (forms.length>0 ){
 //             FilterFormList()
+//         }        
+//         function updateScrollPosition() {
+//             console.log('csoss')
 //         }
 
-        
+//         scroller.current.addEventListener("scroll", updateScrollPosition, false);
+
 //     },[forms,filter,shownum])
 //     return (
-//         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-//             <TableContainer sx={{maxHeight:WindowHeight*0.8}}>
-//                 <Table stickyHeader aria-label="sticky table">
+//         <Paper 
+//             sx={{ width: '100%', overflow: 'hidden' }}
+//             ref={scroller}
+            
+//         >
+//             <TableContainer sx={{maxHeight:WindowHeight*0.8}}
+//             >
+//                 <Table stickyHeader aria-label="sticky table"
+    
+//                 >
 //                     <TableHead>
 //                     <TableRow
 //                     >
@@ -633,7 +802,9 @@ export const TableWidget = forwardRef(({
 //                         >刪除</TableCell>
 //                     </TableRow>
 //                     </TableHead>
-//                     <TableBody>
+//                     <TableBody
+                        
+//                     >
 //                     {
 //                         showlist.map((rowdata)=>{
 //                             const {_id,data} = rowdata;
@@ -797,6 +968,22 @@ export const TableWidget = forwardRef(({
 //                     </TableBody>
 //                 </Table>
 //             </TableContainer>
+//             <Divider />
+//             <Box
+//                 sx={{backgroundColor:alt}}
+               
+//             >   
+//                 <FlexBetween>
+//                     <Box></Box>
+//                     <Typography
+//                         fontWeight={500}
+//                         color="#5499C7"
+//                         mr="1rem"
+//                     >   
+//                         {showlist.length} 筆資料
+//                     </Typography>
+//                 </FlexBetween>
+//             </Box>
 //         </Paper>
 //     );
 // })

@@ -11,7 +11,6 @@ import { urlpath } from "../state";
 import { useDispatch } from 'react-redux';
 import { setUserList } from "../state";
 import { StoreContext } from '../state/store';
-
 const filter = createFilterOptions();
 
 
@@ -187,11 +186,14 @@ export const UserSearchDropdown = ({
     value,
     size,
     setFieldValue,
-    disabled
+    disabled,
+    handleBlur,
+    helperText,
+    defaultbool = false
 })=>{
+    const user = useSelector((state)=>state.user);
     const {storeUserlist} = useContext(StoreContext);
     const [userlist,setUserlist] = storeUserlist;
- 
     return (
         <Autocomplete
             clearOnBlur
@@ -209,25 +211,28 @@ export const UserSearchDropdown = ({
                     }
                 }
             }}
-            onInputChange={(event, newInputValue, reason) => {
-                if (newInputValue === ""){
-                    // setFieldValue(name,null)
-                }
-            }}
+
+            defaultValue={defaultbool&&user}
+
+            isOptionEqualToValue={(option, value) => option.id === value.id}
 
 
             filterOptions={(options, params) => {
                 const { inputValue } = params;
                 const filtered = options.filter((option)=>(option['Name'].toLowerCase()).includes(inputValue.toLowerCase()))
+                const isExists = options.filter((option)=>(option['Name'].toLowerCase()) == (inputValue.toLowerCase()))
+                if (inputValue !== '' && isExists.length==0) {
+                    filtered.push({"Name":inputValue,"picturePath":""})
+                }
                 return filtered;
             }}
             getOptionLabel={(option) => {
-
-                if (value ===""){
+                if (option.Name === undefined){
                     return ""
                 }else{
                     return option.Name;
                 }
+                
             }}
             renderOption={(props, option) => (
                 <Box 
@@ -245,9 +250,12 @@ export const UserSearchDropdown = ({
                 </Box>
             )}
             renderInput={(params) => (
+                
                 <TextField
                     {...params}
                     label={`Choose a ${label}`}
+                    onBlur={handleBlur}
+                    helperText={helperText}
                     // inputProps={{
                     //     ...params.inputProps,
                     //     autoComplete: 'new-password', // disable autocomplete and autofill

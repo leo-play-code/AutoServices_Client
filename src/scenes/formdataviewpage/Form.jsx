@@ -35,6 +35,8 @@ import { UpdateFormModel, GetOneFormModel } from '../../api/formmodel';
 import { GetUserAllFormData, UpdateFormData ,GetAllFormData} from "../../api/formdata";
 import { StoreContext } from "../../state/store";
 import { setLocalforms } from "../../state";
+import HistoryIcon from '@mui/icons-material/History';
+import HistoryModel from "../../components/HistoryModal";
 const updateFormModel = async(formdict,values,updateformdict) => {
     //  只能update Array
     for (const key in formdict['selectdata']){
@@ -100,11 +102,12 @@ const updateFormModel = async(formdict,values,updateformdict) => {
 }
 
 
+
+
 const FormModel = ({
     formdata
 })=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
-    const localforms = useSelector((state)=>state.forms);
     const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
     const [forms,setForms] = storeforms;
     const [userforms,setUserforms] = storeuserforms;
@@ -126,21 +129,17 @@ const FormModel = ({
     const dark = theme.palette.neutral.dark;
     const dispatch = useDispatch();
     const getFormModel = async(data)=>{
-        const formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
-        setFormdict(formmodel)
+        // const formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
+        
+        setFormdict(data['form'])
         getInitValue(data)
     }
 
     const toggleupdatedata = async(values,token,userid,formdataid) =>{
-        const tempforms = [...localforms].filter((form)=>form['_id']!=formdata['_id']);    
+        const tempforms = [...forms].filter((form)=>form['_id']!=formdata['_id']);    
         const tempform = {...formdata}
         tempform['data'] = values;
         tempforms.push(tempform);
-        dispatch(
-            setLocalforms({
-                forms:tempforms
-            })
-        )
         const form = await UpdateFormData(token,values,userid,formdataid);
         if (formdata['creator']['_id']===_id){
             try{
@@ -212,11 +211,7 @@ const FormModel = ({
         for (const key in values){
             if (!(key.includes("&:blank") || key.includes("selectdata-"))){
                 const {label,field} = formdict['schema'][key]
-                if (field !== 'ckeditor'){
-                    newValues[key] = values[key].replaceAll('\n','<br />');
-                }else{
-                    newValues[key] = values[key];
-                }
+                newValues[key] = values[key];
             }
         }
         
@@ -245,7 +240,7 @@ const FormModel = ({
     }
     useEffect(()=>{
         getFormModel(formdata);
-    },[localforms,storeformmodels])
+    },[storeformmodels])
     return(
         <Formik
             onSubmit={handleFormSubmit}
@@ -402,6 +397,20 @@ const FormModel = ({
                                                 }
                                             />
                                         </Box>
+                                        <HistoryModel
+                                            title={
+                                                <IconButton>
+                                                    <HistoryIcon 
+                                                        sx={{
+                                                            color:"#3498DB"
+                                                        }}
+                                                    />    
+                                                </IconButton>
+                                            }
+                                            formdata= {formdata}
+                                        >
+
+                                        </HistoryModel>
                                         {!editable?(
                                             <Tooltip
                                                 title = "編輯"

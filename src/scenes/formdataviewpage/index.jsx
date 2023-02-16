@@ -17,12 +17,13 @@ import FormModel from "./Form";
 import { StoreContext } from '../../state/store';
 const FormDataViewPage = ()=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
+    const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
     const token = useSelector((state)=>state.token);
     const {formdataid} = useParams();
 
     
-    const forms = useSelector((state)=>state.forms);
+    const [forms,setForms] = storeforms;
     const [data,setData] = useState(forms.filter(form=>form["_id"]===formdataid)[0]);
     const windowheight = useSelector((state)=>state.height);
     const windowwidth = useSelector((state)=>state.width);
@@ -49,6 +50,9 @@ const FormDataViewPage = ()=>{
                     flexBasis={isNonMobileScreens?"42%":undefined}
                     mb="1.5rem"
                 >
+                    {
+                        
+                    }
                     <FormModel 
                         formdata={data}
                     

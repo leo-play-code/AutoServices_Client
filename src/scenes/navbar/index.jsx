@@ -255,10 +255,13 @@ const Navbar = ({
             )
             
         }
-          
+        
         window.addEventListener("resize", handleResize)  
         handleResize()
         document.body.addEventListener('click',closedropdown_effect);  
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
     },[])
     return(
         <FetchToStore>

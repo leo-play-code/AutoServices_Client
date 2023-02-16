@@ -15,7 +15,7 @@ const initialState = {
     filter : {},
     filtermode:"post",
     fetchbool:false,
-    newgooglesheet:{}
+    newgooglesheet:{},
 };
 export const ColumnDefault = new Map([
     [1,"A"],

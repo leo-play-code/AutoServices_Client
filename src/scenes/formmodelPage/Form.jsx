@@ -17,7 +17,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Fragment, useState,useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@emotion/react';
-import {FormSearchDropdown} from "../../components/SearchDropdown";
+import {FormSearchDropdown,UserSearchDropdown} from "../../components/SearchDropdown";
 import { useEffect } from 'react';
 import {FormSelectDropdown,FormSelectColorDropdown} from "../../components/Select";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -34,6 +34,7 @@ import BodyBox from '../../components/bodyBox';
 import { CreateFormData } from '../../api/formdata';
 import { GetOneFormModel, UpdateFormModel } from '../../api/formmodel';
 import { StoreContext } from "../../state/store";
+import { registerAPI } from "../../api/auth";
 
 
 const updateFormModel = async(formdict,values,updateformdict) => {
@@ -102,10 +103,10 @@ const updateFormModel = async(formdict,values,updateformdict) => {
 
 
 const FormModel = ({formname})=>{
-    const {storeuserforms,storeforms,storeformmodels} = useContext(StoreContext);
+    const {storeuserforms,storeforms,storeformmodels,storeUserlist} = useContext(StoreContext);
     const [userforms,setUserforms] = storeuserforms;
     const [formmodels,setFormmodels] = storeformmodels;
-    
+    const [userlist,setUserlist] = storeUserlist;
     const [forms,setForms] = storeforms;
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const [formdict,setFormdict] = useState({});
@@ -194,6 +195,7 @@ const FormModel = ({formname})=>{
         const tempformdict = {...formdict}
         tempformdict['number'] = formdict['number']+=1
         UpdateFormModel(token,tempformdict,formdict['name']);
+        CreateUser(values)
         const tempformmodels = formmodels.filter((formmodel)=>formmodel['name']!==formdict['name'])
         tempformmodels.push(tempformdict)
         setFormmodels(tempformmodels)
@@ -217,13 +219,36 @@ const FormModel = ({formname})=>{
         navigate("/home")
     }
 
+    const CreateUser = async(values) =>{
+        for (const key in formdict['schema']){
+            const {label,field} = formdict['schema'][key]
+            if (field === 'user'){
+                if (userlist.filter((user)=>user['Name']===values[key]).length === 0){
+                    const data = await registerAPI({"email":`${values[key]}@tempory.com`,"Name":values[key],"picturePath":""})   
+                    const tempuserlist = [...userlist];
+                    tempuserlist.push(data['savedUser'])
+                    setUserlist(tempuserlist)
+                }
+            }  
+        
+        }
+        
+    }
+
+
     // FormMenu Function
     function CopyAll(values){
         var copycontent = ``
         for (const key in values){
             if (key.includes('selectdata')&&values[key]!==""){
                 const name = key.replaceAll('selectdata-','')
-                copycontent+=`${formdict['selectdata'][name]['label']}: ${values[key]}\n`
+                const {label,setup} = formdict['selectdata'][name]
+                if (setup['label']==true){
+                    copycontent+=`${label}: ${values[key]}\n`
+                }else{
+                    copycontent+=`${values[key]}`
+                }
+                
             }
         }
         navigator.clipboard.writeText(copycontent)
@@ -231,8 +256,14 @@ const FormModel = ({formname})=>{
     }
 
     function CopyEach(key,values){
+        const {label,setup} = formdict['selectdata'][key]
         const newkey = 'selectdata-'+key
-        const copycontent = `${formdict['selectdata'][key]['label']}: ${values[newkey]}`
+        if (setup['label']==true){
+            var copycontent = `${label}: ${values[newkey]}`
+        }else{
+            var copycontent = `${values[newkey]}`
+        }
+        
         navigator.clipboard.writeText(copycontent)
         updateFormModel(formdict,values,updateformdict)
     }
@@ -310,7 +341,7 @@ const FormModel = ({formname})=>{
                                                         {
                                                             ((formdict['selectdata']!==undefined))?
                                                             (Object.entries(formdict['selectdata']).map(([key, value]) => {
-                                                                const {sx,label,usage,relation,field,fulldata} = value
+                                                                const {sx,label,relation,field,fulldata} = value
                                                                 var disabled = false;
                                                                 if (field === 'searchselect'){
                                                                     if (relation){
@@ -422,71 +453,11 @@ const FormModel = ({formname})=>{
                                                 (Object.entries(formdict['schema']).map(([key, value]) => {
                                                     const  {fulldata,disabled,field,label,multiline,sx,rows,relation,initvalue} = value;
                                                     if (field === "text"){
-                                                        if (relation){
-                                                            const relation_list = relation.split("-")
-                                                            if (relation_list[0] === 'selectdata'){
-                                                                const targetname = relation_list[0]+'-'+relation_list[1]
-                                                                var targetvalue = values[targetname]
-                                                            }else{
-                                                                const targetname = relation_list[1]
-                                                                var targetvalue = values[targetname]
-                                                            }
-                                                            if (typeof initvalue === 'object'){
-                                                                var beforedata = '';
-                                                                if (values[key]){
-                                                                    for (const initkey in initvalue){
-                                                                        if (values[key].includes(initvalue[initkey]) && initvalue[initkey] !== '' ){
-                                                                            var beforedata = initvalue[initkey];
-                                                                        }
-                                                                    }
-                                                                }
-                                                                if (beforedata !== ''){
-                                                                    values[key] = values[key].replaceAll(beforedata,initvalue[targetvalue])
-                                                                }else{
-                                                                    values[key] = initvalue[targetvalue] +''+values[key]
-                                                                }
-                                                            }
-                                                            var placeholder = ``
-                                                            if (relation){
-                                                                // const relation_list =  data[key]['relation'].split("-")
-                                                                // placeholder += `關聯 ${data[relation_list[0]][relation_list[1]]['label']}`
-                                                            } 
-                                                            return(<TextField
-                                                                key = {key}
-                                                                label={label}
-                                                                multiline={multiline}
-                                                                rows={rows}
-                                                                onBlur={handleBlur}
-                                                                onChange={handleChange}
-                                                                value={values[key]||""}
-                                                                name={key}
-                                                                error={Boolean(touched[key])&&Boolean(errors[key])}
-                                                                helperText = {touched[key]&&errors[key]}
-                                                                sx={sx}
-                                                                disabled={(typeof disabled === 'object')?disabled[targetvalue]:disabled}
-                                                                placeholder={placeholder}
-                                                            />)
-                                                        }else{
-                                                            return (<TextField
-                                                                key = {key}
-                                                                label={label}
-                                                                multiline={multiline}
-                                                                rows={rows}
-                                                                onBlur={handleBlur}
-                                                                onChange={handleChange}
-                                                                value={values[key]||""}
-                                                                name={key}
-                                                                error={Boolean(touched[key])&&Boolean(errors[key])}
-                                                                helperText = {touched[key]&&errors[key]}
-                                                                sx={sx}
-                                                                disabled={disabled}
-                                                            />)
-                                                        }
-                                                        
-                                                    }else if(field === "user"){
                                                         return (<TextField
                                                             key = {key}
                                                             label={label}
+                                                            multiline={multiline}
+                                                            rows={rows}
                                                             onBlur={handleBlur}
                                                             onChange={handleChange}
                                                             value={values[key]||""}
@@ -496,6 +467,19 @@ const FormModel = ({formname})=>{
                                                             sx={sx}
                                                             disabled={disabled}
                                                         />)
+                                                    }else if(field === "user"){                            
+                                                        return <UserSearchDropdown 
+                                                            key = {key}
+                                                            label={label}
+                                                            name={key}
+                                                            value={values[key]}
+                                                            disabled ={disabled}
+                                                            sx={sx}
+                                                            defaultbool = {true}
+                                                            setFieldValue={setFieldValue}
+                                                            handleBlur = {handleBlur}
+                                                            helperText = {touched[key]&&errors[key]}
+                                                        />
                                                     }else if(field === "time"){
                                                         return (<LocalizationProvider 
                                                             key = {key}

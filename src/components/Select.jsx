@@ -29,7 +29,9 @@ export const SelectDropdown = ({
         "yellow":"#F1C40F",
         "green":"#2ECC71",
         "blue":"#3498DB",
-        "purple":"#9B59B6"
+        "purple":"#9B59B6",
+        "#16A085":"#16A085",
+        "#F39C12":"#F39C12"
     }
     return(
         <FormControl 

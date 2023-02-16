@@ -32,7 +32,8 @@ import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../state/store';
 
 const FilterWidget = ({
-    formname
+    formname,
+    number=""
 }) =>{
     const {storeformmodels} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
@@ -199,15 +200,27 @@ const FilterWidget = ({
                                             Filter
                                         </Typography>
                                     </FlexBetween>
-                                    <IconButton
-                                        onClick={()=>{
-                                            handleReset(resetForm,setFieldValue);
-                                        }}
+                                    <FlexBetween
+                                        gap="1.5rem"
                                     >
-                                        <RestartAltIcon 
-                                            sx={{fontSize:"25px"}}
-                                        />
-                                    </IconButton>
+                                        {number !== ""&&(
+                                            <Typography
+                                                fontWeight={"600"}
+                                            >
+                                                {number} 筆資料
+                                            </Typography>
+                                        )}
+                                       
+                                        <IconButton
+                                            onClick={()=>{
+                                                handleReset(resetForm,setFieldValue);
+                                            }}
+                                        >
+                                            <RestartAltIcon 
+                                                sx={{fontSize:"25px"}}
+                                            />
+                                        </IconButton>
+                                    </FlexBetween>
                                 </FlexBetween>
                                 <Divider />
                                 <Box>

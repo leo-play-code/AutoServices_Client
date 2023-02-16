@@ -319,13 +319,6 @@ export const PostBodyWidget = ({
                             >
                                 <FlexBetween
                                     onClick = {()=>{
-                                        const tempforms = [...localforms].filter((form)=>form['_id']!=data['_id']);
-                                        tempforms.push(data);
-                                        dispatch(
-                                            setLocalforms({
-                                                forms:tempforms
-                                            })
-                                        )
                                         navigate(`/formdata/${data['_id']}`)
                                     }}
                                     sx={dropdownItemStyle}

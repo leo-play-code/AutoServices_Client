@@ -19,6 +19,7 @@ import { StoreContext } from '../../state/store';
 // icon 
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import RightClick from '../../components/RightClick';
 
 
 
@@ -39,7 +40,20 @@ const FormModelViewPage = () =>{
     const tableRef = useRef();
     const tablechildRef = useRef();
     const [screen,setScreen] = useState('part');
+    const [number,setNumber] = useState(undefined);
+    const [x,setX] = useState(null);
+    const [y,setY] = useState(null);
+    const [copyvalue,setCopyvalue] = useState("");
 
+    const mousePosition = (x,y,value)=>{
+        setX(x);
+        setY(y);
+        setCopyvalue(value);
+    }
+
+    const changeNumber = (value)=>{
+        setNumber(value)
+    }
 
     const handleScroll = (element)=>{
         // console.log('handle scroll')
@@ -49,6 +63,7 @@ const FormModelViewPage = () =>{
             }
         }catch{}  
     }
+    // console.log('forms',forms)
     useEffect(()=>{
         if (filtermode !== "post"){
 
@@ -62,13 +77,25 @@ const FormModelViewPage = () =>{
                 scrollDemo.removeEventListener('scroll', handleScroll(scrollDemo));
             };
  
+        }else{
+            
         }
 
         
-    },[filtermode])
+    },[screen,forms,filtermode])
     return(
         <Box>
             <Navbar />
+            {
+                (x!==null && filtermode === "table")&&(
+                    <RightClick 
+                        x={x} 
+                        y={y}
+                        value = {copyvalue}
+                        tool={['copy']}       
+                    />
+                )
+            }
             <BodyBox
                 padding="2rem 2%"
                 display={isNonMobileScreens?"flex":"block"}
@@ -92,7 +119,7 @@ const FormModelViewPage = () =>{
                                 <WidgetWrapper
                                     mt="1.1rem"
                                 >
-                                    <FilterWidget formname={formname} />
+                                    <FilterWidget formname={formname} number= {number}/>
                                 </WidgetWrapper>
                             </Box>
                         </Box>
@@ -110,6 +137,7 @@ const FormModelViewPage = () =>{
                             <PostList 
                                 formname = {formname}
                                 formlist = {forms}
+                                changeNumber={changeNumber}
                             />
                         }
                     </Box>
@@ -130,26 +158,31 @@ const FormModelViewPage = () =>{
                             flexBasis={isNonMobileScreens?((screen==="full")?"99%":"75%"):undefined}
                             mb="1.5rem"
                             
-                        > 
-                            <Box
-                                sx={{
-                                    maxHeight:WindowHeight*0.85,
-                                    overflow:"scroll"
-                                }}
-                                position={isNonMobileScreens?"fixed":""}
-                                width={isNonMobileScreens?((screen==="full")?WindowWidth*0.95:WindowWidth*0.70):"inherit"}
-                                ref = {tableRef}
-                                id ={"scrollDemo"}
-                            >
+                        > <Box>
+                                <Box
+                                    sx={{
+                                        maxHeight:WindowHeight*0.85,
+                                        overflow:"scroll"
+                                    }}
+                                    position={isNonMobileScreens?"fixed":""}
+                                    width={isNonMobileScreens?((screen==="full")?WindowWidth*0.95:WindowWidth*0.70):"inherit"}
+                                    ref = {tableRef}
+                                    id ={"scrollDemo"}
+                                >
 
-                                {(forms.length>0 && formmodel!==undefined)&&
-                                    <TableWidget 
-                                        formname = {formname} 
-                                        formlist = {forms}
-                                        ref = {tablechildRef}
-                                        WindowHeight= {WindowHeight}
-                                    />}
+                                    {(forms.length>0 && formmodel!==undefined)&&
+                                        <TableWidget 
+                                            formname = {formname} 
+                                            formlist = {forms}
+                                            ref = {tablechildRef}
+                                            WindowHeight= {WindowHeight}
+                                            changeNumber={changeNumber}
+                                            mousePosition= {mousePosition}
+                                        />}
+                                </Box>
+                    
                             </Box>
+                            
                             <Box
                                 sx={{
                                     position:"relative"
@@ -157,7 +190,10 @@ const FormModelViewPage = () =>{
                             >
                                 {(screen==="full")?(
                                     <IconButton
-                                        onClick={()=>setScreen('part')}
+                                        onClick={()=>{
+                                            setScreen('part');
+                                            
+                                        }}
                                         sx={{
                                             position:"fixed",
                                             right:"1rem",
@@ -171,7 +207,10 @@ const FormModelViewPage = () =>{
                                     </IconButton>
                                 ):(
                                     <IconButton
-                                        onClick={()=>setScreen('full')}
+                                        onClick={()=>{
+                                            setScreen('full');
+                                            
+                                    }}
                                         sx={{
                                             position:"fixed",
                                             right:"1rem",
@@ -186,7 +225,14 @@ const FormModelViewPage = () =>{
                                 )}
                             </Box>
                         </Box>
-                        
+                        <Box
+                            position={"fixed"}
+                            bottom="3rem"
+                            right="3rem"
+                            fontWeight={"600"}
+                        >
+                            {number} 筆資料
+                        </Box>
                         
                    </>
                 )}

@@ -38,7 +38,6 @@ const GooglesheetPage = () =>{
     const [screen,setScreen] = useState('part');
     const WindowHeight = useSelector((state)=>state.height);
     const [sheetdata,setSheetData] = useState([]);
-    const tablechildRef = useRef();
     const tableRef = useRef();
     const GetSheetList = async()=>{
         const data = await GoogleSheetGetSheetMap(token,docID)
@@ -119,7 +118,6 @@ const GooglesheetPage = () =>{
                             {(sheetdata.length>0)&&
                                 <TableWidget 
                                     SheetData = {sheetdata}
-                                    ref = {tablechildRef}
                                     
                                 />}
                         </Box>

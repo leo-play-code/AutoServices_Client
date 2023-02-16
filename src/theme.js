@@ -1,4 +1,5 @@
 // color design tokens export
+
 export const colorTokens = {
     grey: {
         0: "#FFFFFF",
@@ -30,6 +31,10 @@ export const colorTokens = {
     dropdown:{
         0:"#3e3e3e",
         100:"#f5f5f5"
+    },
+    dropdownactive:{
+        0:"#5D6D7E",
+        100:"#D5DBDB"
     },
     card:{
         0:"#34495E",
@@ -71,6 +76,7 @@ return {
                 },
                 other:{
                     dropdown:colorTokens.dropdown[0],
+                    dropdownactive:colorTokens.dropdownactive[0],
                     card:colorTokens.card[0],
                     link:colorTokens.link[0]
                 },
@@ -97,6 +103,7 @@ return {
                 },
                 other:{
                     dropdown:colorTokens.dropdown[100],
+                    dropdownactive:colorTokens.dropdownactive[100],
                     card:colorTokens.card[100],
                     link:colorTokens.link[100]
                 },

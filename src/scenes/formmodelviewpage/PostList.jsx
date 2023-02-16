@@ -13,7 +13,8 @@ import { GetFormModelPart } from "../../api/formdata";
 
 export const PostList= ({
     formname,
-    formlist
+    formlist,
+    changeNumber
 }) =>{
 
 
@@ -75,6 +76,7 @@ export const PostList= ({
                 }
                 setFilterformfull(filterform);
                 setShowlist(filterform.slice(0,20))
+                changeNumber(filterform.length)
 
             }catch{
                 if (filterformfull.length !== formlist.length){
@@ -83,6 +85,7 @@ export const PostList= ({
                 }
                 setFilterformfull(formlist);
                 setShowlist(formlist.slice(0,20))
+                changeNumber(formlist.length)
             }
             setLoadingbool(false)
         }
@@ -91,11 +94,6 @@ export const PostList= ({
         const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight
         if (bottom) {
             var newshownum = shownum+20;
-            // if (number>newshownum){
-            //     const newformdata = await GetFormModelPart(token,"63c9dbf2c5f4e1a3919c12a5",newshownum,20);
-            //     const combineformdata = forms.concat(newformdata);
-            //     setForms(combineformdata)
-            // }
             setShownum(newshownum);
             if (newshownum>=filterformfull.length){
                 setLoadingbool(false)   
