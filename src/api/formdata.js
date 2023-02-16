@@ -36,9 +36,9 @@ export const GetFormModelAll = async(token,formmodelID) =>{
     return data
 }
 
-export const GetFormModelPart = async(token,formmodelID,skip,limit)=>{
+export const GetFormModelPart = async(token,skip,limit)=>{
     console.log("GetFormModelPart")
-    const response = await fetch(urlpath+`formdata/GetFormModelPart/${formmodelID}/${skip}/${limit}`,{
+    const response = await fetch(urlpath+`formdata/GetFormModelPart/${skip}/${limit}`,{
         method:"GET",
         headers:{
             Authorization:`Bearer ${token}`

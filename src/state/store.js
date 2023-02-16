@@ -73,7 +73,7 @@ export const FetchToStore = ({children}) =>{
                 GetAllUser(token),
                 GetAllFormModel(token),
                 // GetFormModelPart(token,"63c9dbf2c5f4e1a3919c12a5",0,30),
-                GetFormModelPart(token,"63ed9ca2529f277cb9876af3",0,30),
+                GetFormModelPart(token,0,30),
                 GoogleSheetAllList(token)
             ])
         ).map((r) => r);
