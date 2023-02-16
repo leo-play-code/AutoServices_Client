@@ -212,7 +212,7 @@ export const TableWidget = forwardRef(({
         if (rowToEdit !== key){
             if (rowToEdit !== null){
                 const formid = rowToEdit.replaceAll('-pin','')
-                console.log('forms',forms)
+                // console.log('forms',forms)
                 const tempforms = [...forms]
                 const tempform = tempforms.filter((tempform)=>tempform['_id']===formid)[0]
                 tempform['data']['pin'] = dataEdit
