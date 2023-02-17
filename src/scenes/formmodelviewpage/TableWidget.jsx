@@ -118,11 +118,7 @@ export const TableWidget = forwardRef(({
     for (const key in schema){
         const {field} = schema[key]
         if (field !== "blank"){
-            if (key === "systeminformation"){
-                tempwidthdict[key] = 100
-            }else{
-                tempwidthdict[key] = 100
-            }
+            tempwidthdict[key] = 200
             
         }
     }
