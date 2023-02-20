@@ -22,7 +22,7 @@ const DeleteModalWidget = ({
     const [forms,setForms] = storeforms;
     const [formmodels,setFormmodels] = storeformmodels;
     const [userforms,setUserforms] = storeuserforms;
-    const formmodel = formmodels.filter((formmodel)=>formdata['form']['name'])
+    const formmodel = formmodels.filter((formmodel)=>formmodel.name === formdata['form']['name'])[0]
     const schema = formmodel['schema'];
     // console.log('delete data',formdata)
     const token = useSelector((state)=>state.token);
