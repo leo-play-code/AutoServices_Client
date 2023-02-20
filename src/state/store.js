@@ -14,12 +14,14 @@ export const StoreProvider = ({ children }) => {
     const [userforms,setUserforms] = useState([]);
     const [formmodels,setFormmodels] = useState([]);
     const [googlelist,setGooglelist] = useState([]);
+    const [fetchbool,setFetchbool] = useState(false);
     const store ={
         storeforms: [forms, setForms],
         storeUserlist : [userlist,setUserlist],
         storeuserforms : [userforms,setUserforms],
         storeformmodels : [formmodels,setFormmodels],
         storegooglelist : [googlelist,setGooglelist],
+        storefetchbool : [fetchbool,setFetchbool] ,
     };
     return (
         <StoreContext.Provider value={store}>
@@ -32,17 +34,17 @@ export const StoreProvider = ({ children }) => {
 export const FetchToStore = ({children}) =>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const token = useSelector((state)=>state.token)
-    const {storeuserforms,storeUserlist,storeforms,storeformmodels,storegooglelist} = useContext(StoreContext);
+    const {storeuserforms,storeUserlist,storeforms,storeformmodels,storegooglelist,storefetchbool} = useContext(StoreContext);
     const [userforms,setUserforms] = storeuserforms;
     const [forms,setForms] = storeforms;
     const [userlist,setUserlist] = storeUserlist;
     const [formmodels,setFormmodels] = storeformmodels;
     const [googlelist,setGooglelist] = storegooglelist;
-
+    const [fetchbool,setFetchbool] = storefetchbool;
     const dispatch = useDispatch();
 
 
-    const fetchbool = useSelector((state)=>state.fetchbool)
+
     const getUserFormData = async()=>{
         const data = await GetUserAllFormData(token,_id)
         setUserforms(data);
@@ -60,12 +62,7 @@ export const FetchToStore = ({children}) =>{
         setFormmodels(data);
     }
     const dataFetch = async () => {
-        // waiting for allthethings in parallel
-        // dispatch(
-        //     setFetchBool({
-        //         fetchbool:true
-        //     })
-        // )
+        setFetchbool(true)
         const result = (
             await Promise.all([
                 GetUserAllFormData(token,_id),

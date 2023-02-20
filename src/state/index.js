@@ -14,7 +14,6 @@ const initialState = {
     userlist:[],
     filter : {},
     filtermode:"post",
-    fetchbool:false,
     newgooglesheet:{},
 };
 export const ColumnDefault = new Map([
@@ -86,9 +85,6 @@ export const authSlice = createSlice({
         setFilterMode:(state,action)=>{
             state.filtermode = action.payload.filtermode;
         },
-        setFetchBool:(state,action)=>{
-            state.fetchbool = action.payload.fetchbool;
-        },
         setnewGoogleSheet:(state,action)=>{
             state.newgooglesheet = action.payload.newgooglesheet;
         }
@@ -97,11 +93,11 @@ export const authSlice = createSlice({
     }
 })
 
-export const {setMode,setLogin,setLogout,setLocalforms,setScreen,setFormModels,setSettings,setUserList,setFilter,setFilterMode,setFetchBool,setnewGoogleSheet} = authSlice.actions;
+export const {setMode,setLogin,setLogout,setLocalforms,setScreen,setFormModels,setSettings,setUserList,setFilter,setFilterMode,setnewGoogleSheet} = authSlice.actions;
 export default authSlice.reducer;
 
-// export const urlpath = "http://localhost:6001/";
-export const urlpath = "https://autoservices-api.onrender.com/";
+export const urlpath = "http://localhost:6001/";
+// export const urlpath = "https://autoservices-api.onrender.com/";
 
 
 
