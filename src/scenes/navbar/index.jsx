@@ -38,7 +38,7 @@ import { Logout } from "../../components/Auth";
 import Tooltip from '@mui/material/Tooltip';
 import StorageIcon from '@mui/icons-material/Storage';
 import { GetAllFormModel } from "../../api/formmodel";
-import { StoreContext } from '../../state/store';
+import { StoreContext, FetchToStore } from '../../state/store';
 import DownloadIcon from '@mui/icons-material/Download';
 
 
@@ -119,6 +119,7 @@ const SheetItem = ({searchvalue,sheetlist}) =>{
         setSheetfilter(newform)
     },[searchvalue])
     return(
+        
         <Box>
             {
             sheetfilter.map(
@@ -264,7 +265,7 @@ const Navbar = ({
         });
     },[])
     return(
-
+        <FetchToStore>
         <FlexBetween 
             p="1rem 3%" 
             backgroundColor={alt}
@@ -679,7 +680,7 @@ const Navbar = ({
             )}
             
         </FlexBetween>
- 
+        </FetchToStore>
     )
 }
 

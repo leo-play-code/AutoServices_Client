@@ -94,7 +94,6 @@ export const FetchToStore = ({children}) =>{
     useEffect(()=>{
 
         if (!fetchbool && userlist.length<1){
-            
             dataFetch()
             getAllFormData()
         }
