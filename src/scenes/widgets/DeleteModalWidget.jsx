@@ -34,8 +34,8 @@ const DeleteModalWidget = ({
         const tempuserforms = userforms.filter((form)=>form['_id']!==formdata['_id']);
         setForms(tempforms)
         setUserforms(tempuserforms)
-        const tempformmodel = {...formdata['form']}
-        tempformmodel['number']= formdata['form']['number']-1
+        const tempformmodel = {...formmodel}
+        tempformmodel['number']= formmodel['number']-1
         UpdateFormModel(token,tempformmodel,formdata['form']['name']);
         const tempformmodels = formmodels.filter((formmodel)=>formmodel['name']!==formdata['form']['name'])
         tempformmodels.push(tempformmodel)
