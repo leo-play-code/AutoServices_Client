@@ -58,10 +58,10 @@ export const PostList= ({
                             }
                         }else{
                             if (typeof filter[key+"from"] === "number"){
-                                filterform = filterform.filter(form=>(Date.parse(form['createdAt'])>=filter[key+"from"]))            
+                                filterform = filterform.filter(form=>(Date.parse(form['data'][key])>=filter[key+"from"]))            
                             }
                             if (typeof filter[key+"to"] === "number"){
-                                filterform = filterform.filter(form=>(Date.parse(form['createdAt'])<=filter[key+"to"]))  
+                                filterform = filterform.filter(form=>(Date.parse(form['data'][key])<=filter[key+"to"]))  
                             }
                         }
                         
