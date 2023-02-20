@@ -58,7 +58,7 @@ export const TableWidget = ({
         const temp =NumberCovertLetter(i)
         titlelist.push(temp)
     }
-    console.log('titlelist',typeof SheetData)
+    // console.log('titlelist',typeof SheetData)
 
     useEffect(()=>{
         

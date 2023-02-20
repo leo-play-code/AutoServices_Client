@@ -22,7 +22,8 @@ const DeleteModalWidget = ({
     const [forms,setForms] = storeforms;
     const [formmodels,setFormmodels] = storeformmodels;
     const [userforms,setUserforms] = storeuserforms;
-    const formmodel = formdata['form']['schema'];
+    // const formmodel = formdata['form']['schema'];
+    const formmodel = formmodels.filter(form=>form.name===formdata['form']['name'])[0]
     // console.log('delete data',formdata)
     const token = useSelector((state)=>state.token);
     const windowheight = useSelector((state)=>state.height);
@@ -33,8 +34,8 @@ const DeleteModalWidget = ({
         const tempuserforms = userforms.filter((form)=>form['_id']!==formdata['_id']);
         setForms(tempforms)
         setUserforms(tempuserforms)
-        const tempformmodel = {...formdata['form']}
-        tempformmodel['number']= formdata['form']['number']-1
+        const tempformmodel = {...formmodel}
+        tempformmodel['number']= formmodel['number']-1
         UpdateFormModel(token,tempformmodel,formdata['form']['name']);
         const tempformmodels = formmodels.filter((formmodel)=>formmodel['name']!==formdata['form']['name'])
         tempformmodels.push(tempformmodel)
