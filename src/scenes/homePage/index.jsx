@@ -14,7 +14,6 @@ import { FetchToStore, StoreContext } from '../../state/store';
 const HomePage = ()=>{
     // useContext 
 
-    
 
 
     
@@ -23,8 +22,11 @@ const HomePage = ()=>{
     const isNonMobileScreens = useMediaQuery("(min-width:1230px)");
     const token = useSelector((state)=>state.token);
     const width = useSelector((state)=>state.width);
+    useEffect(()=>{
+
+    },[])
     return (
-        
+
             <Box>
             <Navbar />
             <BodyBox

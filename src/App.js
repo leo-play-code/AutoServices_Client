@@ -23,7 +23,7 @@ import GooglesheetPage from "./scenes/googlesheetviewPage";
 import ImportgooglesheetPage from './scenes/importgooglesheetPage/index';
 import TablePage from './scenes/TablePage/index';
 // import FormModelViewPage from './scenes/formmodelviewpage2/index';
-
+import { FetchToStore } from "./state/store";
 
 function App() {
     const mode = useSelector((state)=>state.mode);
@@ -36,15 +36,15 @@ function App() {
                     <CssBaseline />
                         <Routes>
                             <Route path="/" element={<LoginPage/>} />
-                            <Route path="/googlesheet/:docID/view" element={isAuth ?<GooglesheetPage />:<Navigate to="/" />} />
-                            <Route path="/googlesheet/create" element={isAuth ? <ImportgooglesheetPage />:<Navigate to="/" />}  />
-                            <Route path="/home" element={isAuth ?<HomePage />:<Navigate to="/" />} />
-                            <Route path="/form/:formname" element={isAuth ?<FormModelPage />:<Navigate to="/" />} />
-                            <Route path="/formmodel/form/:formname" element={isAuth ? <FormModelViewPage />:<Navigate to="/" />} />
-                            <Route path="/table" element={isAuth ? <TablePage />:<Navigate to="/" />} />
-                            <Route path="/search" element={isAuth ?<SearchPage />:<Navigate to="/" />} />
-                            <Route path="/formdata/:formdataid" element={isAuth ? <FormDataViewPage />:<Navigate to="/" />} />
-                            <Route path="/settings" element={isAuth? <SettingPage />: <Navigate to="/" />} />
+                            <Route path="/googlesheet/:docID/view" element={isAuth ?<FetchToStore><GooglesheetPage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/googlesheet/create" element={isAuth ? <FetchToStore><ImportgooglesheetPage /></FetchToStore>:<Navigate to="/" />}  />
+                            <Route path="/home" element={isAuth ?<FetchToStore><HomePage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/form/:formname" element={isAuth ?<FetchToStore><FormModelPage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/formmodel/form/:formname" element={isAuth ? <FetchToStore><FormModelViewPage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/table" element={isAuth ? <FetchToStore><TablePage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/search" element={isAuth ?<FetchToStore><SearchPage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/formdata/:formdataid" element={isAuth ? <FetchToStore><FormDataViewPage /></FetchToStore>:<Navigate to="/" />} />
+                            <Route path="/settings" element={isAuth? <FetchToStore><SettingPage /></FetchToStore>: <Navigate to="/" />} />
                             {/* <Route path="*" element={isAuth ?<Page404 />:<Navigate to="/" />} /> */}
                             <Route path="*" element={<Page404 />} />
                         </Routes>

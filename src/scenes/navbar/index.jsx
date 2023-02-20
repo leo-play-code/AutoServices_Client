@@ -38,7 +38,7 @@ import { Logout } from "../../components/Auth";
 import Tooltip from '@mui/material/Tooltip';
 import StorageIcon from '@mui/icons-material/Storage';
 import { GetAllFormModel } from "../../api/formmodel";
-import { StoreContext, FetchToStore } from '../../state/store';
+import { StoreContext } from '../../state/store';
 import DownloadIcon from '@mui/icons-material/Download';
 
 
@@ -264,244 +264,159 @@ const Navbar = ({
         });
     },[])
     return(
-        <FetchToStore>
-            <FlexBetween 
-                p="1rem 3%" 
-                backgroundColor={alt}
-                position="fixed"
-                width = {width}
-                zIndex="10"
-            >
-                <FlexBetween gap="1rem">
 
-                    <Box
-                        onClick={()=>{navigate("/home")}}
-                        sx={{
-                            "&:hover":{
-                                cursor:"pointer"
-                            }
-                        }}
-                    >
-                        <img 
-                            src={Logo}  
-                            alt="logo"
-                            width="55px"    
-                        />
-                    </Box>
-                    <Typography 
-                        fontWeight="bold"
-                        fontSize="25px"
-                        color="#0176B9"
-                        onClick={()=>{navigate("/home")}}
-                        sx={{
-                            "&:hover":{
-                                cursor:"pointer"
-                            }
-                        }}
-                    >
-                        AutoServices
-                    </Typography>
-                </FlexBetween>
+        <FlexBetween 
+            p="1rem 3%" 
+            backgroundColor={alt}
+            position="fixed"
+            width = {width}
+            zIndex="10"
+        >
+            <FlexBetween gap="1rem">
 
-                {isNonMobileScreens?
-                (
-                    <FlexBetween gap="1.5rem">
-                        {/* BRIGHT MODE */}
-                        <Tooltip title="顯示模式">
-                            <IconButton
-                                onClick={()=>{dispatch(setMode())}}
-                                sx={{fontSize:"25px"}}    
-                            >
-                                {theme.palette.mode==="dark" ?
-                                    (<DarkMode sx={{fontSize:"25px"}}/>)
-                                    :
-                                    (<LightMode sx= {{color:dark,fontSize:"25px"}}/>)
-                                }
-                            </IconButton>
-                        </Tooltip>
-                        
-                        
+                <Box
+                    onClick={()=>{navigate("/home")}}
+                    sx={{
+                        "&:hover":{
+                            cursor:"pointer"
+                        }
+                    }}
+                >
+                    <img 
+                        src={Logo}  
+                        alt="logo"
+                        width="55px"    
+                    />
+                </Box>
+                <Typography 
+                    fontWeight="bold"
+                    fontSize="25px"
+                    color="#0176B9"
+                    onClick={()=>{navigate("/home")}}
+                    sx={{
+                        "&:hover":{
+                            cursor:"pointer"
+                        }
+                    }}
+                >
+                    AutoServices
+                </Typography>
+            </FlexBetween>
 
-                        
-                        <Dropdown
-                            ref_active = {false}
-                            title = {"創建表單"}
-                            label ={
-                                <CreateNewFolderIcon 
-                                    sx={{fontSize:"25px",color:dark}}
-                                />
-                            }
-                            child={
-                                <DropdownContainer
-                                    sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
-                                    fontSize="1rem"
-                                    backgroundColor={alt}
-                                    width="15rem"
-                                >   
-                                    <FlexBetween
-                                        backgroundColor={neutralLight}
-                                        borderRadius="9px"
-                                        gap="3rem"
-                                        padding="0.1rem 1.5rem"
-                                    >
-                                        <InputBase 
-                                            placeholder="Search.."
-                                            onChange={e=>{setFormsearchvalue(e.target.value)}}
-                                        />
-                                    </FlexBetween>
-                                    <FormItem searchvalue={formsearchvalue} formlist ={formlist}/>
-                                    
-                                </DropdownContainer>
-                            }
+            {isNonMobileScreens?
+            (
+                <FlexBetween gap="1.5rem">
+                    {/* BRIGHT MODE */}
+                    <Tooltip title="顯示模式">
+                        <IconButton
+                            onClick={()=>{dispatch(setMode())}}
+                            sx={{fontSize:"25px"}}    
                         >
-                        </Dropdown>
-                        
-
-                        <Dropdown
-                            ref_active={ false }
-                            title = {"Google Sheet 引入"}
-                            label = {
-                                <StorageIcon 
-                                    sx={{color:dark,fontSize:"25px"}}
-                                />
+                            {theme.palette.mode==="dark" ?
+                                (<DarkMode sx={{fontSize:"25px"}}/>)
+                                :
+                                (<LightMode sx= {{color:dark,fontSize:"25px"}}/>)
                             }
-                            child = {
-                                <DropdownContainer
-                                    sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
-                                    fontSize="1rem"
-                                    backgroundColor={alt}
-                                    width="15rem"
-                                >   
-                                    <FlexBetween
-                                        backgroundColor={neutralLight}
-                                        borderRadius="9px"
-                                        gap="3rem"
-                                        padding="0.1rem 1.5rem"
-                                    >
-                                        <InputBase 
-                                            placeholder="Search.."
-                                            onChange={e=>{setSheetsearchvalue(e.target.value)}}
-                                        />
-                                    </FlexBetween>
-                                    <SheetItem searchvalue={sheetsearchvalue} sheetlist ={sheetlist}/>
-                                    
-                                </DropdownContainer>
-                            }
-                        >
-
-
-
-                        </Dropdown>
-                        {/* SEARCH */}
-                        {/* <Tooltip title="資料庫搜尋">
-                            <IconButton
-                                sx={{fontSize:"25px"}}
-                                onClick={()=>{navigate("/googlesheet")}}
-                            >
-                                <Search 
-                                    sx={{color:dark,fontSize:"25px"}}
-                                />
-                                <StorageIcon 
-                                    sx={{color:dark,fontSize:"25px"}}
-                                />
-                            </IconButton>
-                        </Tooltip> */}
+                        </IconButton>
+                    </Tooltip>
+                    
                     
 
-                        {/* USER */}
-                        <Box >
-                            <Dropdown
-                                ref_active ={false}
-                                title = {"User Info"}
-                                label={<UserImage size={"40px"} image={user.picturePath}/>}
-                                child={
-                                    <DropdownContainer
-                                        sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
-                                        fontSize="1rem"
-                                        backgroundColor={alt}
-                                        width="15rem"
-                                    >
-                                        <FlexBetween>
-                                            <FlexBetween gap="1.5rem">
-                                                <UserImage size={"40px"} image={user.picturePath}/>
-                                                <Typography
-                                                    fontWeight="700"
-                                                >
-                                                    {fullName}
-                                                </Typography>
-                                            </FlexBetween>
-                                        </FlexBetween>
+                    
+                    <Dropdown
+                        ref_active = {false}
+                        title = {"創建表單"}
+                        label ={
+                            <CreateNewFolderIcon 
+                                sx={{fontSize:"25px",color:dark}}
+                            />
+                        }
+                        child={
+                            <DropdownContainer
+                                sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
+                                fontSize="1rem"
+                                backgroundColor={alt}
+                                width="15rem"
+                            >   
+                                <FlexBetween
+                                    backgroundColor={neutralLight}
+                                    borderRadius="9px"
+                                    gap="3rem"
+                                    padding="0.1rem 1.5rem"
+                                >
+                                    <InputBase 
+                                        placeholder="Search.."
+                                        onChange={e=>{setFormsearchvalue(e.target.value)}}
+                                    />
+                                </FlexBetween>
+                                <FormItem searchvalue={formsearchvalue} formlist ={formlist}/>
+                                
+                            </DropdownContainer>
+                        }
+                    >
+                    </Dropdown>
+                    
 
-                                        <FlexBetween
-                                            mt="0.75rem"
-                                            sx={dropdownItemStyle}
-                                            onClick={()=>navigate("/settings")}
-                                        >
-                                            <FlexBetween gap="1.5rem">
-                                                <IconButton
-                                                    sx={{
-                                                        fontSize:"25px",
-                                                        "&:hover":{backgroundColor:dropdowncolor}
-                                                    }}
-                                                >
-                                                    <SettingsIcon 
-                                                        sx={{fontSize:"25px",color:dark}}
-                                                    />
-                                                </IconButton>
-                                                <Typography 
-                                                    width="9rem"
-                                                    fontWeight="700"
-                                                >
-                                                    設定
-                                                </Typography>
-                                            </FlexBetween>
-                                        </FlexBetween>
-                                        <FlexBetween 
-                                            mt="0.75rem"
-                                            sx={dropdownItemStyle}
-                                        >
-                                            <Logout 
-                                                child={
-                                                    <FlexBetween gap="1.5rem">
-                                                        
-                                                        <IconButton
-                                                            sx={{
-                                                                fontSize:"25px",
-                                                                "&:hover":{backgroundColor:dropdowncolor}
-                                                            }}
-                                                        >
-                                                            <LogoutIcon 
-                                                                sx={{fontSize:"25px",color:dark}}
-                                                            />
-                                                        </IconButton>
-                                                        <Typography 
-                                                            width="9rem"
-                                                            fontWeight="700"
-                                                        >
-                                                            登出 
-                                                        </Typography>
-                                                    </FlexBetween>
-                                                }
-                                            />
-                                            
-                                        </FlexBetween>
-                                    </DropdownContainer>
-                                }
-                            >
-                            </Dropdown>
-                        </Box>
-                    </FlexBetween>
-                ):
-                (
-                    <FlexBetween gap="1.5rem">
+                    <Dropdown
+                        ref_active={ false }
+                        title = {"Google Sheet 引入"}
+                        label = {
+                            <StorageIcon 
+                                sx={{color:dark,fontSize:"25px"}}
+                            />
+                        }
+                        child = {
+                            <DropdownContainer
+                                sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
+                                fontSize="1rem"
+                                backgroundColor={alt}
+                                width="15rem"
+                            >   
+                                <FlexBetween
+                                    backgroundColor={neutralLight}
+                                    borderRadius="9px"
+                                    gap="3rem"
+                                    padding="0.1rem 1.5rem"
+                                >
+                                    <InputBase 
+                                        placeholder="Search.."
+                                        onChange={e=>{setSheetsearchvalue(e.target.value)}}
+                                    />
+                                </FlexBetween>
+                                <SheetItem searchvalue={sheetsearchvalue} sheetlist ={sheetlist}/>
+                                
+                            </DropdownContainer>
+                        }
+                    >
 
-                        <Dropdown 
-                            ref_active = {false}
-                            title = "Menu"
-                            label={ <Menu />}
+
+
+                    </Dropdown>
+                    {/* SEARCH */}
+                    {/* <Tooltip title="資料庫搜尋">
+                        <IconButton
+                            sx={{fontSize:"25px"}}
+                            onClick={()=>{navigate("/googlesheet")}}
+                        >
+                            <Search 
+                                sx={{color:dark,fontSize:"25px"}}
+                            />
+                            <StorageIcon 
+                                sx={{color:dark,fontSize:"25px"}}
+                            />
+                        </IconButton>
+                    </Tooltip> */}
+                
+
+                    {/* USER */}
+                    <Box >
+                        <Dropdown
+                            ref_active ={false}
+                            title = {"User Info"}
+                            label={<UserImage size={"40px"} image={user.picturePath}/>}
                             child={
                                 <DropdownContainer
-                                    sx={{top:"0.25rem",right:"-1.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
+                                    sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
                                     fontSize="1rem"
                                     backgroundColor={alt}
                                     width="15rem"
@@ -511,42 +426,16 @@ const Navbar = ({
                                             <UserImage size={"40px"} image={user.picturePath}/>
                                             <Typography
                                                 fontWeight="700"
-                                            >{fullName}
+                                            >
+                                                {fullName}
                                             </Typography>
                                         </FlexBetween>
                                     </FlexBetween>
 
-                                    {
-                                        isshowform&&(
-                                            <DropdownContainer 
-                                                ref={formRef}
-                                                sx={{top:"7rem",right:"0rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
-                                                fontSize="1rem"
-                                                backgroundColor={alt}
-                                                width="15rem"
-                                            
-                                            >
-                                                <FlexBetween
-                                                    backgroundColor={neutralLight}
-                                                    borderRadius="9px"
-                                                    gap="3rem"
-                                                    padding="0.1rem 1.5rem"
-                                                >
-                                                    <InputBase 
-                                                        placeholder="Search.."
-                                                        onChange={e=>{setFormsearchvalue(e.target.value)}}
-                                                    />
-                                                </FlexBetween>
-                                                <FormItem searchvalue={formsearchvalue} formlist = {formlist}/>
-                                            </DropdownContainer>
-                                        )
-                                    }
-                                
-                                    <FlexBetween  
-                                        mt="0.75rem" 
+                                    <FlexBetween
+                                        mt="0.75rem"
                                         sx={dropdownItemStyle}
-                                        onClick={toggleCreateform}
-                                        ref={formbtnRef}
+                                        onClick={()=>navigate("/settings")}
                                     >
                                         <FlexBetween gap="1.5rem">
                                             <IconButton
@@ -555,131 +444,242 @@ const Navbar = ({
                                                     "&:hover":{backgroundColor:dropdowncolor}
                                                 }}
                                             >
-                                                <CreateNewFolderIcon 
+                                                <SettingsIcon 
                                                     sx={{fontSize:"25px",color:dark}}
                                                 />
                                             </IconButton>
-                                            <Typography
+                                            <Typography 
+                                                width="9rem"
                                                 fontWeight="700"
-                                            >創建表單
+                                            >
+                                                設定
                                             </Typography>
                                         </FlexBetween>
                                     </FlexBetween>
-        
                                     <FlexBetween 
-                                        mt="0.75rem" 
+                                        mt="0.75rem"
                                         sx={dropdownItemStyle}
-                                        onClick={()=>{navigate("/googlesheet")}}
                                     >
-                                        <FlexBetween gap="1.5rem">
-                                            <IconButton
-                                                sx={{
-                                                    fontSize:"25px",
-                                                    "&:hover":{backgroundColor:dropdowncolor},
-                                                }}
-                                            >
-                                                {/* <Search 
-                                                    sx={{color:dark,fontSize:"25px"}}
-                                                /> */}
-                                                <StorageIcon 
-                                                    sx={{color:dark,fontSize:"25px"}}
-                                                />
-                                            </IconButton>
-                                            <Typography
-                                                fontWeight="700"
-                                            >
-                                                資料庫搜尋
-                                            </Typography>
-                                        </FlexBetween>
+                                        <Logout 
+                                            child={
+                                                <FlexBetween gap="1.5rem">
+                                                    
+                                                    <IconButton
+                                                        sx={{
+                                                            fontSize:"25px",
+                                                            "&:hover":{backgroundColor:dropdowncolor}
+                                                        }}
+                                                    >
+                                                        <LogoutIcon 
+                                                            sx={{fontSize:"25px",color:dark}}
+                                                        />
+                                                    </IconButton>
+                                                    <Typography 
+                                                        width="9rem"
+                                                        fontWeight="700"
+                                                    >
+                                                        登出 
+                                                    </Typography>
+                                                </FlexBetween>
+                                            }
+                                        />
+                                        
                                     </FlexBetween>
-            
-                                    <FlexBetween 
-                                        mt="0.75rem" 
-                                        sx={dropdownItemStyle}
-                                        onClick={()=>{dispatch(setMode())}}    
-                                    >
-                                        <FlexBetween gap="1.5rem" >
-                                            <IconButton
-                                                sx={{
-                                                    fontSize:"25px",
-                                                    "&:hover":{backgroundColor:dropdowncolor}
-                                                }}      
-                                            >
-                                                {theme.palette.mode==="dark" ?
-                                                    (<DarkMode sx={{fontSize:"25px"}}/>)
-                                                    :
-                                                    (<LightMode sx= {{color:dark,fontSize:"25px"}}/>)
-                                                }
-                                            </IconButton>
-                                            <Typography
-                                                fontWeight="700"
-                                            >顯示模式
-                                            </Typography>
-                                        </FlexBetween>
-                                    </FlexBetween>
-
-                                    {/* Settings */}
-                                    <FlexBetween 
-                                        mt="0.75rem" 
-                                        sx={dropdownItemStyle}
-                                        onClick={()=>navigate("/settings")}    
-                                    >
-                                        <FlexBetween gap="1.5rem" >
-                                            <IconButton
-                                                sx={{
-                                                    fontSize:"25px",
-                                                    "&:hover":{backgroundColor:dropdowncolor}
-                                                }}      
-                                            >
-                                                <SettingsIcon 
-                                                    sx={{color:dark,fontSize:"25px"}}
-                                                />
-                                            </IconButton>
-                                            <Typography
-                                                fontWeight="700"
-                                            >設定
-                                            </Typography>
-                                        </FlexBetween>
-                                    </FlexBetween>
-
-                                    <FlexBetween 
-                                            mt="0.75rem"
-                                            sx={dropdownItemStyle}
-                                            pl="0.3rem"
-
-                                        >
-                                            <Logout 
-                                                child={
-                                                    <FlexBetween gap="1.5rem">
-                                                        <IconButton
-                                                            sx={{
-                                                                fontSize:"25px",
-                                                                "&:hover":{backgroundColor:dropdowncolor}
-                                                            }}
-                                                        >
-                                                            <LogoutIcon 
-                                                                sx={{fontSize:"20px",color:dark}}
-                                                            />
-                                                        </IconButton>
-                                                        <Typography 
-                                                            width="9rem"
-                                                            fontWeight="700"
-                                                        >
-                                                            登出 
-                                                        </Typography>
-                                                    </FlexBetween>
-                                                }
-                                            />
-                                    </FlexBetween>
-                                    
                                 </DropdownContainer>
                             }
-                        />
-                    </FlexBetween>
-                )}
-                
-            </FlexBetween>
-        </FetchToStore>
+                        >
+                        </Dropdown>
+                    </Box>
+                </FlexBetween>
+            ):
+            (
+                <FlexBetween gap="1.5rem">
+
+                    <Dropdown 
+                        ref_active = {false}
+                        title = "Menu"
+                        label={ <Menu />}
+                        child={
+                            <DropdownContainer
+                                sx={{top:"0.25rem",right:"-1.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
+                                fontSize="1rem"
+                                backgroundColor={alt}
+                                width="15rem"
+                            >
+                                <FlexBetween>
+                                    <FlexBetween gap="1.5rem">
+                                        <UserImage size={"40px"} image={user.picturePath}/>
+                                        <Typography
+                                            fontWeight="700"
+                                        >{fullName}
+                                        </Typography>
+                                    </FlexBetween>
+                                </FlexBetween>
+
+                                {
+                                    isshowform&&(
+                                        <DropdownContainer 
+                                            ref={formRef}
+                                            sx={{top:"7rem",right:"0rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
+                                            fontSize="1rem"
+                                            backgroundColor={alt}
+                                            width="15rem"
+                                        
+                                        >
+                                            <FlexBetween
+                                                backgroundColor={neutralLight}
+                                                borderRadius="9px"
+                                                gap="3rem"
+                                                padding="0.1rem 1.5rem"
+                                            >
+                                                <InputBase 
+                                                    placeholder="Search.."
+                                                    onChange={e=>{setFormsearchvalue(e.target.value)}}
+                                                />
+                                            </FlexBetween>
+                                            <FormItem searchvalue={formsearchvalue} formlist = {formlist}/>
+                                        </DropdownContainer>
+                                    )
+                                }
+                            
+                                <FlexBetween  
+                                    mt="0.75rem" 
+                                    sx={dropdownItemStyle}
+                                    onClick={toggleCreateform}
+                                    ref={formbtnRef}
+                                >
+                                    <FlexBetween gap="1.5rem">
+                                        <IconButton
+                                            sx={{
+                                                fontSize:"25px",
+                                                "&:hover":{backgroundColor:dropdowncolor}
+                                            }}
+                                        >
+                                            <CreateNewFolderIcon 
+                                                sx={{fontSize:"25px",color:dark}}
+                                            />
+                                        </IconButton>
+                                        <Typography
+                                            fontWeight="700"
+                                        >創建表單
+                                        </Typography>
+                                    </FlexBetween>
+                                </FlexBetween>
+    
+                                <FlexBetween 
+                                    mt="0.75rem" 
+                                    sx={dropdownItemStyle}
+                                    onClick={()=>{navigate("/googlesheet")}}
+                                >
+                                    <FlexBetween gap="1.5rem">
+                                        <IconButton
+                                            sx={{
+                                                fontSize:"25px",
+                                                "&:hover":{backgroundColor:dropdowncolor},
+                                            }}
+                                        >
+                                            {/* <Search 
+                                                sx={{color:dark,fontSize:"25px"}}
+                                            /> */}
+                                            <StorageIcon 
+                                                sx={{color:dark,fontSize:"25px"}}
+                                            />
+                                        </IconButton>
+                                        <Typography
+                                            fontWeight="700"
+                                        >
+                                            資料庫搜尋
+                                        </Typography>
+                                    </FlexBetween>
+                                </FlexBetween>
+        
+                                <FlexBetween 
+                                    mt="0.75rem" 
+                                    sx={dropdownItemStyle}
+                                    onClick={()=>{dispatch(setMode())}}    
+                                >
+                                    <FlexBetween gap="1.5rem" >
+                                        <IconButton
+                                            sx={{
+                                                fontSize:"25px",
+                                                "&:hover":{backgroundColor:dropdowncolor}
+                                            }}      
+                                        >
+                                            {theme.palette.mode==="dark" ?
+                                                (<DarkMode sx={{fontSize:"25px"}}/>)
+                                                :
+                                                (<LightMode sx= {{color:dark,fontSize:"25px"}}/>)
+                                            }
+                                        </IconButton>
+                                        <Typography
+                                            fontWeight="700"
+                                        >顯示模式
+                                        </Typography>
+                                    </FlexBetween>
+                                </FlexBetween>
+
+                                {/* Settings */}
+                                <FlexBetween 
+                                    mt="0.75rem" 
+                                    sx={dropdownItemStyle}
+                                    onClick={()=>navigate("/settings")}    
+                                >
+                                    <FlexBetween gap="1.5rem" >
+                                        <IconButton
+                                            sx={{
+                                                fontSize:"25px",
+                                                "&:hover":{backgroundColor:dropdowncolor}
+                                            }}      
+                                        >
+                                            <SettingsIcon 
+                                                sx={{color:dark,fontSize:"25px"}}
+                                            />
+                                        </IconButton>
+                                        <Typography
+                                            fontWeight="700"
+                                        >設定
+                                        </Typography>
+                                    </FlexBetween>
+                                </FlexBetween>
+
+                                <FlexBetween 
+                                        mt="0.75rem"
+                                        sx={dropdownItemStyle}
+                                        pl="0.3rem"
+
+                                    >
+                                        <Logout 
+                                            child={
+                                                <FlexBetween gap="1.5rem">
+                                                    <IconButton
+                                                        sx={{
+                                                            fontSize:"25px",
+                                                            "&:hover":{backgroundColor:dropdowncolor}
+                                                        }}
+                                                    >
+                                                        <LogoutIcon 
+                                                            sx={{fontSize:"20px",color:dark}}
+                                                        />
+                                                    </IconButton>
+                                                    <Typography 
+                                                        width="9rem"
+                                                        fontWeight="700"
+                                                    >
+                                                        登出 
+                                                    </Typography>
+                                                </FlexBetween>
+                                            }
+                                        />
+                                </FlexBetween>
+                                
+                            </DropdownContainer>
+                        }
+                    />
+                </FlexBetween>
+            )}
+            
+        </FlexBetween>
+ 
     )
 }
 

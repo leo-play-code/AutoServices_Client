@@ -42,7 +42,6 @@ export const FetchToStore = ({children}) =>{
     const dispatch = useDispatch();
 
 
-
     const fetchbool = useSelector((state)=>state.fetchbool)
     const getUserFormData = async()=>{
         const data = await GetUserAllFormData(token,_id)
@@ -96,7 +95,7 @@ export const FetchToStore = ({children}) =>{
 
     
     useEffect(()=>{
-        // console.log('fetchbool',fetchbool)
+
         if (!fetchbool && userlist.length<1){
             
             dataFetch()
@@ -115,7 +114,7 @@ export const FetchToStore = ({children}) =>{
         //     getFormmodels();
         // }
         
-    })
+    },[])
 
     return(
         <Box>
