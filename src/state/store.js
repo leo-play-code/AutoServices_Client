@@ -55,6 +55,7 @@ export const FetchToStore = ({children}) =>{
     }
     const getAllUserlist = async()=>{
         const data = await GetAllUser(token);
+        data.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
         setUserlist(data)
     }
     const getFormmodels = async()=>{
@@ -79,6 +80,8 @@ export const FetchToStore = ({children}) =>{
             result
         );
         // when the data is ready, save it to state
+        userforms.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
+        forms.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
         setUserforms(userforms);
         setUserlist(userlist);
         setFormmodels(formmodels);
