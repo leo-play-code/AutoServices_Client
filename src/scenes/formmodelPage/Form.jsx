@@ -450,7 +450,7 @@ const FormModel = ({formname})=>{
                                         {
                                             ((formdict['schema']!==undefined))?
                                                 (Object.entries(formdict['schema']).map(([key, value]) => {
-                                                    const  {fulldata,disabled,field,label,multiline,sx,rows,relation,initvalue} = value;
+                                                    const  {fulldata,disabled,field,label,multiline,sx,rows,relation,initvalue,logo} = value;
                                                     if (field === "text"){
                                                         return (<TextField
                                                             key = {key}
@@ -511,6 +511,7 @@ const FormModel = ({formname})=>{
                                                                     fulldata = {fulldata}
                                                                     helperText = {touched[key]&&errors[key]}
                                                                     handleBlur={handleBlur}
+                                                                    logo={logo}
                                                                 />
                                                            )
                                                         }else{

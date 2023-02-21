@@ -31,6 +31,11 @@ export const PostSetting = ({title})=>{
     const changeSettings = async(formname,key) =>{
         // change target
         const changedict = {}
+        if (mysetting[title][formname][key]===undefined){
+            changedict[key] = true
+        }else{
+            
+        }
         for (const keyitem in mysetting[title][formname]){
             if (key === keyitem ){
                 changedict[keyitem] = !mysetting[title][formname][keyitem]

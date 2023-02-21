@@ -10,6 +10,10 @@ import {
 } from "@mui/material";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import UserImage from './UserImage';
+
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+
+
 export const SelectDropdown = ({
     label,
     value,
@@ -19,7 +23,8 @@ export const SelectDropdown = ({
     type,
     sx,
     disabled,
-    size
+    size,
+    logo
 })=>{
     const theme = useTheme();
     const dark = theme.palette.neutral.dark;
@@ -69,9 +74,18 @@ export const SelectDropdown = ({
                                                 justifyContent="space-between"
                                             >
                                                 <Box>
-                                                    <BookmarkIcon 
-                                                        sx={{fontSize:"15px",color:colorDict[key]}}
-                                                    />
+                          
+                                                    {
+                                                        logo==="PriorityHighIcon"?(
+                                                            <PriorityHighIcon 
+                                                                sx={{fontSize:"15px",color:colorDict[key]}}
+                                                            />
+                                                        ):(
+                                                            <BookmarkIcon 
+                                                            sx={{fontSize:"15px",color:colorDict[key]}}
+                                                            />
+                                                        )
+                                                    }
                                                 </Box>
                                                 <Box>
                                                     {value}
@@ -106,7 +120,8 @@ export const FormSelectColorDropdown = (
         sx,
         fulldata,
         disabled,
-        size
+        size,
+        logo
     }
 )=>{
     function changefunc(newvalue){
@@ -123,6 +138,7 @@ export const FormSelectColorDropdown = (
             sx={sx}
             disabled={disabled}
             size = {size}
+            logo={logo}
         />
     )
 }

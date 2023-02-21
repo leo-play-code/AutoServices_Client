@@ -231,7 +231,7 @@ const FilterWidget = ({
                                     >
                                         {
                                             Object.entries(schema).map(([key,data])=>{
-                                                const {field,fulldata,label} = data;
+                                                const {field,fulldata,label,logo} = data;
                                                 if (field !== 'blank'){
                                                     if (field === 'text' || field === 'ckeditor'){
                                                         var item = <TextField
@@ -264,6 +264,7 @@ const FilterWidget = ({
                                                                     sx ={isNonMobileScreens?filterwidthNonMobile:filterwidthMobile}
                                                                     fulldata = {fulldata}
                                                                     size = "small"
+                                                                    logo={logo}
                                                                 />
                                                         }else{
                                                             var item = 

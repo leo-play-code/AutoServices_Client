@@ -102,12 +102,14 @@ const FormModelViewPage = () =>{
                 gap="0.5rem"
                 justifyContent="space-between"
             >
-                {
-                    ((screen!=="full")&&(
+                {/* {
+                    ((screen!=="full")&&( */}
                         <Box 
                             flexBasis={isNonMobileScreens?"26%":undefined}
                             mb="1.5rem"
-                            
+                            sx={{
+                                "display":(screen==="full")&&"none"
+                            }}
                         >
                             <Box
                                 position={isNonMobileScreens?"fixed":""}
@@ -123,9 +125,9 @@ const FormModelViewPage = () =>{
                                 </WidgetWrapper>
                             </Box>
                         </Box>
-                    ))
+                    {/* ))
                 }
-                
+                 */}
                 {(filtermode==="post")?(
                     <>
                     <Box

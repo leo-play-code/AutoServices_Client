@@ -485,7 +485,7 @@ const FormModel = ({
                                         {
                                             ((formdict['schema']!==undefined))?
                                                 (Object.entries(formdict['schema']).map(([key, value]) => {
-                                                    const  {fulldata,disabled,field,label,multiline,sx,rows,relation,initvalue} = value;
+                                                    const  {fulldata,disabled,field,label,multiline,sx,rows,relation,initvalue,logo} = value;
                                                     if (field === "text"){
                                                         if (relation){
                                                             const relation_list = relation.split("-")
@@ -594,6 +594,7 @@ const FormModel = ({
                                                                     helperText = {touched[key]&&errors[key]}
                                                                     handleBlur={handleBlur}
                                                                     disabled={editable?disabled:true}
+                                                                    logo={logo}
                                                                 />
                                                            )
                                                         }else{

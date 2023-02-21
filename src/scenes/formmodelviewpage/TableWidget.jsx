@@ -355,7 +355,7 @@ export const TableWidget = forwardRef(({
                                 )
                                 for (const key in formmodel['schema']){
                                     
-                                    const {label,field,fulldata} = formmodel['schema'][key]
+                                    const {label,field,fulldata,logo} = formmodel['schema'][key]
                                     
                                     if (field === "select-color"){
                                     
@@ -365,6 +365,7 @@ export const TableWidget = forwardRef(({
                                             <ColorTag 
                                                 color={color}
                                                 value={value}
+                                                logo={logo}
                                             />
                                         )
                                     }else if (field !== "blank"){

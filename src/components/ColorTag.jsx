@@ -2,9 +2,9 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 import { Box } from '@mui/material';
 import FlexBetween from './Flexbetween';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
-
-export const ColorTag = ({color,value})=>{
+export const ColorTag = ({color,value,logo})=>{
     const colorDict = {
         "red":"#E74C3C",
         "orange":"#E67E22",
@@ -25,9 +25,18 @@ export const ColorTag = ({color,value})=>{
                     position="relative"
                     top="0.2rem"
                 >
-                    <BookmarkIcon 
-                        sx={{fontSize:"15px",color:colorDict[color]}}
-                    />
+                    {
+                        logo==="PriorityHighIcon"?(
+                            <PriorityHighIcon 
+                                sx={{fontSize:"15px",color:colorDict[color]}}
+                            />
+                        ):(
+                            <BookmarkIcon 
+                            sx={{fontSize:"15px",color:colorDict[color]}}
+                            />
+                        )
+                    }
+                    
                 </Box>
                 <Box>
                     {value}

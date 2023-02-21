@@ -109,7 +109,7 @@ export const PostBody = ({
     const linkcolor = theme.palette.other.link;
     const body = []; 
     for (const key in data['data']){
-        const {label,field,fulldata} = formmodel[key]
+        const {label,field,fulldata,logo} = formmodel[key]
         
         if (field === 'select-color'){
             const color = data['data'][key]
@@ -118,6 +118,7 @@ export const PostBody = ({
                 <ColorTag 
                     color={color}
                     value={value}
+                    logo={logo}
                 />
             )
         }else{
