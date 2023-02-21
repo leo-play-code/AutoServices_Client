@@ -104,7 +104,7 @@ const updateFormModel = async(formdict,values,updateformdict) => {
 
 
 
-const FormModel = ({
+const FormModalEdit = ({
     formdata
 })=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);

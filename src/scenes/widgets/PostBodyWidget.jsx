@@ -13,8 +13,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { setFormModels, setLocalforms, webpath } from '../../state';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModalWidget from './DeleteModalWidget';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { Collapse,Grow,Zoom} from '@mui/material';
+import { BasicModal } from '../../components/modal';
+import FormModel from '../formdataviewpage/Form';
+
 const colorDict = {
     "red":"#E74C3C",
     "orange":"#E67E22",
@@ -252,7 +255,6 @@ export const PostBodyWidget = ({
     const dark = theme.palette.neutral.dark;
     const alt = theme.palette.background.alt;
     const dropdowncolor = theme.palette.other.dropdown;
-    
     const dropdownItemStyle = {
         "&:hover":{
             cursor:"pointer",
@@ -264,7 +266,6 @@ export const PostBodyWidget = ({
         maxHeight : windowheight*0.36,
         overflow : "scroll"
     }
-    
 
     return(
         <Box
@@ -305,7 +306,7 @@ export const PostBodyWidget = ({
                     </Typography>
                 </FlexBetween>
                 <Dropdown
-                    ref_active = {false}
+                    ref_active = {true}
                     title = "更多"
                     label = {
                         <MoreHorizIcon sx={{color:dark}} />
@@ -318,36 +319,46 @@ export const PostBodyWidget = ({
                                 backgroundColor={alt}
                                 width="15rem"
                             >
-                                <FlexBetween
-                                    onClick = {()=>{
-                                        navigate(`/formdata/${data['_id']}`)
-                                    }}
-                                    sx={dropdownItemStyle}
-                                >
-                                    <FlexBetween
-                                        gap="2.5rem"
-                                        
-                                    >
-                                        <IconButton
-                                            sx={{
-                                                fontSize:"25px",
-                                                "&:hover":{backgroundColor:dropdowncolor},
-                                            }}
+                                <BasicModal
+                                    title={
+                                        <FlexBetween
+                                            sx={dropdownItemStyle}
                                         >
-                                            <EditIcon 
-                                                sx={{color:"#2ECC71",fontSize:"25px"}}
-                                            />
-                                        </IconButton>
-                                        <Typography
-                                            fontWeight="700"
-                                            width="9rem"
-                                            color = "#2ECC71"
-                                        >
-                                            Edit
-                                        </Typography>
+                                            <FlexBetween
+                                                gap="2.5rem"
+                                                
+                                            >
+                                            <IconButton
+                                                sx={{
+                                                    fontSize:"25px",
+                                                    "&:hover":{backgroundColor:dropdowncolor},
+                                                }}
+                                            >
+                                                <EditIcon 
+                                                    sx={{color:"#2ECC71",fontSize:"25px"}}
+                                                />
+                                            </IconButton>
+                                            <Typography
+                                                fontWeight="700"
+                                                width="9rem"
+                                                color = "#2ECC71"
+                                            >
+                                                Edit
+                                            </Typography>
+                                                            
+                                        </FlexBetween>
                                     </FlexBetween>
-                                </FlexBetween>
-                                
+                        
+                                    }
+                                    body={
+                                        <FormModel 
+                                            formdata={data}
+                                        />
+                                    }
+                                >
+
+                                </BasicModal>
+                     
                                 <DeleteModalWidget 
                                     title={
                                         <FlexBetween

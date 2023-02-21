@@ -26,6 +26,7 @@ import { StoreContext } from '../../state/store';
 import { setLocalforms } from '../../state';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { UpdateFormData } from '../../api/formdata';
+import FormModel from '../formdataviewpage/Form';
 
 
 export const DragComponents = ({compnonent,sx}) =>{
@@ -103,6 +104,8 @@ export const TableWidget = forwardRef(({
     const [scrolltoTop,setScrolltoTop] = useState(false);
     const linkcolor = theme.palette.other.link;
 
+    // cell fontsize
+    const fontsize = "1rem";
     // click on table
     const [rowToEdit, setRowToEdit] = useState(null);
     const [dataEdit,setDataEdit] = useState("");
@@ -242,12 +245,16 @@ export const TableWidget = forwardRef(({
             // console.log(value)
         }
     };
+    const toggleCopy = (value) =>{
+        navigator.clipboard.writeText(value)
+    }
+    
     useEffect(()=>{
         UpdateShowlist(filterformfull)
         if (forms.length>0 ){
             FilterFormList()
         }
-
+       
         
     },[forms,filter,shownum])
     return (
@@ -335,22 +342,29 @@ export const TableWidget = forwardRef(({
                                         key = {_id+"_edit"}
                                         
                                     >
-                                        <Tooltip
-                                            title="編輯"
-                                        >
-                                        <IconButton
-                                            // onClick={()=>window.open(webpath+`formdata/${_id}`)}
-                                            onClick = {()=>{
-                                                navigate(`/formdata/${_id}`)
-                                            }}
-                                        >
-                                            <EditIcon 
-                                                sx={{
-                                                    color:'#2ECC71'
-                                                }}
-                                            />
-                                        </IconButton>
-                                        </Tooltip>
+                                        <BasicModal 
+                                            title={
+                                                <Tooltip
+                                                    title="編輯"
+                                                >
+                                                <IconButton>
+                                                    <EditIcon 
+                                                        sx={{
+                                                            color:'#2ECC71'
+                                                        }}
+                                                    />
+                                                </IconButton>
+                                                </Tooltip>
+                                            }
+                                            body={
+                                                <>
+                                                    <FormModel 
+                                                        formdata={rowdata}
+                                                    />
+                                                </>
+                                            }
+                                        />
+                                        
                                     </TableCell>
                                 )
                                 for (const key in formmodel['schema']){
@@ -375,14 +389,16 @@ export const TableWidget = forwardRef(({
                                         >
                                         </span>)
                                     }
+                                    const copydata = data[key].replace(/<\/p>/g, '\n').replace(/<p>/g, '');
                                     if (field !== "blank"){
                                         if (key === "pin"){
                                             if ((_id+"-"+key) === rowToEdit && rowToClick === (_id+"-"+key)){
                                                 var item = <TableCell
-    
+                                                    onCopy ={()=>toggleCopy(copydata)}
                                                     key={_id+"-"+key}
                                                     // sx={{fontWeight:"500",fontSize:"1rem"}}
                                                     sx={{
+                                                        fontSize:fontsize,
                                                         fontWeight:"500",
                                                         "&>span>p>a":{
                                                             color:linkcolor
@@ -396,7 +412,7 @@ export const TableWidget = forwardRef(({
                                                     <InputBase 
                                                         sx={{
                                                             fontWeight:"500",
-                                                            fontSize:"0.8rem"
+                                                            fontSize:fontsize,
                                                         }}
                                                         value={dataEdit} 
                                                         rows ={5} 
@@ -407,6 +423,7 @@ export const TableWidget = forwardRef(({
                                                 </TableCell>
                                             }else if(rowToClick === (_id+"-"+key)){
                                                 var item = <TableCell
+                                                    onCopy ={()=>toggleCopy(copydata)}
                                                     onDoubleClick= {()=>{
                                                         setRowToEdit(_id+"-"+key);
                                                         setDataEdit(data[key]);
@@ -418,6 +435,7 @@ export const TableWidget = forwardRef(({
                                                     onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
                                                     key={_id+"-"+key}
                                                     sx={{
+                                                        fontSize:fontsize,
                                                         fontWeight:"500",
                                                         "&>span>p>a":{
                                                             color:linkcolor
@@ -432,6 +450,7 @@ export const TableWidget = forwardRef(({
                                             
                                             else{
                                                 var item = <TableCell
+                                                    onCopy ={()=>toggleCopy(copydata)}
                                                     onDoubleClick= {()=>{
                                                         setRowToEdit(_id+"-"+key);
                                                         setDataEdit(data[key]);
@@ -443,6 +462,7 @@ export const TableWidget = forwardRef(({
                                                     }}
                                                     key={_id+"-"+key}
                                                     sx={{
+                                                        fontSize:fontsize,
                                                         fontWeight:"500",
                                                         "&>span>p>a":{
                                                             color:linkcolor
@@ -456,12 +476,14 @@ export const TableWidget = forwardRef(({
                                         }else{
                                             if (rowToClick === _id+"-"+key){
                                                 var item = <TableCell
+                                                    onCopy ={()=>toggleCopy(copydata)}
                                                     onClick = {(e)=>{
                                                         UpdateJira(e,_id+"-"+key)
                                                     }}
                                                     onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
                                                     key={_id+"-"+key}
                                                     sx={{
+                                                        fontSize:fontsize,
                                                         fontWeight:"500",
                                                         "&>span>p>a":{
                                                             color:linkcolor
@@ -474,12 +496,14 @@ export const TableWidget = forwardRef(({
                                                 </TableCell>
                                             }else{
                                                 var item = <TableCell
+                                                    onCopy ={()=>toggleCopy(copydata)}
                                                     key={_id+"-"+key}
                                                     onClick = {(e)=>{
                                                         UpdateJira(e,_id+"-"+key)
                                                     }}
                                                     onContextMenu={(e)=>{handleClick(e,data[key]);UpdateJira(e,_id+"-"+key)}}
                                                     sx={{
+                                                        fontSize:fontsize,
                                                         fontWeight:"500",
                                                         "&>span>p>a":{
                                                             color:linkcolor
@@ -555,9 +579,7 @@ export const TableWidget = forwardRef(({
                                                     </IconButton>
                                                 </Tooltip>
                                             }
-                                            otherfunc = {
-                                                ()=>DeleteForm(_id)
-                                            }
+                                            
                                         />
                                     </TableCell>
                                 )

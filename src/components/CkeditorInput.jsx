@@ -1,10 +1,17 @@
 // ckeditor
-import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import {AutoLink} from '@ckeditor/ckeditor5-build-classic';
+// import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+
 import { useState } from 'react';
 import { FormHelperText,Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { urlpath } from '../state';
+
+
+
+
 export const  createMarkup = (data)=>{
     return {__html: data};
   }
@@ -25,20 +32,34 @@ export const CkeditorInput= ({
 })=>{
 
     const mode = useSelector((state)=>(state.mode))
-
+    const editorConfig = {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote','autoLink' ],
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+            ]
+        },
+        link: {
+          addTargetToExternalLinks: true
+        },
+        ckfinder:{
+            uploadUrl:`${urlpath}uploads/images`
+        },
+        placeholder: label,
+        autolink: true,
+      };
     return(
         <span className={((mode==="dark")?"ckeditor-dark CkeditorInput":"CkeditorInput")} style={sx}>
             <CKEditor
                 editor={ ClassicEditor }
                 data={value}
-                
+                autoFocus={false} 
                 config ={
-                    {
-                        ckfinder:{
-                            uploadUrl:`${urlpath}uploads/images`
-                        },
-                        placeholder: label,
-                    }
+                    editorConfig
+                    
                 }
                 onReady={ editor => {
                     // You can store the "editor" and use when it is needed.

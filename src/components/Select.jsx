@@ -28,16 +28,7 @@ export const SelectDropdown = ({
 })=>{
     const theme = useTheme();
     const dark = theme.palette.neutral.dark;
-    const colorDict = {
-        "red":"#E74C3C",
-        "orange":"#E67E22",
-        "yellow":"#F1C40F",
-        "green":"#2ECC71",
-        "blue":"#3498DB",
-        "purple":"#9B59B6",
-        "#16A085":"#16A085",
-        "#F39C12":"#F39C12"
-    }
+
     return(
         <FormControl 
             sx={sx}
@@ -78,11 +69,11 @@ export const SelectDropdown = ({
                                                     {
                                                         logo==="PriorityHighIcon"?(
                                                             <PriorityHighIcon 
-                                                                sx={{fontSize:"15px",color:colorDict[key]}}
+                                                                sx={{fontSize:"15px",color:key}}
                                                             />
                                                         ):(
                                                             <BookmarkIcon 
-                                                            sx={{fontSize:"15px",color:colorDict[key]}}
+                                                            sx={{fontSize:"15px",color:key}}
                                                             />
                                                         )
                                                     }

@@ -41,7 +41,7 @@ const RightClick = ({
             top={y}
             left={x}
             sx={{
-                zIndex:"5000",
+                zIndex:"1000",
                 backgroundColor:alt,
                 padding:"0.75rem",
                 borderRadius:"0.4rem",

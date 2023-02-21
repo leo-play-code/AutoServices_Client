@@ -5,16 +5,7 @@ import FlexBetween from './Flexbetween';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 export const ColorTag = ({color,value,logo})=>{
-    const colorDict = {
-        "red":"#E74C3C",
-        "orange":"#E67E22",
-        "yellow":"#F1C40F",
-        "green":"#2ECC71",
-        "blue":"#3498DB",
-        "purple":"#9B59B6",
-        "#16A085":"#16A085",
-        "#F39C12":"#F39C12"
-    }
+
     return (
         <FlexBetween>
             <FlexBetween
@@ -28,11 +19,11 @@ export const ColorTag = ({color,value,logo})=>{
                     {
                         logo==="PriorityHighIcon"?(
                             <PriorityHighIcon 
-                                sx={{fontSize:"15px",color:colorDict[color]}}
+                                sx={{fontSize:"15px",color:color}}
                             />
                         ):(
                             <BookmarkIcon 
-                            sx={{fontSize:"15px",color:colorDict[color]}}
+                            sx={{fontSize:"15px",color:color}}
                             />
                         )
                     }
