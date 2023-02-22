@@ -1,5 +1,6 @@
 import { useState,useEffect,useRef,useContext } from "react";
-
+import { BasicModal } from "../../components/modal";
+import FormModel from "../formmodelPage/Form";
 import {
     Box,
     IconButton,
@@ -43,7 +44,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 
 
 const FormItem = ({searchvalue , formlist})=>{
-
+    const windowheight = useSelector((state)=>state.height);
     const navigate = useNavigate();
     const [formfilter,setFormfilter] = useState(formlist)
     const theme = useTheme();
@@ -66,35 +67,53 @@ const FormItem = ({searchvalue , formlist})=>{
             {
             formfilter.map(
                 form=>
-                <FlexBetween
-                    key={form}
-                    mt="0.25rem" 
-                    sx={dropdownItemStyle}
-                    onClick={()=>{navigate(`/form/${form}`)}}
-                >   
-                    <FlexBetween
-                        gap="1.5rem"
-                    >
-                   
-                        <IconButton
-                            sx={{
-                                fontSize:"15px",
-                                "&:hover":{backgroundColor:dropdowncolor}
-                            }}
-                        >
-                            <ListAltOutlinedIcon 
-                                sx={{fontSize:"15px",color:dark}}
-                            />
-                        </IconButton>
-          
-                        
-                        <Typography
-                            fontWeight="700"
-                        >
-                            {form}
-                        </Typography>
-                    </FlexBetween>
-                </FlexBetween>   
+                <BasicModal 
+                    modelsx = {{
+                        m:'auto' ,
+                        width:"900px",
+                        overflow:"scroll",
+                        bgcolor: 'background.paper',
+                        borderRadius:"10px",
+                        boxShadow: 24,
+                        p: 4,
+                        mt : windowheight*0.002,
+                        // mb : windowheight*0.0002
+                        maxHeight:windowheight*0.95
+                    }}
+                    title={
+                        <FlexBetween
+                            key={form}
+                            mt="0.25rem" 
+                            sx={dropdownItemStyle}
+                        >   
+                            <FlexBetween
+                                gap="1.5rem"
+                            >
+                                <IconButton
+                                    sx={{
+                                        fontSize:"15px",
+                                        "&:hover":{backgroundColor:dropdowncolor}
+                                    }}
+                                >
+                                    <ListAltOutlinedIcon 
+                                        sx={{fontSize:"15px",color:dark}}
+                                    />
+                                </IconButton>
+                
+                                
+                                <Typography
+                                    fontWeight="700"
+                                >
+                                    {form}
+                                </Typography>
+                            </FlexBetween>
+                        </FlexBetween>   
+                    }
+                    body={
+                        <FormModel formname={form}/>
+                    }
+                    
+                />
             ) 
         }        
         </Box>
@@ -325,7 +344,7 @@ const Navbar = ({
 
                     
                     <Dropdown
-                        ref_active = {false}
+                        ref_active = {true}
                         title = {"創建表單"}
                         label ={
                             <CreateNewFolderIcon 

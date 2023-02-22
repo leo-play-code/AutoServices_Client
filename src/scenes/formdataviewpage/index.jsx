@@ -15,13 +15,13 @@ import { CommentWidget } from "../widgets/CommentWidget";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import FormModel from "./Form";
 import { StoreContext } from '../../state/store';
-const FormDataViewPage = ()=>{
+const FormDataViewPage = ({formdataid})=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
     const token = useSelector((state)=>state.token);
-    const {formdataid} = useParams();
+    // const {formdataid} = useParams();
 
     
     const [forms,setForms] = storeforms;
@@ -32,23 +32,23 @@ const FormDataViewPage = ()=>{
 
     },[forms])
     return (
-        <Box>
-            <Navbar />
-            <BodyBox 
+        // <Box>
+        //     <Navbar />
+            <Box 
                 width="100%"
-                padding="2rem 6%"
+                // padding="2rem 6%"
                 display={isNonMobileScreens?"flex":"block"}
                 gap="0.5rem"
                 justifyContent="space-between"
             >
-                <Box 
+                {/* <Box 
                     flexBasis={isNonMobileScreens?"26%":undefined}
                     mb="1.5rem"
                 >
                     
-                </Box>
+                </Box> */}
                 <Box
-                    flexBasis={isNonMobileScreens?"42%":undefined}
+                    flexBasis={isNonMobileScreens?"50%":undefined}
                     mb="1.5rem"
                 >
                     {
@@ -60,10 +60,11 @@ const FormDataViewPage = ()=>{
                    
                 </Box>
                 <Box
-                    flexBasis={isNonMobileScreens?"26%":undefined}
+                    flexBasis={isNonMobileScreens?"40%":undefined}
                 >
                     <WidgetWrapper
                         maxHeight = {windowheight*0.85}
+                        maxWidth = {windowwidth*0.3}
                         overflow = "scroll"
                     >
                         {
@@ -71,7 +72,7 @@ const FormDataViewPage = ()=>{
                                 <CommentWidget 
                                     formdata = {data}
                                     ckwidth = {isNonMobileScreens?windowwidth*0.17:windowwidth*0.6}
-                                    commentwidthrate = {0.6}
+                                    commentwidthrate = {0.55}
                                 />
                             )
                         }
@@ -79,8 +80,8 @@ const FormDataViewPage = ()=>{
                     </WidgetWrapper>
                    
                 </Box>
-            </BodyBox>
-        </Box>
+            </Box>
+        // </Box>
     )
 }
 

@@ -18,8 +18,8 @@ export const Dropdownlabel = styled(Box)({
 export const Dropdown = ({ref_active,title,label,child})=>{
     const [show,setShow] = useState(false);
     const dropdownRef = useRef();
+    
     useEffect(()=>{
-        
         const closedropdown_effect = e =>{
             if (!("path" in Event.prototype)){
                 Object.defineProperty(Event.prototype, "path", {

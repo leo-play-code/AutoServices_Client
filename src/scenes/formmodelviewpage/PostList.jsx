@@ -54,7 +54,7 @@ export const PostList= ({
                     if (field !== 'blank'){
                         if (field !== 'time'){
                             if (filter[key].replaceAll(" ","") !== ""){
-                                filterform = filterform.filter(form=>(form['data'][key].replaceAll(" ","")).includes(filter[key].replaceAll(" ","")))            
+                                filterform = filterform.filter(form=>(form['data'][key].toLowerCase().replaceAll(" ","")).includes(filter[key].toLowerCase().replaceAll(" ","")))            
                             }
                         }else{
                             if (typeof filter[key+"from"] === "number"){

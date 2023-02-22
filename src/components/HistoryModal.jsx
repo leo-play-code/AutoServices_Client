@@ -48,6 +48,7 @@ const HistoryTable = ({
     const windowheight = useSelector((state)=>state.height);
     const columns = ['User','資料','時間']
     const {form,history} = formdata;
+    const windowwidth = useSelector((state)=>state.width);
     const {schema} = form;
     return(
         <Table_Model
@@ -88,38 +89,45 @@ const HistoryTable = ({
                                                 <FlexBetweenTop
                                                     
                                                 >   
-                                                    <Box
-                                                        sx={{
-                                                            color:"#3498DB"
-                                                        }}
-                                                    >{label}:</Box>
-                                                    <FlexBetweenTop
-                                                        width="400px"
+                                                    <FlexBetween
+                                                        gap="1rem"
                                                     >
-                                                        
-                                                        {field==='select-color'? <Box>{fulldata[value['orignal']]}</Box>:( <Box>
-                                                            <span 
-                                                                className="CkeditorInput"
-                                                                dangerouslySetInnerHTML={createMarkup(value['orignal'].replaceAll('\n','<br />'))}
-                                                            ></span>
-
-                                                        </Box>)}
-                            
-                                                        <Box>
-                                                            {field==='select-color'? <Box
-                                                                ml="3rem"
-                                                            >{fulldata[value['now']]}</Box>:( <Box
+                                                        <Box
+                                                            sx={{
+                                                                color:"#3498DB",
+                                                                width:"10rem"
+                                                            }}
+                                                        >{label}:</Box>
+                                                        <FlexBetweenTop
+                                                            width={windowwidth*0.4}
+                                                        >
                                                             
-                                                                ml="3rem"
-                                                            >
-
+                                                            {field==='select-color'? <Box>{fulldata[value['orignal']]}</Box>:( <Box>
                                                                 <span 
                                                                     className="CkeditorInput"
-                                                                    dangerouslySetInnerHTML={createMarkup(value['now'].replaceAll('\n','<br />'))}
+                                                                    dangerouslySetInnerHTML={createMarkup(value['orignal'].replaceAll('\n','<br />'))}
                                                                 ></span>
+
                                                             </Box>)}
-                                                        </Box>         
-                                                    </FlexBetweenTop>                                      
+                                
+                                                            <Box>
+                                                                {field==='select-color'? <Box
+                                                                    ml="3rem"
+                                                                >{fulldata[value['now']]}</Box>:( <Box
+                                                                
+                                                                    ml="3rem"
+                                                                >
+
+                                                                    <span 
+                                                                        className="CkeditorInput"
+                                                                        dangerouslySetInnerHTML={createMarkup(value['now'].replaceAll('\n','<br />'))}
+                                                                    ></span>
+                                                                </Box>)}
+                                                            </Box>         
+                                                        </FlexBetweenTop>      
+
+                                                    </FlexBetween>
+                                                                                    
                                                 </FlexBetweenTop>
                                                 {/* <Divider /> */}
                                             </Box>
@@ -145,11 +153,12 @@ const HistoryModel = ({
 
 })=>{
     const windowheight = useSelector((state)=>state.height);
+    const windowwidth = useSelector((state)=>state.width);
     return(
         <BasicModal
             modelsx = {{
                 m:'auto' ,
-                width:"900px",
+                width:windowwidth*0.7,
                 overflow:"scroll",
                 bgcolor: 'background.paper',
                 borderRadius:"10px",

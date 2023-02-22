@@ -27,6 +27,7 @@ import { setLocalforms } from '../../state';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { UpdateFormData } from '../../api/formdata';
 import FormModel from '../formdataviewpage/Form';
+import FormDataViewPage from '../formdataviewpage/index';
 
 
 export const DragComponents = ({compnonent,sx}) =>{
@@ -88,6 +89,7 @@ export const TableWidget = forwardRef(({
     const formmodel = formmodels.filter(form=>form.name === formname)[0];
     const isNonmobile = useMediaQuery("(min-width:900px)");
     const windowwidth = useSelector((state)=>state.width);
+    const windowheight = useSelector((state)=>state.height);
     const {schema,selectdata} = formmodel;
     const theme = useTheme();
     const cardcolor = theme.palette.other.card;
@@ -164,7 +166,7 @@ export const TableWidget = forwardRef(({
                     if (field !== 'blank'){
                         if (field !== 'time'){
                             if (filter[key].replaceAll(" ","") !== ""){
-                                filterform = filterform.filter(form=>(form['data'][key].replaceAll(" ","")).includes(filter[key].replaceAll(" ","")))            
+                                filterform = filterform.filter(form=>(form['data'][key].toLowerCase().replaceAll(" ","")).includes(filter[key].toLowerCase().replaceAll(" ","")))            
                             }
                         }else{
                             if (typeof filter[key+"from"] === "number"){
@@ -345,6 +347,17 @@ export const TableWidget = forwardRef(({
                                         
                                     >
                                         <BasicModal 
+                                            modelsx = {{
+                                                m:'auto' ,
+                                                width:(windowwidth>1300)?windowwidth*0.7:windowwidth,
+                                                overflow:"scroll",
+                                                bgcolor: 'background.paper',
+                                                borderRadius:"10px",
+                                                boxShadow: 24,
+                                                p: 4,
+                                                mt : windowheight*0.002,
+                                                maxHeight:windowheight*0.95
+                                            }}
                                             title={
                                                 <Tooltip
                                                     title="編輯"
@@ -360,8 +373,8 @@ export const TableWidget = forwardRef(({
                                             }
                                             body={
                                                 <>
-                                                    <FormModel 
-                                                        formdata={rowdata}
+                                                    <FormDataViewPage 
+                                                        formdataid={_id}
                                                     />
                                                 </>
                                             }
@@ -385,11 +398,14 @@ export const TableWidget = forwardRef(({
                                             />
                                         )
                                     }else if (field !== "blank"){
+                               
                                         var cell = (<span 
                                             className="CkeditorInput"
                                             dangerouslySetInnerHTML={createMarkup(data[key].replaceAll('\n','<br>'))}
                                         >
+                                        
                                         </span>)
+                 
                                     }
                                     const copydata = data[key].replace(/<\/p>/g, '\n').replace(/<p>/g, '');
                                     if (field !== "blank"){

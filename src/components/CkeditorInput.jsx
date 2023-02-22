@@ -34,6 +34,7 @@ export const CkeditorInput= ({
     const mode = useSelector((state)=>(state.mode))
     const editorConfig = {
         toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote','autoLink' ],
+        // toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ],
         heading: {
             options: [
                 { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -49,7 +50,6 @@ export const CkeditorInput= ({
             uploadUrl:`${urlpath}uploads/images`
         },
         placeholder: label,
-        autolink: true,
       };
     return(
         <span className={((mode==="dark")?"ckeditor-dark CkeditorInput":"CkeditorInput")} style={sx}>

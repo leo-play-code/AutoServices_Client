@@ -17,6 +17,7 @@ import { useEffect,useState } from 'react';
 import { Collapse,Grow,Zoom} from '@mui/material';
 import { BasicModal } from '../../components/modal';
 import FormModel from '../formdataviewpage/Form';
+import FormDataViewPage from '../formdataviewpage/index';
 
 const colorDict = {
     "red":"#E74C3C",
@@ -251,6 +252,7 @@ export const PostBodyWidget = ({
     const navigate = useNavigate();
     const theme = useTheme();
     const windowheight = useSelector((state)=>state.height);
+    const windowwidth = useSelector((state)=>state.width);
     const formmodel = data['form']['schema'];
     const dark = theme.palette.neutral.dark;
     const alt = theme.palette.background.alt;
@@ -305,7 +307,55 @@ export const PostBodyWidget = ({
                         @{data["form"]["name"]}
                     </Typography>
                 </FlexBetween>
-                <Dropdown
+                <BasicModal
+                    modelsx = {{
+                        m:'auto' ,
+                        width:(windowwidth>1300)?windowwidth*0.7:windowwidth,
+                        overflow:"scroll",
+                        bgcolor: 'background.paper',
+                        borderRadius:"10px",
+                        boxShadow: 24,
+                        p: 4,
+                        mt : windowheight*0.002,
+                        maxHeight:windowheight*0.95
+                    }}
+                    title={
+                        <FlexBetween
+                            sx={dropdownItemStyle}
+                        >
+                            <FlexBetween
+                                gap="2.5rem"
+                                
+                            >
+                            <IconButton
+                                sx={{
+                                    fontSize:"20px",
+                                    "&:hover":{backgroundColor:dropdowncolor},
+                                }}
+                            >
+                                <EditIcon 
+                                    sx={{color:"#E74C3C",fontSize:"20px"}}
+                                />
+                            </IconButton>
+                            {/* <Typography
+                                fontWeight="700"
+                                width="9rem"
+                                color = "#2ECC71"
+                            >
+                                Edit
+                            </Typography> */}
+                                            
+                        </FlexBetween>
+                    </FlexBetween>
+        
+                    }
+                    body={
+                        <FormDataViewPage 
+                            formdataid={data['_id']}
+                        />
+                    }
+                />
+                {/* <Dropdown
                     ref_active = {true}
                     title = "更多"
                     label = {
@@ -320,6 +370,17 @@ export const PostBodyWidget = ({
                                 width="15rem"
                             >
                                 <BasicModal
+                                    modelsx = {{
+                                        m:'auto' ,
+                                        width:(windowwidth>1300)?windowwidth*0.7:windowwidth,
+                                        overflow:"scroll",
+                                        bgcolor: 'background.paper',
+                                        borderRadius:"10px",
+                                        boxShadow: 24,
+                                        p: 4,
+                                        mt : windowheight*0.002,
+                                        maxHeight:windowheight*0.95
+                                    }}
                                     title={
                                         <FlexBetween
                                             sx={dropdownItemStyle}
@@ -351,8 +412,8 @@ export const PostBodyWidget = ({
                         
                                     }
                                     body={
-                                        <FormModel 
-                                            formdata={data}
+                                        <FormDataViewPage 
+                                            formdataid={data['_id']}
                                         />
                                     }
                                 >
@@ -395,7 +456,7 @@ export const PostBodyWidget = ({
                     }
                 >
 
-                </Dropdown>
+                </Dropdown> */}
                 
                 
             </FlexBetween>

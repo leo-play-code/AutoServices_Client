@@ -215,7 +215,7 @@ const FormModel = ({formname})=>{
 
         createFormDataDB(newValues, user['_id'],formdict['_id'])
         onSubmitProps.resetForm()
-        navigate("/home")
+        // navigate("/home")
     }
 
     const CreateUser = async(values) =>{
@@ -287,19 +287,19 @@ const FormModel = ({formname})=>{
                 resetForm,
             })=>(
                 <form onSubmit={handleSubmit}>
-                    <BodyBox 
-                        padding="2rem 6%"
+                    {/* <BodyBox 
+                        // padding="2rem 6%"
                         display={isNonMobileScreens?"flex":"block"}
                         gap="0.5rem"
                         justifyContent="space-between"
-                    >
-                        <Box flexBasis={isNonMobileScreens?"30%":undefined} >
-                        </Box>
+                    > */}
+                        {/* <Box flexBasis={isNonMobileScreens?"30%":undefined} >
+                        </Box> */}
                       
                         
-                        <Box 
+                        {/* <Box 
                             flexBasis={isNonMobileScreens?"40%":undefined}
-                        >
+                        > */}
                             <WidgetWrapper
                                 maxWidth="700px"
                                 m="1rem auto"
@@ -590,12 +590,12 @@ const FormModel = ({formname})=>{
                                 </Box>
                             </WidgetWrapper>
                            
-                        </Box>
+                        {/* </Box>
                         <Box 
                             flexBasis={isNonMobileScreens?"30%":undefined}
                         >
-                        </Box>
-                    </BodyBox>
+                        </Box> */}
+                    {/* </BodyBox> */}
                 </form>
             )}
         </Formik>

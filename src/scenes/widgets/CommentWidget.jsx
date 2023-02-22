@@ -7,7 +7,9 @@ import {
     Typography,
     IconButton,
     Divider, 
-    Tooltip
+    Tooltip,
+    TextField,
+    InputBase
 } from "@mui/material";
 import UserImage from "../../components/UserImage";
 import { CkeditorInput,createMarkup } from "../../components/CkeditorInput";
@@ -26,6 +28,7 @@ export const CommentItem = ({
     commentlist,
     ckwidth,
 })=>{
+    const windowWidth = useSelector((state)=>state.width);
     const user = useSelector((state)=>state.user);
     const dt = new Date();
     const [mode,setMode] = useState('view');
@@ -89,13 +92,14 @@ export const CommentItem = ({
                                     sx={{
                                         position:"relative",
                                         top:"0px",
-                                        left:"60px"
+                                        left:"60px",
+                                        maxWidth:"500px",
+                                        overflowWrap: 'break-word'
                                     }}
                                 >
                                     <span 
                                         className="CkeditorInput"
-                                        
-                                        dangerouslySetInnerHTML={createMarkup(comment['comments'])}
+                                        dangerouslySetInnerHTML={createMarkup(comment['comments'].replaceAll('\n','<br>'))}
                                     >
                                     </span>
                                     {comment['edit']&&<Typography>(已編輯)</Typography>}
@@ -192,13 +196,24 @@ export const CommentItem = ({
                                 width={"100%"}
                             >
                                 
-                                <CkeditorInput 
+                                {/* <CkeditorInput 
                                     label = {"你的回覆"}
                                     value = {commentdata}
                                     name = {"comment"}
                                     otherfunc = {changeComment}
                                     sx = {{width:"10px"}}
                                     setheight ={"150px"}
+                                /> */}
+
+                                <InputBase 
+                                    sx = {{minWidth:"500px",maxLength: 100}}
+                                    label = {"你的回覆"}
+                                    name = {"comment"}
+                                    value = {commentdata}
+                                    // rows ={5} 
+                                    placeholder={"你的回覆"}
+                                    multiline={true}  
+                                    onChange={(e)=>setCommentdata(e.target.value)}
                                 />
                             </Box>
                             
@@ -369,13 +384,33 @@ export const CommentWidget = ({
                         width={ckwidth}
                     >
                         
-                        <CkeditorInput 
+                        {/* <CkeditorInput 
                             label = {"你的回覆"}
                             value = {comment}
                             name = {"comment"}
                             otherfunc = {changeComment}
                             sx = {{width:"10px"}}
                             setheight ={"150px"}
+                        /> */}
+                        {/* <TextField
+                            label = {"你的回覆"}
+                            value = {comment}
+                            name = {"comment"}
+                            sx = {{width:"100%"}}
+                            placeholder={"你的回覆"}
+                            multiline={true}
+                            rows={1}
+                            onChange={(e)=>setComment(e.target.value)}
+                        /> */}
+                        <InputBase 
+                            sx = {{width:"100%",maxLength: 100}}
+                            label = {"你的回覆"}
+                            name = {"comment"}
+                            value = {comment}
+                            // rows ={5} 
+                            placeholder={"你的回覆"}
+                            multiline={true}  
+                            onChange={(e)=>setComment(e.target.value)}
                         />
                     </Box>
                     

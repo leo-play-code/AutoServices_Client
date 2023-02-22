@@ -39,11 +39,11 @@ function App() {
                             <Route path="/googlesheet/:docID/view" element={isAuth ?<GooglesheetPage />:<Navigate to="/" />} />
                             <Route path="/googlesheet/create" element={isAuth ? <ImportgooglesheetPage />:<Navigate to="/" />}  />
                             <Route path="/home" element={isAuth ?<HomePage />:<Navigate to="/" />} />
-                            <Route path="/form/:formname" element={isAuth ?<FormModelPage />:<Navigate to="/" />} />
+                            {/* <Route path="/form/:formname" element={isAuth ?<FormModelPage />:<Navigate to="/" />} /> */}
                             <Route path="/formmodel/form/:formname" element={isAuth ? <FormModelViewPage />:<Navigate to="/" />} />
                             <Route path="/table" element={isAuth ? <TablePage />:<Navigate to="/" />} />
                             <Route path="/search" element={isAuth ?<SearchPage />:<Navigate to="/" />} />
-                            <Route path="/formdata/:formdataid" element={isAuth ? <FormDataViewPage />:<Navigate to="/" />} />
+                            {/* <Route path="/formdata/:formdataid" element={isAuth ? <FormDataViewPage />:<Navigate to="/" />} /> */}
                             <Route path="/settings" element={isAuth? <SettingPage />: <Navigate to="/" />} />
                             {/* <Route path="*" element={isAuth ?<Page404 />:<Navigate to="/" />} /> */}
                             <Route path="*" element={<Page404 />} />

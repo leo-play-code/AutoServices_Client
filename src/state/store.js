@@ -51,6 +51,7 @@ export const FetchToStore = ({children}) =>{
     }
     const getAllFormData = async()=>{
         const data = await GetAllFormData(token);
+        // console.log('data',data)
         setForms(data)
     }
     const getAllUserlist = async()=>{
@@ -100,6 +101,15 @@ export const FetchToStore = ({children}) =>{
             dataFetch()
             getAllFormData()
         }
+        // Set interval to fetch data every 10 seconds
+        const intervalId = setInterval(() => {
+            getAllFormData()
+        }, 20000);
+    
+        // Clean up interval on unmount
+        return () => clearInterval(intervalId);
+
+
         // if (!fetchbool && userforms.length<1){
         //     getUserFormData()
         // }

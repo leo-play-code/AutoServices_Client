@@ -57,7 +57,7 @@ const DeleteModalWidget = ({
                 boxShadow: 24,
                 p: 4,
                 mt : windowheight*0.01
-             }}
+            }}
             title = {
                 title
             }

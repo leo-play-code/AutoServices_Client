@@ -22,6 +22,9 @@ import { useSelector } from 'react-redux';
 import { StoreContext } from "../../state/store";
 import { GetFormDataCount } from "../../api/formdata";
 import CircularProgress from '@mui/material/CircularProgress';
+import { BasicModal } from "../../components/modal";
+import FormModel from "../formmodelPage/Form";
+import { maxHeight } from '@mui/system';
 
 
 export const FormProfileWidget = ({
@@ -35,7 +38,7 @@ export const FormProfileWidget = ({
     const [forms,setForms] = storeforms;
     const thisformdata = forms.filter((form)=>form['form']['name'] === formname)
 
-
+    const windowheight = useSelector((state)=>state.height);
 
     const modelforms = forms.filter((form)=>form['form']['name']===formname);
     const [formmodels,setFormmodels] = storeformmodels;
@@ -162,16 +165,39 @@ export const FormProfileWidget = ({
                             fontSize:"25px"
                         }}
                     />
-                    <Button
-                        onClick={()=>navigate(`/form/${formname}`)}
-                    >
-                        <Typography
-                            fontWeight="700"
-                        >
-                            添加表單
-                        </Typography>
-                    </Button>
                     
+                    <BasicModal 
+                        modelsx = {{
+                            m:'auto' ,
+                            width:"900px",
+                            overflow:"scroll",
+                            bgcolor: 'background.paper',
+                            borderRadius:"10px",
+                            boxShadow: 24,
+                            p: 4,
+                            mt : windowheight*0.002,
+                            // mb : windowheight*0.0002
+                            maxHeight:windowheight*0.95
+                        }}
+                        title={
+                            <Button
+                                // onClick={()=>navigate(`/form/${formname}`)}
+                            >
+                                <Typography
+                                    fontWeight="700"
+                                >
+                                    添加表單
+                                </Typography>
+                            </Button>
+                        }
+                        body={
+                            <FormModel formname={formname}/>
+                        }
+                        
+                    />
+
+
+
                 </FlexBetween>
             </FlexBetween>
         </WidgetWrapper>    
