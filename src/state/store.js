@@ -1,5 +1,5 @@
 import React, { createContext, useState,useContext,useEffect} from "react";
-import { GetAllFormData, GetUserAllFormData,GetFormModelPart } from "../api/formdata";
+import { GetAllFormData, GetUserAllFormData,GetFormModelPart, Temp } from "../api/formdata";
 import { GetAllUser } from '../api/user';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
@@ -64,6 +64,7 @@ export const FetchToStore = ({children}) =>{
         setFormmodels(data);
     }
     const dataFetch = async () => {
+
         setFetchbool(true)
         const result = (
             await Promise.all([
@@ -105,7 +106,7 @@ export const FetchToStore = ({children}) =>{
         // Set interval to fetch data every 10 seconds
         const intervalId = setInterval(() => {
             getAllFormData()
-        }, 120000);
+        }, 60000);
     
         // Clean up interval on unmount
         return () => clearInterval(intervalId);

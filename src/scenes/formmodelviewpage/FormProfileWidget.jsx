@@ -39,7 +39,7 @@ export const FormProfileWidget = ({
     const thisformdata = forms.filter((form)=>form['form']['name'] === formname)
 
     const windowheight = useSelector((state)=>state.height);
-
+    const windowWidth = useSelector((state)=>state.width);
     const modelforms = forms.filter((form)=>form['form']['name']===formname);
     const [formmodels,setFormmodels] = storeformmodels;
     const formmodel = formmodels.filter((form)=>form['name']===formname)[0];
@@ -49,6 +49,10 @@ export const FormProfileWidget = ({
     const dark = theme.palette.neutral.dark;
     const dispatch = useDispatch();
     const token = useSelector((state)=>state.token)
+    const [screen,setScreen] = useState('part');
+    const toggleScreen = (value)=>{
+        setScreen(value);
+    }
     const getCount = async() =>{
         const data = await GetFormDataCount(token,formmodel['_id'])
         const tempformmodel = {...formmodel}
@@ -169,7 +173,7 @@ export const FormProfileWidget = ({
                     <BasicModal 
                         modelsx = {{
                             m:'auto' ,
-                            width:"900px",
+                            width: (screen==="part")?"900px":windowWidth, 
                             overflow:"scroll",
                             bgcolor: 'background.paper',
                             borderRadius:"10px",
@@ -191,7 +195,12 @@ export const FormProfileWidget = ({
                             </Button>
                         }
                         body={
-                            <FormModel formname={formname}/>
+                            <FormModel 
+                                formname={formname}
+                                toggleScreen= {toggleScreen}
+                                screen = {screen}
+                            
+                            />
                         }
                         
                     />

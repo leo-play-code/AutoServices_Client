@@ -93,7 +93,7 @@ export const CommentItem = ({
                                         position:"relative",
                                         top:"0px",
                                         left:"60px",
-                                        maxWidth:"500px",
+                                        maxWidth:windowWidth*0.15,
                                         overflowWrap: 'break-word'
                                     }}
                                 >

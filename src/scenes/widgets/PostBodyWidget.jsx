@@ -310,7 +310,7 @@ export const PostBodyWidget = ({
                 <BasicModal
                     modelsx = {{
                         m:'auto' ,
-                        width:(windowwidth>1300)?windowwidth*0.7:windowwidth,
+                        width:(windowwidth>1900)?windowwidth*0.7:windowwidth,
                         overflow:"scroll",
                         bgcolor: 'background.paper',
                         borderRadius:"10px",

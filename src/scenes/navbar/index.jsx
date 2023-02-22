@@ -45,11 +45,16 @@ import DownloadIcon from '@mui/icons-material/Download';
 
 const FormItem = ({searchvalue , formlist})=>{
     const windowheight = useSelector((state)=>state.height);
+    const windowWidth = useSelector((state)=>state.width);
     const navigate = useNavigate();
     const [formfilter,setFormfilter] = useState(formlist)
     const theme = useTheme();
     const dark = theme.palette.neutral.dark;
     const dropdowncolor = theme.palette.other.dropdown;
+    const [screen,setScreen] = useState('part');
+    const toggleScreen = (value)=>{
+        setScreen(value);
+    }
     const dropdownItemStyle = {
         "&:hover":{
             cursor:"pointer",
@@ -68,9 +73,10 @@ const FormItem = ({searchvalue , formlist})=>{
             formfilter.map(
                 form=>
                 <BasicModal 
+                    key={form}
                     modelsx = {{
                         m:'auto' ,
-                        width:"900px",
+                        width: (screen==="part")?"900px":windowWidth, 
                         overflow:"scroll",
                         bgcolor: 'background.paper',
                         borderRadius:"10px",
@@ -110,7 +116,11 @@ const FormItem = ({searchvalue , formlist})=>{
                         </FlexBetween>   
                     }
                     body={
-                        <FormModel formname={form}/>
+                        <FormModel 
+                            formname={form}
+                            toggleScreen= {toggleScreen}
+                            screen = {screen}
+                        />
                     }
                     
                 />

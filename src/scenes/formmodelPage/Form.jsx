@@ -34,7 +34,9 @@ import { CreateFormData } from '../../api/formdata';
 import { GetOneFormModel, UpdateFormModel } from '../../api/formmodel';
 import { StoreContext } from "../../state/store";
 import { registerAPI } from "../../api/auth";
-
+// icon 
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 const updateFormModel = async(formdict,values,updateformdict) => {
     //  只能update Array
@@ -101,7 +103,7 @@ const updateFormModel = async(formdict,values,updateformdict) => {
 }
 
 
-const FormModel = ({formname})=>{
+const FormModel = ({formname,toggleScreen,screen})=>{
     const {storeuserforms,storeforms,storeformmodels,storeUserlist} = useContext(StoreContext);
     const [userforms,setUserforms] = storeuserforms;
     const [formmodels,setFormmodels] = storeformmodels;
@@ -301,7 +303,7 @@ const FormModel = ({formname})=>{
                             flexBasis={isNonMobileScreens?"40%":undefined}
                         > */}
                             <WidgetWrapper
-                                maxWidth="700px"
+                                maxWidth="100%"
                                 m="1rem auto"
                             >   
                             
@@ -319,6 +321,9 @@ const FormModel = ({formname})=>{
                                         </Typography>
                                         
                                     </Box>
+                                    <FlexBetween
+                                        gap="1.5rem"
+                                    >
                                     <Box 
                                         textAlign="end"
                                     >
@@ -433,6 +438,23 @@ const FormModel = ({formname})=>{
                                             }
                                         />
                                     </Box>
+                                    {
+                                        (screen==="part")?(
+                                            <IconButton
+                                                onClick={()=>{toggleScreen("full")}}
+                                            >
+                                                <FullscreenIcon />
+                                            </IconButton>
+                                        ):(
+                                            <IconButton
+                                                onClick={()=>{toggleScreen("part")}}
+                                            >
+                                                <FullscreenExitIcon />
+                                            </IconButton>
+                                        )
+                                    }
+                                    </FlexBetween>
+                                    
                                 </FlexBetween>
                                 {/* FORM BODY */}
                                 <Box

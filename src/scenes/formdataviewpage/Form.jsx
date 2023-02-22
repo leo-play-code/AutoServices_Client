@@ -37,6 +37,10 @@ import { StoreContext } from "../../state/store";
 import { setLocalforms } from "../../state";
 import HistoryIcon from '@mui/icons-material/History';
 import HistoryModel from "../../components/HistoryModal";
+
+// icon 
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 const updateFormModel = async(formdict,values,updateformdict) => {
     //  只能update Array
     for (const key in formdict['selectdata']){
@@ -105,7 +109,9 @@ const updateFormModel = async(formdict,values,updateformdict) => {
 
 
 const FormModel = ({
-    formdata
+    formdata,
+    screen,
+    toggleScreen
 })=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
@@ -240,7 +246,7 @@ const FormModel = ({
     }
     useEffect(()=>{
         getFormModel(formdata);
-    },[storeformmodels])
+    },[storeformmodels,screen])
     return(
         <Formik
             onSubmit={handleFormSubmit}
@@ -261,7 +267,7 @@ const FormModel = ({
                 <form onSubmit={handleSubmit}>
                     
                             <WidgetWrapper
-                                maxWidth="700px"
+                                width="100%"
                                 m="0rem auto"
                                 
                             >   
@@ -461,6 +467,23 @@ const FormModel = ({
                                             
                                             />
                                         </Box>
+                                        {
+                                            (screen==="part")?(
+                                                <IconButton
+                                                    onClick={()=>{toggleScreen("full")}}
+                                                >
+                                                    <FullscreenIcon />
+                                                </IconButton>
+                                            ):(
+                                                <IconButton
+                                                    onClick={()=>{toggleScreen("part")}}
+                                                >
+                                                    <FullscreenExitIcon />
+                                                </IconButton>
+                                            )
+                                        }
+                                        
+                                        
                                     </FlexBetween>
                                     
                                 </FlexBetween>

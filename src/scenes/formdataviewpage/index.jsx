@@ -15,6 +15,8 @@ import { CommentWidget } from "../widgets/CommentWidget";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import FormModel from "./Form";
 import { StoreContext } from '../../state/store';
+import FlexBetween from "../../components/Flexbetween";
+import FlexBetweenTop from '../../components/FlexBetweenTop';
 const FormDataViewPage = ({formdataid})=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
@@ -23,11 +25,14 @@ const FormDataViewPage = ({formdataid})=>{
     const token = useSelector((state)=>state.token);
     // const {formdataid} = useParams();
 
-    
+    const [screen,setScreen] = useState('part')
     const [forms,setForms] = storeforms;
     const data = forms.filter(form=>form["_id"]===formdataid)[0]
     const windowheight = useSelector((state)=>state.height);
     const windowwidth = useSelector((state)=>state.width);
+    const toggleScreen = (value)=>{
+        setScreen(value)
+    }
     useEffect(()=>{
 
     },[forms])
@@ -36,36 +41,31 @@ const FormDataViewPage = ({formdataid})=>{
         //     <Navbar />
             <Box 
                 width="100%"
-                // padding="2rem 6%"
-                display={isNonMobileScreens?"flex":"block"}
-                gap="0.5rem"
-                justifyContent="space-between"
             >
-                {/* <Box 
-                    flexBasis={isNonMobileScreens?"26%":undefined}
-                    mb="1.5rem"
-                >
-                    
-                </Box> */}
                 <Box
-                    flexBasis={isNonMobileScreens?"50%":undefined}
-                    mb="1.5rem"
+                    sx={{
+                        display:(screen==="part")&&"flex",
+                        justifyContent:(screen==="part")&&"space-between",
+                        alignItems:(screen==="part")&&"flex-start"
+                    }}
                 >
                     {
                         (data!==undefined)&&(formmodels.length>0)&&( <FormModel 
                             formdata={data}
-                        
+                            toggleScreen= {toggleScreen}
+                            screen = {screen}
                         />)
                     }
-                   
-                </Box>
-                <Box
-                    flexBasis={isNonMobileScreens?"40%":undefined}
-                >
+                    
+
                     <WidgetWrapper
                         maxHeight = {windowheight*0.85}
-                        maxWidth = {windowwidth*0.3}
+                        maxWidth = {windowwidth*0.4}
                         overflow = "scroll"
+                        width={windowwidth*0.3}
+                        sx={{
+                            display:(screen==="full")&&"none"
+                        }}
                     >
                         {
                             (data!==undefined)&&(formmodels.length>0)&&(
@@ -77,9 +77,14 @@ const FormDataViewPage = ({formdataid})=>{
                             )
                         }
                         
-                    </WidgetWrapper>
-                   
+                    </WidgetWrapper> 
                 </Box>
+                    
+
+       
+
+                   
+  
             </Box>
         // </Box>
     )

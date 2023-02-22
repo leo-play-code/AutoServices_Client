@@ -150,3 +150,16 @@ export const GetFormDataCount = async(token,id) =>{
     const data = await response.json();
     return data
 }
+
+// temp
+// export const Temp = async(token)=>{
+//     const response = await fetch(urlpath+`formdata/temp`,{
+//         method:"GET",
+//         headers:{
+//             Authorization:`Bearer ${token}`
+//         }
+//     })
+//     const data = await response.json();
+//     console.log('data',data)
+//     return data
+// }
