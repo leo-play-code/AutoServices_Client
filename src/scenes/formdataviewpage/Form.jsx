@@ -206,7 +206,7 @@ const FormModel = ({
     }
     const handleFormSubmit = async(values,onSubmitProps)=>{
         updateFormModel(formdict,values,updateformdict);
-        const data = await UpdateFormModel(token,formdict,formdict['name'])
+        const data = UpdateFormModel(token,formdict,formdict['name'])
         const newValues = {}
         for (const key in values){
             if (!(key.includes("&:blank") || key.includes("selectdata-"))){
