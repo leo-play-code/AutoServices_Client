@@ -119,9 +119,11 @@ export const TableWidget = forwardRef(({
     // width set
     const tempwidthdict = {}
     for (const key in schema){
-        const {field} = schema[key]
+        const {field,sx} = schema[key]
         if (field !== "blank"){
-            tempwidthdict[key] = 400
+            var len = sx['gridColumn']
+            var len = parseInt(len.replaceAll('span ',''))
+            tempwidthdict[key] = len*100
             
         }
     }
