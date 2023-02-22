@@ -140,7 +140,7 @@ const FormModel = ({
         const tempform = {...formdata}
         tempform['data'] = values;
         tempforms.push(tempform);
-        const form = await UpdateFormData(token,values,userid,formdataid);
+        const form = UpdateFormData(token,values,userid,formdataid);
         if (formdata['creator']['_id']===_id){
             try{
                 const tempuserforms = [...userforms];
