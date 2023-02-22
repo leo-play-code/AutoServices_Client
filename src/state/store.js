@@ -103,12 +103,12 @@ export const FetchToStore = ({children}) =>{
         }
 
         // Set interval to fetch data every 10 seconds
-        // const intervalId = setInterval(() => {
-        //     getAllFormData()
-        // }, 60000);
+        const intervalId = setInterval(() => {
+            getAllFormData()
+        }, 120000);
     
         // Clean up interval on unmount
-        // return () => clearInterval(intervalId);
+        return () => clearInterval(intervalId);
 
 
         // if (!fetchbool && userforms.length<1){
