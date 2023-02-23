@@ -103,7 +103,7 @@ export const urlpath = "https://autoservices-api.onrender.com/";
 
 
 // export const webpath = "http://localhost:8000/";
-// export const webpath = "https://autoservices.onrender.com/"
+export const webpath = "https://autoservices.onrender.com/"
 
 
 
