@@ -6,8 +6,8 @@ export const GetAllFormData = async(token)=>{
     const response = await fetch(urlpath+"formdata/GetAll",{
         method:"GET",
         headers:{
-            Authorization:`Bearer ${token}`,
-        },
+            Authorization:`Bearer ${token}`
+        }
     })
     const data = await response.json()
     return data
