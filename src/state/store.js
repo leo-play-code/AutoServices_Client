@@ -66,7 +66,7 @@ export const FetchToStore = ({children}) =>{
         
 
         const data = await GetAllFormData(token,fetchtime);
-        // console.log('data',data)
+        console.log('data',data)
         if (data!==0){
             const merged = [];
 
@@ -160,7 +160,7 @@ export const FetchToStore = ({children}) =>{
         const intervalId = setInterval(() => {
             
             getAllFormData()
-        }, 5000);
+        }, 20000);
     
         // Clean up interval on unmount
         return () => clearInterval(intervalId);
