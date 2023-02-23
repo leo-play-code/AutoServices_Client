@@ -104,6 +104,7 @@ export const FetchToStore = ({children}) =>{
                 }
             }
             setForms(merged)
+            // await Temp(token);
         }else{
 
         }
@@ -126,7 +127,7 @@ export const FetchToStore = ({children}) =>{
         setFormmodels(data);
     }
     const dataFetch = async () => {
-
+        
         setFetchbool(true)
         const result = (
             await Promise.all([
@@ -161,6 +162,7 @@ export const FetchToStore = ({children}) =>{
         const sizeInKilobytes = sizeInBytes ;
 
         console.log(sizeInKilobytes + " B");
+       
     };
     // console.log('userform length',userforms);
     // console.log('userlist length',userlist.length);
@@ -186,7 +188,7 @@ export const FetchToStore = ({children}) =>{
         const intervalId = setInterval(() => {
             
             getAllFormData()
-        }, 20000);
+        }, 60000);
     
         // Clean up interval on unmount
         return () => clearInterval(intervalId);
@@ -205,7 +207,7 @@ export const FetchToStore = ({children}) =>{
         //     getFormmodels();
         // }
         
-    },[forms])
+    },[forms,formmodels])
 
     return(
         <Box>
