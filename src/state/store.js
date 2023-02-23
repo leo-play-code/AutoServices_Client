@@ -66,7 +66,8 @@ export const FetchToStore = ({children}) =>{
         
 
         const data = await GetAllFormData(token,fetchtime);
-        if (data.length>0){
+        // console.log('data',data)
+        if (data!==0){
             const merged = [];
 
             // Loop through each dictionary in A and add it to the merged list
@@ -159,7 +160,7 @@ export const FetchToStore = ({children}) =>{
         const intervalId = setInterval(() => {
             
             getAllFormData()
-        }, 20000);
+        }, 5000);
     
         // Clean up interval on unmount
         return () => clearInterval(intervalId);
