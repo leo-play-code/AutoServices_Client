@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -22,6 +24,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { StoreProvider } from './state/store';
 
 // if (process.env.NODE_ENV === 'production') disableReactDevTools();
+dotenv.config();
 
 
 const persistConfig = {key:"root",storage,version:1};
