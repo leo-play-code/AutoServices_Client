@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
+
 const initialState = {
     mode:"light",
     user:null,
@@ -97,13 +98,14 @@ export const {setMode,setLogin,setLogout,setLocalforms,setScreen,setFormModels,s
 export default authSlice.reducer;
 
 // export const urlpath = "http://localhost:6001/";
-export const urlpath = "https://autoservices-api.onrender.com/";
+// export const urlpath = "https://autoservices-api.onrender.com/";
+export const urlpath = "https://autoservices-test-api.onrender.com/"
 
 
 
 
 // export const webpath = "http://localhost:8000/";
-export const webpath = "https://autoservices.onrender.com/"
+// export const webpath = "https://autoservices.onrender.com/"
 
 
 
