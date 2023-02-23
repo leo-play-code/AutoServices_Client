@@ -64,33 +64,18 @@ export const FetchToStore = ({children}) =>{
     const getAllFormData = async()=>{
         
         
-
+        const startTime = new Date().getTime();
         var data = await GetAllFormData(token,fetchtime);
-        // const blob = new Blob([data]);
-        
+        // Stop the timer
+        const endTime = new Date().getTime();
 
-        // // Get the size of the Blob in bytes
-        // const sizeInBytes = blob.size;
-
-        // // Convert the size to kilobytes
-        // const sizeInKilobytes = sizeInBytes ;
-
-        // console.log('only data',sizeInKilobytes + " B");
+        // Calculate the elapsed time in milliseconds
+        const elapsedTime = endTime - startTime;
+        console.log('time between get forms',elapsedTime)
         data = data['data']
 
 
-        // console.log('data',)
-        
-        // const temp = new Map()
-        // const tempdata = data
-        // for(const item in tempdata){
-        //     const {_id,data,comments,history} = tempdata[item];
-        //     temp.set(_id,{"comments":comments,"data":data,"history":history})
-        // }
-        // temp.set('data',data)
-        // console.log('temp length',data)
-        
-        // console.log('data',data)
+
         if (data!==0){
             const merged = [];
 
@@ -186,7 +171,14 @@ export const FetchToStore = ({children}) =>{
     useEffect(()=>{
 
         if (!fetchbool && userlist.length<1){
+            const startTime = new Date().getTime();
             dataFetch()
+            // Stop the timer
+            const endTime = new Date().getTime();
+
+            // Calculate the elapsed time in milliseconds
+            const elapsedTime = endTime - startTime;
+            console.log('time between all',elapsedTime)
             getAllFormData()
         }
 
