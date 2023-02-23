@@ -65,8 +65,32 @@ export const FetchToStore = ({children}) =>{
         
         
 
-        const data = await GetAllFormData(token,fetchtime);
-        console.log('data',data)
+        var data = await GetAllFormData(token,fetchtime);
+        // const blob = new Blob([data]);
+        
+
+        // // Get the size of the Blob in bytes
+        // const sizeInBytes = blob.size;
+
+        // // Convert the size to kilobytes
+        // const sizeInKilobytes = sizeInBytes ;
+
+        // console.log('only data',sizeInKilobytes + " B");
+        data = data['data']
+
+
+        // console.log('data',)
+        
+        // const temp = new Map()
+        // const tempdata = data
+        // for(const item in tempdata){
+        //     const {_id,data,comments,history} = tempdata[item];
+        //     temp.set(_id,{"comments":comments,"data":data,"history":history})
+        // }
+        // temp.set('data',data)
+        // console.log('temp length',data)
+        
+        // console.log('data',data)
         if (data!==0){
             const merged = [];
 
@@ -142,6 +166,16 @@ export const FetchToStore = ({children}) =>{
         setFormmodels(formmodels);
         setForms(forms)
         setGooglelist(googlelist)
+        // Convert the data to a Blob
+        const blob = new Blob([forms]);
+
+        // Get the size of the Blob in bytes
+        const sizeInBytes = blob.size;
+
+        // Convert the size to kilobytes
+        const sizeInKilobytes = sizeInBytes ;
+
+        console.log(sizeInKilobytes + " B");
     };
     // console.log('userform length',userforms);
     // console.log('userlist length',userlist.length);
@@ -189,3 +223,15 @@ export const FetchToStore = ({children}) =>{
     )
 
 }
+
+
+// // Convert the data to a Blob
+// const blob = new Blob([data]);
+
+// // Get the size of the Blob in bytes
+// const sizeInBytes = blob.size;
+
+// // Convert the size to kilobytes
+// const sizeInKilobytes = sizeInBytes ;
+
+// console.log(sizeInKilobytes + " B");
