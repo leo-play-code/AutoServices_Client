@@ -60,7 +60,8 @@ export const FetchToStore = ({children}) =>{
     }
     const getAllFormData = async()=>{
         // const or_forms = cleanformlist(forms)
-        const data = await GetAllFormData(token,or_forms);
+        // const data = await GetAllFormData(token,or_forms);
+        const data = await GetAllFormData(token);
         setForms(data)
         // if (data.length>1){
         //     const merged = [];
