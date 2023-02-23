@@ -143,7 +143,7 @@ export const FetchToStore = ({children}) =>{
         const intervalId = setInterval(() => {
             
             getAllFormData()
-        }, 20000);
+        }, 120000);
     
         // Clean up interval on unmount
         return () => clearInterval(intervalId);
