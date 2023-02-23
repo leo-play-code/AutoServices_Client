@@ -59,34 +59,35 @@ export const FetchToStore = ({children}) =>{
         setUserforms(data);
     }
     const getAllFormData = async()=>{
-        const or_forms = cleanformlist(forms)
+        // const or_forms = cleanformlist(forms)
         const data = await GetAllFormData(token,or_forms);
-        if (data.length>1){
-            const merged = [];
-            // Loop through each dictionary in A and add it to the merged list
-            for (const a_dict of forms) {
-                merged.push({...a_dict});
-            }
+        setForms(data)
+        // if (data.length>1){
+        //     const merged = [];
+        //     // Loop through each dictionary in A and add it to the merged list
+        //     for (const a_dict of forms) {
+        //         merged.push({...a_dict});
+        //     }
 
-            // Loop through each dictionary in B
-            for (const b_dict of data) {
-                let found = false;
-                // Check if the dictionary already exists in merged and update it if necessary
-                for (const merged_dict of merged) {
-                    if (merged_dict._id === b_dict._id) {
-                        merged_dict.data = b_dict.data;
-                        found = true;
-                        break;
-                        }
-                    }
-                    // If the dictionary doesn't exist in merged, add it
-                    if (!found) {
-                        merged.push({...b_dict});
-                }
-            }
-            console.log('merge',merged.length)
-            setForms(merged)
-        }
+        //     // Loop through each dictionary in B
+        //     for (const b_dict of data) {
+        //         let found = false;
+        //         // Check if the dictionary already exists in merged and update it if necessary
+        //         for (const merged_dict of merged) {
+        //             if (merged_dict._id === b_dict._id) {
+        //                 merged_dict.data = b_dict.data;
+        //                 found = true;
+        //                 break;
+        //                 }
+        //             }
+        //             // If the dictionary doesn't exist in merged, add it
+        //             if (!found) {
+        //                 merged.push({...b_dict});
+        //         }
+        //     }
+        //     console.log('merge',merged.length)
+        //     setForms(merged)
+        // }
         
         
     }
@@ -140,13 +141,13 @@ export const FetchToStore = ({children}) =>{
         }
 
         // Set interval to fetch data every 10 seconds
-        const intervalId = setInterval(() => {
+        // const intervalId = setInterval(() => {
             
-            getAllFormData()
-        }, 120000);
+        //     getAllFormData()
+        // }, 20000);
     
-        // Clean up interval on unmount
-        return () => clearInterval(intervalId);
+        // // Clean up interval on unmount
+        // return () => clearInterval(intervalId);
        
 
         // if (!fetchbool && userforms.length<1){
