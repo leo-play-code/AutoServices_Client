@@ -79,7 +79,7 @@ export const Login = ()=>{
                 scope: ""
             })
         }
-        gapi.load('client:auth2',start);
+        gapi.load('client:auth2',()=>{start()});
     })
     return(
         <Box>
