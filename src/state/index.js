@@ -98,7 +98,7 @@ export const authSlice = createSlice({
 export const {setMode,setLogin,setLogout,setLocalforms,setScreen,setFormModels,setSettings,setUserList,setFilter,setFilterMode,setnewGoogleSheet} = authSlice.actions;
 export default authSlice.reducer;
 
-export const urlpath = urlpath
+export const urlpath = urlpath;
 // export const urlpath = "https://autoservices-api.onrender.com/";
 // export const urlpath = "https://autoservices-test-api.onrender.com/"
 
