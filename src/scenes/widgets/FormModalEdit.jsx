@@ -158,7 +158,7 @@ const FormModalEdit = ({
             setForms(tempstoreforms)
         }catch{
             if (forms.length>0){
-                const tempuserforms = await GetAllFormData(token)
+                const tempuserforms = await GetAllFormData(token,forms)
                 setForms(tempuserforms)
             }
             

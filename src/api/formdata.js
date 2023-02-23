@@ -1,13 +1,15 @@
 
 import { urlpath } from "../state";
 
-export const GetAllFormData = async(token)=>{
+export const GetAllFormData = async(token,formlist)=>{
     console.log('GetAllFormData')
     const response = await fetch(urlpath+"formdata/GetAll",{
-        method:"GET",
+        method:"POST",
         headers:{
-            Authorization:`Bearer ${token}`
-        }
+            Authorization:`Bearer ${token}`,
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formlist)
     })
     const data = await response.json()
     return data
