@@ -5,7 +5,7 @@ import {
     useMediaQuery
 } from "@mui/material";
 import Logo from "../../assets/logo.jpeg";
-import { Login, Logout } from "../../components/Auth";
+import { Login } from "../../components/Auth2";
 import FlexBetween from "../../components/Flexbetween";
 import Management from '../../assets/management.png'
 const LoginPage = ()=>{
@@ -56,14 +56,14 @@ const LoginPage = ()=>{
                 </Typography>
                 <Login />
             </Box>
-            <Box textAlign="center">
+            {/* <Box textAlign="center">
                 <img 
                     src={Management} 
                     alt="management picture" 
                     style={{objectFit:"cover"}}
                     width={isNonMobileScreens?"500rem":"300rem"}
                 />
-            </Box>
+            </Box> */}
         </Box>
     
     )

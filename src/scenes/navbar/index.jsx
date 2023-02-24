@@ -35,7 +35,7 @@ import FlexBetween from "../../components/Flexbetween";
 import UserImage from "../../components/UserImage";
 import { setFormModels, setMode, setScreen, setUserList } from "../../state";
 import {DropdownContainer,Dropdown,Dropdownlabel} from '../../components/dropdown';
-import { Logout } from "../../components/Auth";
+import { Logout } from "../../components/Auth2";
 import Tooltip from '@mui/material/Tooltip';
 import StorageIcon from '@mui/icons-material/Storage';
 import { GetAllFormModel } from "../../api/formmodel";
