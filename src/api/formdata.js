@@ -160,5 +160,6 @@ export const Temp = async(token)=>{
         }
     })
     const data = await response.json();
+    console.log('temp data',data)
     return data
 }

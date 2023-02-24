@@ -80,7 +80,7 @@ export const Login = ()=>{
             })
         }
         gapi.load('client:auth2',start);
-    })
+    },[])
     return(
         <Box>
             {(method=="login")?(

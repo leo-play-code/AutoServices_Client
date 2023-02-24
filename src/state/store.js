@@ -35,6 +35,7 @@ export const StoreProvider = ({ children }) => {
 
 export const FetchToStore = ({children}) =>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
+
     const token = useSelector((state)=>state.token)
     const {storeuserforms,storeUserlist,storeforms,storeformmodels,storegooglelist,storefetchbool,storefetchtime} = useContext(StoreContext);
     const [userforms,setUserforms] = storeuserforms;
@@ -44,8 +45,6 @@ export const FetchToStore = ({children}) =>{
     const [googlelist,setGooglelist] = storegooglelist;
     const [fetchbool,setFetchbool] = storefetchbool;
     const [fetchtime,setFetchtime] =  storefetchtime;
-    const dispatch = useDispatch();
-    
     const cleanformlist = (formlist)=>{
         const formdict = {}
         for (const item in formlist){
@@ -104,7 +103,6 @@ export const FetchToStore = ({children}) =>{
                 }
             }
             setForms(merged)
-            // await Temp(token);
         }else{
 
         }
@@ -147,40 +145,23 @@ export const FetchToStore = ({children}) =>{
         // when the data is ready, save it to state
         userforms.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
         forms.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
+
         setUserforms(userforms);
         setUserlist(userlist);
         setFormmodels(formmodels);
         setForms(forms)
         setGooglelist(googlelist)
-        // Convert the data to a Blob
-        const blob = new Blob([forms]);
 
-        // Get the size of the Blob in bytes
-        const sizeInBytes = blob.size;
-
-        // Convert the size to kilobytes
-        const sizeInKilobytes = sizeInBytes ;
-
-        console.log(sizeInKilobytes + " B");
        
     };
-    // console.log('userform length',userforms);
-    // console.log('userlist length',userlist.length);
-    // console.log('forms length',forms);
-    // console.log('formmodels length',formmodels);
+
 
     
     useEffect(()=>{
 
         if (!fetchbool && userlist.length<1){
-            const startTime = new Date().getTime();
             dataFetch()
-            // Stop the timer
-            const endTime = new Date().getTime();
 
-            // Calculate the elapsed time in milliseconds
-            const elapsedTime = endTime - startTime;
-            console.log('time between all',elapsedTime)
             getAllFormData()
         }
 
@@ -194,18 +175,6 @@ export const FetchToStore = ({children}) =>{
         return () => clearInterval(intervalId);
        
 
-        // if (!fetchbool && userforms.length<1){
-        //     getUserFormData()
-        // }
-        // if (!fetchbool && forms.length<1){
-        //     getAllFormData()
-        // }
-        // if (!fetchbool && userlist.length<1){
-        //     getAllUserlist();
-        // }
-        // if (!fetchbool && formmodels.length<1){
-        //     getFormmodels();
-        // }
         
     },[forms,formmodels])
 

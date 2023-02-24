@@ -16,6 +16,7 @@ const initialState = {
     filter : {},
     filtermode:"post",
     newgooglesheet:{},
+
 };
 export const ColumnDefault = new Map([
     [1,"A"],
@@ -88,7 +89,8 @@ export const authSlice = createSlice({
         },
         setnewGoogleSheet:(state,action)=>{
             state.newgooglesheet = action.payload.newgooglesheet;
-        }
+        },
+
 
 
     }
