@@ -101,7 +101,7 @@ export default authSlice.reducer;
 
 // export const urlpath = "http://localhost:6001/";
 export const urlpath = "https://autoservices-api.onrender.com/";
-// export const urlpath = "https://autoservices-test-api.onrender.com/"
+
 
 
 

@@ -8,6 +8,8 @@ import Logo from "../../assets/logo.jpeg";
 import { Login } from "../../components/Auth2";
 import FlexBetween from "../../components/Flexbetween";
 import Management from '../../assets/management.png'
+import WidgetWrapper from '../../components/WidgetWrapper';
+import {ResetPasswordMail} from '../../components/MailHtml';
 const LoginPage = ()=>{
     const theme = useTheme();
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)")
@@ -56,14 +58,6 @@ const LoginPage = ()=>{
                 </Typography>
                 <Login />
             </Box>
-            {/* <Box textAlign="center">
-                <img 
-                    src={Management} 
-                    alt="management picture" 
-                    style={{objectFit:"cover"}}
-                    width={isNonMobileScreens?"500rem":"300rem"}
-                />
-            </Box> */}
         </Box>
     
     )

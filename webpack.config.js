@@ -1,8 +1,10 @@
-const Dotenv = require('dotenv-webpack');
-
 module.exports = {
-  // ... other config options
-  plugins: [
-    new Dotenv()
-  ]
+  // ...
+  resolve: {
+    fallback: {
+      fs: false,
+      path: require.resolve("path-browserify"),
+      crypto: require.resolve("crypto-browserify")
+    }
+  }
 };

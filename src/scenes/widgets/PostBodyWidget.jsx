@@ -107,7 +107,7 @@ export const PostBody = ({
 
     },[showlimit])
     const mysetting = useSelector((state)=>state.settings);
-    const viewsetup = mysetting['貼文顯示方式'][data['form']['name']];
+    const viewsetup = (mysetting===undefined || mysetting['貼文顯示方式']===undefined)?{}:mysetting['貼文顯示方式'][data['form']['name']];
     const theme = useTheme();
     const cardcolor = theme.palette.other.card;
     const linkcolor = theme.palette.other.link;
@@ -337,13 +337,7 @@ export const PostBodyWidget = ({
                                     sx={{color:"#E74C3C",fontSize:"20px"}}
                                 />
                             </IconButton>
-                            {/* <Typography
-                                fontWeight="700"
-                                width="9rem"
-                                color = "#2ECC71"
-                            >
-                                Edit
-                            </Typography> */}
+
                                             
                         </FlexBetween>
                     </FlexBetween>
@@ -355,110 +349,6 @@ export const PostBodyWidget = ({
                         />
                     }
                 />
-                {/* <Dropdown
-                    ref_active = {true}
-                    title = "更多"
-                    label = {
-                        <MoreHorizIcon sx={{color:dark}} />
-                    }
-                    child = {
-                        <DropdownContainer>
-                            <DropdownContainer
-                                sx={{top:"0.25rem",right:"-2.5rem",padding:"0.5rem 0.5rem",paddingLeft:"0.5rem"}}
-                                fontSize="1rem"
-                                backgroundColor={alt}
-                                width="15rem"
-                            >
-                                <BasicModal
-                                    modelsx = {{
-                                        m:'auto' ,
-                                        width:(windowwidth>1300)?windowwidth*0.7:windowwidth,
-                                        overflow:"scroll",
-                                        bgcolor: 'background.paper',
-                                        borderRadius:"10px",
-                                        boxShadow: 24,
-                                        p: 4,
-                                        mt : windowheight*0.002,
-                                        maxHeight:windowheight*0.95
-                                    }}
-                                    title={
-                                        <FlexBetween
-                                            sx={dropdownItemStyle}
-                                        >
-                                            <FlexBetween
-                                                gap="2.5rem"
-                                                
-                                            >
-                                            <IconButton
-                                                sx={{
-                                                    fontSize:"25px",
-                                                    "&:hover":{backgroundColor:dropdowncolor},
-                                                }}
-                                            >
-                                                <EditIcon 
-                                                    sx={{color:"#2ECC71",fontSize:"25px"}}
-                                                />
-                                            </IconButton>
-                                            <Typography
-                                                fontWeight="700"
-                                                width="9rem"
-                                                color = "#2ECC71"
-                                            >
-                                                Edit
-                                            </Typography>
-                                                            
-                                        </FlexBetween>
-                                    </FlexBetween>
-                        
-                                    }
-                                    body={
-                                        <FormDataViewPage 
-                                            formdataid={data['_id']}
-                                        />
-                                    }
-                                >
-
-                                </BasicModal>
-                     
-                                <DeleteModalWidget 
-                                    title={
-                                        <FlexBetween
-                                            mt="0.25rem" 
-                                            sx={dropdownItemStyle}
-                                        >
-                                            <FlexBetween
-                                                gap="2.5rem"
-                                            >
-                                                <IconButton
-                                                    sx={{
-                                                        fontSize:"25px",
-                                                        "&:hover":{backgroundColor:dropdowncolor},
-                                                    }}
-                                                >
-                                                    <DeleteIcon 
-                                                        sx={{color:"#E74C3C",fontSize:"25px"}}
-                                                    />
-                                                </IconButton>
-                                                <Typography
-                                                    fontWeight="700"
-                                                    width="9rem"
-                                                    color = "#E74C3C"
-                                                >
-                                                    Delete
-                                                </Typography>
-                                            </FlexBetween>
-                                        </FlexBetween>
-                                        }
-                                    formdata = {data}
-                                />
-                            </DropdownContainer>
-                        </DropdownContainer>
-                    }
-                >
-
-                </Dropdown> */}
-                
-                
             </FlexBetween>
 
             <Box
