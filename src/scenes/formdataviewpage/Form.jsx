@@ -118,6 +118,7 @@ const FormModel = ({
     const [forms,setForms] = storeforms;
     const [userforms,setUserforms] = storeuserforms;
     const [formmodels,setFormmodels] = storeformmodels;
+
     const formname = formdata["form"]["name"]
     const [editable,setEditable] = useState(false);
     const [formdict,setFormdict] = useState({});
@@ -134,9 +135,9 @@ const FormModel = ({
     const navigate = useNavigate();
     const dark = theme.palette.neutral.dark;
     const dispatch = useDispatch();
+    
     const getFormModel = async(data)=>{
         // const formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
-        
         setFormdict(data['form'])
         getInitValue(data)
     }
@@ -220,7 +221,14 @@ const FormModel = ({
                 newValues[key] = values[key];
             }
         }
-        
+        console.log('formdict',formdict)
+        setFormmodels(formmodels.map(obj => {
+            if (obj.name === formdict['name']) {
+              return { ...obj, ...formdict};
+            } else {
+              return obj;
+            }
+          }));
         toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
         setEditable(false)
         
@@ -327,7 +335,9 @@ const FormModel = ({
                                                                                 
                                                                             }else{
                                                                                 var finallist = []
-                                                                                var disabled = true;
+                                                                                if (targetvalue === ""){
+                                                                                    var disabled = true;
+                                                                                }
                                                                             }
                                                                         }else{
                                                                             var finallist = fulldata

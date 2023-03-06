@@ -321,7 +321,9 @@ const FormModalEdit = ({
                                                                                 
                                                                             }else{
                                                                                 var finallist = []
-                                                                                var disabled = true;
+                                                                                if (targetvalue === ""){
+                                                                                    var disabled = true;
+                                                                                }
                                                                             }
                                                                         }else{
                                                                             var finallist = fulldata
