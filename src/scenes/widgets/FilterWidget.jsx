@@ -56,7 +56,10 @@ const FilterWidget = ({
         if (formmodels.length>0){
             const thisformmodel = formmodels.filter((formmodel)=>formmodel['name'] === formname)[0];
             setSchema(thisformmodel['schema']);
+
             getInitValue()
+
+   
         }
     }
 
@@ -93,6 +96,7 @@ const FilterWidget = ({
     const filterwidthNonMobile= {
         width:windowwidth/10
     }
+
     const getInitValue = () =>{
         const newinitvalue = {}
         const newinitschema = {}
@@ -124,11 +128,16 @@ const FilterWidget = ({
         setInitschema(yup.object().shape(newinitschema));
         const newfilter = {...filter}
         newfilter[formname] = newinitvalue
-        dispatch(
-            setFilter({
-                filter:newfilter
-            })
-        )
+        if (filter[formname]){
+
+        }else{
+            dispatch(
+                setFilter({
+                    filter:newfilter
+                })
+            )
+        }
+        
     }
     const handleFilter = (values,onSubmitProps) =>{
         // console.log('values=',values)
@@ -161,10 +170,13 @@ const FilterWidget = ({
     }
 
     useEffect(()=>{
-        // getInitValue();
+
+
+
         getSchema()
+
+        
     },[formmodels,schema])
-    // },[formmodels,schema])
     return(
         <Formik
             onSubmit = {handleFilter}

@@ -222,13 +222,13 @@ const FormModel = ({
             }
         }
         // 更新本地formmodel由於會重置filterwidget所以不跑
-        // setFormmodels(formmodels.map(obj => {
-        //     if (obj.name === formdict['name']) {
-        //       return { ...obj, ...formdict};
-        //     } else {
-        //       return obj;
-        //     }
-        // }));
+        setFormmodels(formmodels.map(obj => {
+            if (obj.name === formdict['name']) {
+              return { ...obj, ...formdict};
+            } else {
+              return obj;
+            }
+        }));
         toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
         setEditable(false)
         
