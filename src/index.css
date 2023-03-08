@@ -27,3 +27,6 @@ html,body,#root,.app{
     --ck-z-default: 10555 !important;
     --ck-z-modal: calc(var(--ck-z-default) + 10555) !important;
 } */
+.fixed {
+    position: fixed;
+}

@@ -189,7 +189,8 @@ export const UserSearchDropdown = ({
     disabled,
     handleBlur,
     helperText,
-    defaultbool = false
+    defaultbool = false,
+    otherfunc
 })=>{
     const user = useSelector((state)=>state.user);
     const {storeUserlist} = useContext(StoreContext);
@@ -209,6 +210,11 @@ export const UserSearchDropdown = ({
                     if(newValue === null){
                         setFieldValue(name,"")
                     }
+                }
+                try{
+                    otherfunc(newValue['Name'])
+                }catch{
+                    
                 }
             }}
 

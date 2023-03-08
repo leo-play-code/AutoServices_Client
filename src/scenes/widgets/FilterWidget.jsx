@@ -40,8 +40,6 @@ const FilterWidget = ({
     const [schema,setSchema] = useState({});
     
 
-    
-
     const dispatch = useDispatch();
     const [initalvalue,setInitalvalue] = useState({});
     
@@ -54,7 +52,6 @@ const FilterWidget = ({
     const windowheight = useSelector((state)=>state.height);
     const filter = useSelector((state)=>state.filter);
     const navigate = useNavigate();
-
     const getSchema = () =>{
         if (formmodels.length>0){
             const thisformmodel = formmodels.filter((formmodel)=>formmodel['name'] === formname)[0];
@@ -167,6 +164,7 @@ const FilterWidget = ({
         // getInitValue();
         getSchema()
     },[formmodels,schema])
+    // },[formmodels,schema])
     return(
         <Formik
             onSubmit = {handleFilter}

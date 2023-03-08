@@ -41,7 +41,8 @@ import StorageIcon from '@mui/icons-material/Storage';
 import { GetAllFormModel } from "../../api/formmodel";
 import { StoreContext, FetchToStore } from '../../state/store';
 import DownloadIcon from '@mui/icons-material/Download';
-
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import Helper from "../widgets/Helper";
 
 const FormItem = ({searchvalue , formlist})=>{
     const windowheight = useSelector((state)=>state.height);
@@ -336,6 +337,28 @@ const Navbar = ({
             {isNonMobileScreens?
             (
                 <FlexBetween gap="1.5rem">
+                    {/* TIP Help */}
+
+                    <Dropdown
+                        ref_active={ false }
+                        title = {"更新內容"}
+                        label = {
+                            <QuestionMarkIcon 
+                                 sx={{fontSize:"25px",color:dark}}
+                            />
+                        }
+                        child = {
+                            <DropdownContainer
+                                sx={{top:"0.25rem",right:"-2.5rem",padding:"1rem 1rem",paddingLeft:"1rem"}}
+                                fontSize="1rem"
+                                backgroundColor={alt}
+                                width="25rem"
+                            >   
+                                <Helper />
+                                
+                            </DropdownContainer>
+                        }
+                    />
                     {/* BRIGHT MODE */}
                     <Tooltip title="顯示模式">
                         <IconButton
@@ -349,6 +372,7 @@ const Navbar = ({
                             }
                         </IconButton>
                     </Tooltip>
+
                     
                     
 
@@ -358,7 +382,7 @@ const Navbar = ({
                         title = {"創建表單"}
                         label ={
                             <CreateNewFolderIcon 
-                                sx={{fontSize:"25px",color:dark}}
+                            sx={{fontSize:"25px",color:dark}}
                             />
                         }
                         child={

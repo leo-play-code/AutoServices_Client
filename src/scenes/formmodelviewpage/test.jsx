@@ -20,10 +20,12 @@ import { StoreContext } from '../../state/store';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import RightClick from '../../components/RightClick';
+import Form_Table from '../../components/Table_Max';
 
 
 
 const FormModelViewPage = () =>{
+    
     // useContext 
     const {storeforms,storeformmodels} = useContext(StoreContext);
     const [forms,setForms] = storeforms;
@@ -32,9 +34,7 @@ const FormModelViewPage = () =>{
     const {formname} = useParams();
     const formmodel = formmodels.filter((form)=>form['name']===formname)[0];
     const isNonMobileScreens = useMediaQuery("(min-width:1230px)");
-    const WindowWidth = useSelector((state)=>state.width);
     const filtermode = useSelector((state)=>state.filtermode);
-    const WindowHeight = useSelector((state)=>state.height);
     const token = useSelector((state)=>state.token);
     const tableRef = useRef();
     const tablechildRef = useRef();
@@ -43,46 +43,18 @@ const FormModelViewPage = () =>{
     const [x,setX] = useState(null);
     const [y,setY] = useState(null);
     const [copyvalue,setCopyvalue] = useState("");
-
-    const mousePosition = (x,y,value)=>{
-        setX(x);
-        setY(y);
-        setCopyvalue(value);
-    }
+    console.log('formmodel',formmodel)
 
     const changeNumber = (value)=>{
         setNumber(value)
     }
+    console.log('formmodelviewpage')
 
-    const handleScroll = (element)=>{
-        // console.log('handle scroll')
-        try{
-            if (element.scrollTop+tableRef.current.offsetHeight>=element.scrollHeight*0.85){
-                tablechildRef.current.updateShownum();
-            }
-        }catch{}  
-    }
-    // console.log('forms',forms)
     useEffect(()=>{
-        if (filtermode !== "post"){
 
-            const scrollDemo = document.querySelector("#scrollDemo");
-            scrollDemo.addEventListener("scroll", event => {
-                handleScroll(scrollDemo)
-                // 
-
-            }, { passive: true });
-            return () => {
-                scrollDemo.removeEventListener('scroll', handleScroll(scrollDemo));
-            };
- 
-        }else{
-            
-        }
 
         
-    },[screen,filtermode])
-
+    },[screen,forms,filtermode])
     return(
         <Box>
             <Navbar />
@@ -113,7 +85,7 @@ const FormModelViewPage = () =>{
                         >
                             <Box
                                 position={isNonMobileScreens?"fixed":""}
-                                width={isNonMobileScreens?(WindowWidth*0.23):"inherit"}
+                                width={isNonMobileScreens?(window.innerWidth*0.23):"inherit"}
                             >
                                 {(formmodel!==undefined)&&<FormProfileWidget 
                                     formname = {formname}
@@ -148,7 +120,7 @@ const FormModelViewPage = () =>{
                     >
                         <Box
                             position={isNonMobileScreens?"fixed":""}
-                            width={isNonMobileScreens?(WindowWidth*0.23):"inherit"}
+                            width={isNonMobileScreens?(window.innerWidth*0.23):"inherit"}
                         >
                         </Box>
                         
@@ -160,30 +132,21 @@ const FormModelViewPage = () =>{
                             flexBasis={isNonMobileScreens?((screen==="full")?"99%":"75%"):undefined}
                             mb="1.5rem"
                             
-                        > <Box>
-                                <Box
-                                    sx={{
-                                        maxHeight:WindowHeight*0.85,
-                                        overflow:"scroll"
-                                    }}
-                                    position={isNonMobileScreens?"fixed":""}
-                                    width={isNonMobileScreens?((screen==="full")?WindowWidth*0.95:WindowWidth*0.70):"inherit"}
-                                    ref = {tableRef}
-                                    id ={"scrollDemo"}
-                                >
-
-                                    {(forms.length>0 && formmodel!==undefined)&&
-                                        <TableWidget 
-                                            formname = {formname} 
-                                            formlist = {forms}
-                                            ref = {tablechildRef}
-                                            WindowHeight= {WindowHeight}
-                                            changeNumber={changeNumber}
-                                            mousePosition= {mousePosition}
-                                        />
-                                    }
-                                </Box>
+                        >
+                            <Box
+                                width={(screen==="full")?window.innerWidth*0.95:window.innerWidth*0.70}
+                            >
+                                {formmodel !== undefined&&(
+                                    <Form_Table 
+                                        formlist={forms}
+                                        sx={{maxHeight:window.innerHeight*0.85}}
+                                        formmodel = {formmodel}
+                                    />
+                                )}
                             </Box>
+                            
+                           
+     
                             
                             <Box
                                 sx={{

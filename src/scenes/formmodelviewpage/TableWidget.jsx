@@ -74,6 +74,13 @@ export const DragComponents = ({compnonent,sx}) =>{
 
 
 
+export const TabelCellEditable = ({
+
+})=>{
+    
+}
+
+
 export const TableWidget = forwardRef(({
     formname,
     changeNumber,

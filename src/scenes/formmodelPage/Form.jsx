@@ -197,13 +197,13 @@ const FormModel = ({formname,toggleScreen,screen})=>{
         tempformdict['number'] = formdict['number']+=1
         UpdateFormModel(token,tempformdict,formdict['name']);
         CreateUser(values)
-        setFormmodels(formmodels.map(obj => {
-            if (obj.name === tempformdict['name']) {
-              return { ...obj, ...tempformdict};
-            } else {
-              return obj;
-            }
-          }));
+        // setFormmodels(formmodels.map(obj => {
+        //     if (obj.name === tempformdict['name']) {
+        //       return { ...obj, ...tempformdict};
+        //     } else {
+        //       return obj;
+        //     }
+        //   }));
         const newValues = {}
         for (const key in values){
             if (key.includes("&:blank") || key.includes("selectdata-")){
