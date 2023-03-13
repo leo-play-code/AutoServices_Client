@@ -62,7 +62,8 @@ export const BasicModal = forwardRef(({
             <Box onClick={handleOpen}>{title}</Box>
             <Modal
                 open={open}
-                onClose={handleClose}
+                // 點擊旁邊關閉
+                // onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
