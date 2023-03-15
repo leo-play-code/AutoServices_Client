@@ -247,7 +247,11 @@ export const PostBodyWidget = ({
     // const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const localforms = useSelector((state)=>state.forms);
     const dispatch = useDispatch();
+
     const {Name,picturePath} = data['creator']
+
+    
+
     const mysetting = useSelector((state)=>state.settings);
     const navigate = useNavigate();
     const theme = useTheme();

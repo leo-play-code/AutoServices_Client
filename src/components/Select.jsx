@@ -24,7 +24,8 @@ export const SelectDropdown = ({
     sx,
     disabled,
     size,
-    logo
+    logo,
+    otherfunc
 })=>{
     const theme = useTheme();
     const dark = theme.palette.neutral.dark;
@@ -40,7 +41,15 @@ export const SelectDropdown = ({
                     value={value||""}
                     label={label}
                     onChange={(e)=>{
-                        changefunc(e.target.value)
+                        try{
+                            changefunc(e.target.value)
+                        }catch{
+
+                        }
+                        try{
+                            otherfunc(e.target.value)
+                        }catch{}
+                        
                     }}
                     defaultValue=""
                     error = {error}
@@ -112,7 +121,8 @@ export const FormSelectColorDropdown = (
         fulldata,
         disabled,
         size,
-        logo
+        logo,
+        otherfunc
     }
 )=>{
     function changefunc(newvalue){
@@ -130,6 +140,7 @@ export const FormSelectColorDropdown = (
             disabled={disabled}
             size = {size}
             logo={logo}
+            otherfunc={otherfunc}
         />
     )
 }

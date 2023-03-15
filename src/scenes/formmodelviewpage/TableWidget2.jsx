@@ -30,6 +30,7 @@ import FormModel from '../formdataviewpage/Form';
 import FormDataViewPage from '../formdataviewpage/index';
 import Badge from '@mui/material/Badge';
 import { UserSearchDropdown } from '../../components/SearchDropdown';
+import { FormSelectColorDropdown } from '../../components/Select';
 
 
 export const DragComponents = ({compnonent,sx}) =>{
@@ -81,26 +82,52 @@ const TabelCellEditable = ({
     data,
     schema,
     handleCellClick,
-    selected
+    selected,
+    name
 })=>{
+    const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
+    const token = useSelector((state)=>state.token);
+    const {storeforms} = useContext(StoreContext);
+    const [forms,setForms] = storeforms;
     const toggleCopy = (data) =>{
         navigator.clipboard.writeText(data)
     }
     const theme = useTheme();
     const linkcolor = theme.palette.other.link;
 
-
+    
     const [mode,setMode] = useState("view")
     const [value,setValue] = useState(data)
-
-    const {label,field} = schema;
+    
+    
+    const {field,fulldata,label,logo} = schema;
+    const changeValue = (newValue) =>{
+        setValue(newValue)
+    }
+    if (mode==="edit"){
+        if (selected===false){
+            
+            setMode("view")
+            // update local form 
+            var temp = forms.filter((form)=>form['_id']===id)[0];
+            temp['data'][name] = value;
+            const form = UpdateFormData(token,temp['data'],_id,id);
+        }
+    }
     return (
         <TableCell
             onClick = {(e)=>{
                 handleCellClick(id+'-'+label)
             }}
             onDoubleClick= {()=>{
-               setMode("edit")
+                if (field.includes("select")){
+                    if (label==="狀態" || label==="Priority"){
+                        setMode("edit")
+                    }
+                }else if(label==="Jira Number"){
+                    setMode("edit")
+                }
+                
             }}
             onCopy ={()=>toggleCopy(value)}
             sx={{
@@ -116,10 +143,22 @@ const TabelCellEditable = ({
 
 
         >
-            {(mode==="view")&&( <span 
-                className="CkeditorInput"
-                dangerouslySetInnerHTML={createMarkup(value.replaceAll('\n','<br>'))}
-            ></span>)}
+            {
+                (mode==="view")&&(
+                    (field==="select-color")?(
+                        <ColorTag 
+                            color={value}
+                            value={fulldata[value]}
+                            logo={logo}
+                        />
+                    ):(
+                        <span 
+                            className="CkeditorInput"
+                            dangerouslySetInnerHTML={createMarkup(value.replaceAll('\n','<br>'))}
+                        ></span>
+                    )
+                )
+            }
             {(mode==="edit")&&(field==="text")&&(
                 <InputBase 
                     sx={{
@@ -134,18 +173,25 @@ const TabelCellEditable = ({
                     onChange={(e)=>setValue(e.target.value)}    
                 />
             )}
-            {(mode==="edit")&&(field==="user")&&(
+            {/* {(mode==="edit")&&(field==="user")&&(
                 <UserSearchDropdown 
                     label={label}
                     value={value} 
                     size="small"
                     sx={{width:"250px"}}
-                    otherfunc = {setValue}
+                    otherfunc = {changeValue}
+                />
+            )} */}
+            {(mode==="edit")&&(field.includes("select"))&&(field.includes("color"))&&(
+                <FormSelectColorDropdown
+                    label={label}
+                    otherfunc = {changeValue}
+                    value = {value}
+                    fulldata = {fulldata}
+                    size = "small"
+                    logo={logo}
                 />
             )}
-            {/* {(mode==="edit")&&(field==="select")&&(
-                
-            )} */}
 
         </TableCell>
     )
@@ -165,7 +211,7 @@ export const TableWidget = forwardRef(({
     };
     const WindowWidth = useSelector((state)=>state.width);
 
-    console.log('effect table widget2')
+    // console.log('effect table widget2')
     const user = useSelector((state)=>state.user);
     const token = useSelector((state)=>state.token);
     const {storeformmodels,storeforms} = useContext(StoreContext);
@@ -471,11 +517,13 @@ export const TableWidget = forwardRef(({
                                             />
                                             
                                         </TableCell>
-                                        {Object.entries(rowdata['data']).map(([key,value])=>{
+                                        {Object.entries(schema).map(([key,value])=>{
+                                            const cellvalue = rowdata['data'][key]
                                             return (
                                                 <TabelCellEditable 
                                                     key = {key}
-                                                    data = {value}
+                                                    name={key}
+                                                    data = {cellvalue}
                                                     id = {_id}
                                                     schema = {formmodel['schema'][key]}
                                                     handleCellClick={handleCellClick}
