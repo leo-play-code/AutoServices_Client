@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import TableViewIcon from '@mui/icons-material/TableView';
 import { useTheme } from '@emotion/react';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect,useRef } from 'react';
 import { setFilterMode } from "../../state";
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -62,7 +62,11 @@ export const FormProfileWidget = ({
         setFormmodels(tempformmodels)
 
     }
-    
+    const handleCloseModal = ()=>{
+        childRef.current.handleClose();
+    }
+
+    const childRef = useRef();
     useEffect(()=>{
         // if (!formmodel['count']){
         //     getCount()
@@ -171,6 +175,7 @@ export const FormProfileWidget = ({
                     />
                     
                     <BasicModal 
+                        ref={childRef}
                         modelsx = {{
                             m:'auto' ,
                             width: (screen==="part")?"900px":windowWidth, 
@@ -199,6 +204,7 @@ export const FormProfileWidget = ({
                                 formname={formname}
                                 toggleScreen= {toggleScreen}
                                 screen = {screen}
+                                closeModal={handleCloseModal}
                             
                             />
                         }

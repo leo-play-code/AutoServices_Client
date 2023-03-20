@@ -392,7 +392,11 @@ export const TableWidget = forwardRef(({
     const toggleCopy = (value) =>{
         navigator.clipboard.writeText(value)
     }
-    
+    const handleCloseModal = ()=>{
+        childRef.current.handleClose();
+    }
+
+    const childRef = useRef();
     useEffect(()=>{
         UpdateShowlist(filterformfull)
         if (forms.length>0 ){
@@ -539,6 +543,7 @@ export const TableWidget = forwardRef(({
                                         </TableCell>
                                         <TableCell>
                                         <BasicModal
+                                            ref={childRef}
                                             modelsx = {{
                                                 m:'auto' ,
                                                 width: (screen==="part")?"900px":window.innerWidth, 
@@ -587,6 +592,7 @@ export const TableWidget = forwardRef(({
                                                     toggleScreen= {toggleScreen}
                                                     screen = {screen}
                                                     formdata= {rowdata['data']}
+                                                    closeModal={handleCloseModal}
                                                 />
                                             }
                                         />

@@ -38,7 +38,6 @@ export const BasicModal = forwardRef(({
     const theme = useTheme();
     const dark = theme.palette.neutral.dark;
     const windowheight = useSelector((state)=>state.height);
-
     const style = {
         // position: 'absolute',
         // top: "50%",
@@ -55,7 +54,9 @@ export const BasicModal = forwardRef(({
     };
 
     useImperativeHandle(ref, () => ({
-        handleClose
+        handleClose: () => {
+            setOpen(false);
+        }
     }));
     return (
         <div>

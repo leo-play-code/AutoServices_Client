@@ -67,13 +67,18 @@ const FormItem = ({searchvalue , formlist})=>{
         const newform = formlist.filter(each=>each.toLowerCase().replaceAll(' ','').includes(searchvalue.toLowerCase().replaceAll(' ','')))
         setFormfilter(newform)
     },[searchvalue])
+    const handleCloseModal = ()=>{
+        childRef.current.handleClose();
+    }
 
+    const childRef = useRef();
     return(
         <Box>
             {
             formfilter.map(
                 form=>
                 <BasicModal 
+                    ref={childRef}
                     key={form}
                     modelsx = {{
                         m:'auto' ,
@@ -121,6 +126,7 @@ const FormItem = ({searchvalue , formlist})=>{
                             formname={form}
                             toggleScreen= {toggleScreen}
                             screen = {screen}
+                            closeModal={handleCloseModal}
                         />
                     }
                     

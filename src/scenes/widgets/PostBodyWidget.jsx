@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { setFormModels, setLocalforms, webpath } from '../../state';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModalWidget from './DeleteModalWidget';
-import { useEffect,useState } from 'react';
+import { useEffect,useState,useRef } from 'react';
 import { Collapse,Grow,Zoom} from '@mui/material';
 import { BasicModal } from '../../components/modal';
 import FormModel from '../formdataviewpage/Form';
@@ -276,6 +276,11 @@ export const PostBodyWidget = ({
         maxHeight : windowheight*0.36,
         overflow : "scroll"
     }
+    const handleCloseModal = ()=>{
+        childRef.current.handleClose();
+    }
+
+    const childRef = useRef();
 
     return(
         <Box
@@ -319,6 +324,7 @@ export const PostBodyWidget = ({
                     gap="1rem"
                 >
                     <BasicModal
+                        ref={childRef}
                         modelsx = {{
                             m:'auto' ,
                             width: (screen==="part")?"900px":windowWidth, 
@@ -361,10 +367,13 @@ export const PostBodyWidget = ({
                                 toggleScreen= {toggleScreen}
                                 screen = {screen}
                                 formdata= {data['data']}
+                                closeModal={handleCloseModal}
+
                             />
                         }
                     />
                     <BasicModal
+                        
                         modelsx = {{
                             m:'auto' ,
                             width:(windowwidth>1900)?windowwidth*0.7:windowwidth,

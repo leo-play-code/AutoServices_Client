@@ -41,6 +41,7 @@ import HistoryModel from "../../components/HistoryModal";
 // icon 
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import { toast } from 'react-toastify';
 const updateFormModel = async(formdict,values,updateformdict) => {
     //  只能update Array
     for (const key in formdict['selectdata']){
@@ -231,7 +232,7 @@ const FormModel = ({
         }));
         toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
         setEditable(false)
-        
+        toast.success('更新 Buglist 成功 !!')
     }
 
     // FormMenu Function

@@ -37,7 +37,7 @@ import { registerAPI } from "../../api/auth";
 // icon 
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-
+import { toast } from 'react-toastify';
 const updateFormModel = async(formdict,values,updateformdict) => {
     //  只能update Array
     for (const key in formdict['selectdata']){
@@ -103,7 +103,7 @@ const updateFormModel = async(formdict,values,updateformdict) => {
 }
 
 
-const FormModelClone = ({formname,toggleScreen,screen,formdata})=>{
+const FormModelClone = ({formname,toggleScreen,screen,formdata,closeModal})=>{
 
     const {storeuserforms,storeforms,storeformmodels,storeUserlist} = useContext(StoreContext);
     const [userforms,setUserforms] = storeuserforms;
@@ -224,6 +224,8 @@ const FormModelClone = ({formname,toggleScreen,screen,formdata})=>{
 
         createFormDataDB(newValues, user['_id'],formdict['_id'])
         onSubmitProps.resetForm()
+        toast.success('Clone Buglist 成功 !!')
+        closeModal()
         // navigate("/home")
     }
 
