@@ -290,7 +290,7 @@ const FormModel = ({
                                             fontSize="2.5rem"
                                             maxWidth="200px"
                                         >   
-                                            {formname}
+                                            {formname}(EDIT)
                                         </Typography>
                                         
                                     </Box>

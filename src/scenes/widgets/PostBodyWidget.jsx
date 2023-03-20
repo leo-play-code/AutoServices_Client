@@ -18,7 +18,8 @@ import { Collapse,Grow,Zoom} from '@mui/material';
 import { BasicModal } from '../../components/modal';
 import FormModel from '../formdataviewpage/Form';
 import FormDataViewPage from '../formdataviewpage/index';
-
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import FormModelClone from '../clonePage/FormModel';
 const colorDict = {
     "red":"#E74C3C",
     "orange":"#E67E22",
@@ -247,9 +248,12 @@ export const PostBodyWidget = ({
     // const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const localforms = useSelector((state)=>state.forms);
     const dispatch = useDispatch();
-
+    const windowWidth = useSelector((state)=>state.width);
     const {Name,picturePath} = data['creator']
-
+    const [screen,setScreen] = useState('part');
+    const toggleScreen = (value)=>{
+        setScreen(value);
+    }
     
 
     const mysetting = useSelector((state)=>state.settings);
@@ -311,48 +315,99 @@ export const PostBodyWidget = ({
                         @{data["form"]["name"]}
                     </Typography>
                 </FlexBetween>
-                <BasicModal
-                    modelsx = {{
-                        m:'auto' ,
-                        width:(windowwidth>1900)?windowwidth*0.7:windowwidth,
-                        overflow:"scroll",
-                        bgcolor: 'background.paper',
-                        borderRadius:"10px",
-                        boxShadow: 24,
-                        p: 4,
-                        mt : windowheight*0.002,
-                        maxHeight:windowheight*0.95
-                    }}
-                    title={
-                        <FlexBetween
-                            sx={dropdownItemStyle}
-                        >
+                <FlexBetween
+                    gap="1rem"
+                >
+                    <BasicModal
+                        modelsx = {{
+                            m:'auto' ,
+                            width: (screen==="part")?"900px":windowWidth, 
+                            overflow:"scroll",
+                            bgcolor: 'background.paper',
+                            borderRadius:"10px",
+                            boxShadow: 24,
+                            p: 4,
+                            mt : windowheight*0.002,
+                            // mb : windowheight*0.0002
+                            maxHeight:windowheight*0.95
+                        }}
+                        title={
                             <FlexBetween
-                                gap="2.5rem"
-                                
+                                sx={dropdownItemStyle}
                             >
-                            <IconButton
-                                sx={{
-                                    fontSize:"20px",
-                                    "&:hover":{backgroundColor:dropdowncolor},
-                                }}
-                            >
-                                <EditIcon 
-                                    sx={{color:"#E74C3C",fontSize:"20px"}}
-                                />
-                            </IconButton>
+                                <FlexBetween
+                                    gap="2.5rem"
+                                    
+                                >
+                                <IconButton
+                                    sx={{
+                                        fontSize:"20px",
+                                        "&:hover":{backgroundColor:dropdowncolor},
+                                    }}
+                                >
+                                    <FileCopyIcon 
+                                        sx={{color:"#F5B041",fontSize:"20px"}}
+                                    />
+                                </IconButton>
 
-                                            
+                                                
+                            </FlexBetween>
                         </FlexBetween>
-                    </FlexBetween>
-        
-                    }
-                    body={
-                        <FormDataViewPage 
-                            formdataid={data['_id']}
-                        />
-                    }
-                />
+            
+                        }
+                        body={
+                            <FormModelClone 
+                                formname={data['form']['name']}
+                                toggleScreen= {toggleScreen}
+                                screen = {screen}
+                                formdata= {data['data']}
+                            />
+                        }
+                    />
+                    <BasicModal
+                        modelsx = {{
+                            m:'auto' ,
+                            width:(windowwidth>1900)?windowwidth*0.7:windowwidth,
+                            overflow:"scroll",
+                            bgcolor: 'background.paper',
+                            borderRadius:"10px",
+                            boxShadow: 24,
+                            p: 4,
+                            mt : windowheight*0.002,
+                            maxHeight:windowheight*0.95
+                        }}
+                        title={
+                            <FlexBetween
+                                sx={dropdownItemStyle}
+                            >
+                                <FlexBetween
+                                    gap="2.5rem"
+                                    
+                                >
+                                <IconButton
+                                    sx={{
+                                        fontSize:"20px",
+                                        "&:hover":{backgroundColor:dropdowncolor},
+                                    }}
+                                >
+                                    <EditIcon 
+                                        sx={{color:"#E74C3C",fontSize:"20px"}}
+                                    />
+                                </IconButton>
+
+                                                
+                            </FlexBetween>
+                        </FlexBetween>
+            
+                        }
+                        body={
+                            <FormDataViewPage 
+                                formdataid={data['_id']}
+                            />
+                        }
+                    />
+                </FlexBetween>
+                
             </FlexBetween>
 
             <Box

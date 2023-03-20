@@ -31,7 +31,8 @@ import FormDataViewPage from '../formdataviewpage/index';
 import Badge from '@mui/material/Badge';
 import { UserSearchDropdown } from '../../components/SearchDropdown';
 import { FormSelectColorDropdown } from '../../components/Select';
-
+import FormModelClone from '../clonePage/FormModel';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 export const DragComponents = ({compnonent,sx}) =>{
     const [x, setX] = useState(0);
@@ -210,7 +211,7 @@ export const TableWidget = forwardRef(({
         setSelectedCellId(cellId);
     };
     const WindowWidth = useSelector((state)=>state.width);
-
+    const windowheight = useSelector((state)=>state.height);
     // console.log('effect table widget2')
     const user = useSelector((state)=>state.user);
     const token = useSelector((state)=>state.token);
@@ -243,7 +244,10 @@ export const TableWidget = forwardRef(({
     const [dataEdit,setDataEdit] = useState("");
     const [oringaldata,setOriginalData] = useState("");
     const [rowToClick,setRowToClick] = useState(null);
-    
+    const [screen,setScreen] = useState('part');
+    const toggleScreen = (value)=>{
+        setScreen(value);
+    }
     // right click componenets
     
     // top ref
@@ -259,8 +263,14 @@ export const TableWidget = forwardRef(({
             
         }
     }
-
-
+    const dropdowncolor = theme.palette.other.dropdown;
+    const dropdownItemStyle = {
+        "&:hover":{
+            cursor:"pointer",
+            backgroundColor:dropdowncolor
+        },
+        borderRadius:"5px"
+    }
 
     useImperativeHandle(ref, () => ({
 
@@ -431,6 +441,16 @@ export const TableWidget = forwardRef(({
                                 </FlexBetween>
 
                             </TableCell>
+                            <TableCell
+                            
+                            >
+                                <FlexBetween>
+                                    <Box></Box>
+                                    <Box
+                                    >Clone</Box>
+                                </FlexBetween>
+
+                            </TableCell>
                             {Object.entries(formmodel['schema']).map(([key,value])=>{
                                 const {field,label} = value;
                                 if (field !== 'blank'){
@@ -516,6 +536,61 @@ export const TableWidget = forwardRef(({
                                                 }
                                             />
                                             
+                                        </TableCell>
+                                        <TableCell>
+                                        <BasicModal
+                                            modelsx = {{
+                                                m:'auto' ,
+                                                width: (screen==="part")?"900px":window.innerWidth, 
+                                                overflow:"scroll",
+                                                bgcolor: 'background.paper',
+                                                borderRadius:"10px",
+                                                boxShadow: 24,
+                                                p: 4,
+                                                mt : windowheight*0.002,
+                                                // mb : windowheight*0.0002
+                                                maxHeight:windowheight*0.95
+                                            }}
+                                            title={
+                                                <FlexBetween
+                                                    sx={dropdownItemStyle}
+                                                >
+                                                    <FlexBetween
+                                                        gap="2.5rem"
+                                                        
+                                                    >
+                                                    <Tooltip
+                                                        title="Clone"
+                                                    >
+                                                        <IconButton
+                                                            sx={{
+                                                                fontSize:"20px",
+                                                                "&:hover":{backgroundColor:dropdowncolor},
+                                                            }}
+                                                        >
+                                                            <FileCopyIcon 
+                                                                sx={{color:"#F5B041",fontSize:"20px"}}
+                                                            />
+                                                        </IconButton>
+                                                        
+                                                    </Tooltip>
+                                                    
+
+                                                                    
+                                                </FlexBetween>
+                                            </FlexBetween>
+                                
+                                            }
+                                            body={
+                                                <FormModelClone 
+                                                    formname={rowdata['form']['name']}
+                                                    toggleScreen= {toggleScreen}
+                                                    screen = {screen}
+                                                    formdata= {rowdata['data']}
+                                                />
+                                            }
+                                        />
+
                                         </TableCell>
                                         {Object.entries(schema).map(([key,value])=>{
                                             const cellvalue = rowdata['data'][key]

@@ -11,6 +11,7 @@ import { urlpath } from "../state";
 import { useDispatch } from 'react-redux';
 import { setUserList } from "../state";
 import { StoreContext } from '../state/store';
+import { registerAPI } from "../api/auth";
 const filter = createFilterOptions();
 
 
@@ -69,6 +70,7 @@ export const SearchDropdown=({
                 if(newValue){
                     if (newValue.includes("Add")){
                         newValue = newValue.replaceAll('Add ','').replaceAll('"','')
+                        
                     }
                 }else{
                     newValue = ""
@@ -101,6 +103,7 @@ export const SearchDropdown=({
                 if (typeof option === 'string') {
                     if (option.includes("Add")){
                         option = option.replaceAll('Add ','').replaceAll('"','')
+                        
                     }
                     
                     return option;
@@ -195,6 +198,11 @@ export const UserSearchDropdown = ({
     const user = useSelector((state)=>state.user);
     const {storeUserlist} = useContext(StoreContext);
     const [userlist,setUserlist] = storeUserlist;
+    const CreateUser = async(newValue)=>{
+        const data = await registerAPI({"Name":newValue['Name'],"picturePath":newValue['picturePath'],"email":newValue['Name']+"@tempory.com","password":"123"})
+        setUserList([...userlist,data])
+        return data
+    }
     return (
         <Autocomplete
             clearOnBlur
@@ -204,6 +212,11 @@ export const UserSearchDropdown = ({
             size = {size}
             autoHighlight
             onChange={(event, newValue) => {
+                if(newValue){
+                    if(!newValue['_id']){
+                        CreateUser(newValue)
+                    }
+                }
                 try{
                     setFieldValue(name,newValue['Name'])
                 }catch{
@@ -233,6 +246,7 @@ export const UserSearchDropdown = ({
                 return filtered;
             }}
             getOptionLabel={(option) => {
+                
                 if (option.Name === undefined){
                     return ""
                 }else{
@@ -240,8 +254,9 @@ export const UserSearchDropdown = ({
                 }
                 
             }}
-            renderOption={(props, option) => (
-                <Box 
+            renderOption={(props, option) => {
+                
+                return <Box 
                     component="li" 
                     sx={{ '& > img': { mr: 2, flexShrink: 0 } }} 
                     gap="1rem"
@@ -254,7 +269,7 @@ export const UserSearchDropdown = ({
 
                     {option.Name}
                 </Box>
-            )}
+            }}
             renderInput={(params) => (
                 
                 <TextField
