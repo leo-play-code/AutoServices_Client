@@ -125,7 +125,7 @@ const FormModelClone = ({formname,toggleScreen,screen,formdata})=>{
     const alt = theme.palette.background.alt;
     const navigate = useNavigate();
     const dark = theme.palette.neutral.dark;
-    const stabledata = ['pin','status'];
+    const stabledata = ['pin','status','title','chinesedescription','testcasename'];
     const getFormModel = async()=>{
 
         if (formmodels.length>0){
