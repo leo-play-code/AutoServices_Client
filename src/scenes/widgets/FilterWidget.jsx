@@ -478,6 +478,18 @@ const FilterWidget = ({
                                         <FlexBetween
                                             gap="1rem"
                                         >
+                                            <Button 
+                                                type="submit"
+                                                sx={{
+                                                    backgroundColor:palette.primary.main,
+                                                    color:"white",
+                                                    "&:hover":{
+                                                        color:palette.primary.main
+                                                    }
+                                                }}
+                                            >
+                                                Filter
+                                            </Button>
                                             <Button
                                                 onClick={()=> exportToExcel(filterform,schema)}
                                                 type="submit"
@@ -492,18 +504,7 @@ const FilterWidget = ({
                                             >
                                                 Export
                                             </Button>
-                                            <Button 
-                                                type="submit"
-                                                sx={{
-                                                    backgroundColor:palette.primary.main,
-                                                    color:"white",
-                                                    "&:hover":{
-                                                        color:palette.primary.main
-                                                    }
-                                                }}
-                                            >
-                                                Filter
-                                            </Button>
+                                            
                                         </FlexBetween>
                                     </FlexBetween>
                                     {/* <Box
