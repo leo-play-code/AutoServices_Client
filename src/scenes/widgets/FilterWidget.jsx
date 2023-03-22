@@ -83,7 +83,7 @@ function exportToExcel(data,schema) {
     }, 0);
     });
     // Add column lengths to worksheet
-    worksheet['!cols'] = columnLengths.map((length) => ({ width: length }));
+    worksheet['!cols'] = columnLengths.map((length) => ({ width: 20}));
 
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'AutoServices');
