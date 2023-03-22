@@ -14,7 +14,7 @@ import { GetFormModelPart } from "../../api/formdata";
 export const PostList= ({
     formname,
     formlist,
-    changeNumber
+    changeFilterForm
 }) =>{
 
 
@@ -54,7 +54,13 @@ export const PostList= ({
                     if (field !== 'blank'){
                         if (field !== 'time'){
                             if (filter[key].replaceAll(" ","") !== ""){
-                                filterform = filterform.filter(form=>(form['data'][key].toLowerCase().replaceAll(" ","")).includes(filter[key].toLowerCase().replaceAll(" ","")))            
+                                // filterform = filterform.filter(form=>(form['data'][key].toLowerCase().replaceAll(" ","")).includes(filter[key].toLowerCase().replaceAll(" ","")))            
+                                filterform = filterform.filter(form=>{
+                                    const value = form['data'][key]?.toLowerCase()?.replaceAll(" ","");
+                                    if (value) {
+                                        return value.includes(filter[key].toLowerCase().replaceAll(" ",""));
+                                    }
+                                    return false;}) 
                             }
                         }else{
                             if (typeof filter[key+"from"] === "number"){
@@ -76,7 +82,7 @@ export const PostList= ({
                 }
                 setFilterformfull(filterform);
                 setShowlist(filterform.slice(0,20))
-                changeNumber(filterform.length)
+                changeFilterForm(filterform)
 
             }catch{
                 if (filterformfull.length !== formlist.length){
@@ -85,7 +91,7 @@ export const PostList= ({
                 }
                 setFilterformfull(formlist);
                 setShowlist(formlist.slice(0,20))
-                changeNumber(formlist.length)
+                changeFilterForm(formlist)
             }
             setLoadingbool(false)
         }

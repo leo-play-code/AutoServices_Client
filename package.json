@@ -28,6 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-export-excel": "^0.5.3",
     "react-native-device-info": "^10.4.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
@@ -36,6 +37,7 @@
     "redux-persist": "^6.0.0",
     "stream": "^0.0.2",
     "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5",
     "yup": "^1.0.0"
   },
   "scripts": {

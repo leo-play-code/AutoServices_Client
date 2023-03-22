@@ -111,6 +111,31 @@ const Helper = ()=>{
                     網址可點擊(orange color)
                 </Typography>
             </FlexBetween>
+            <FlexBetween
+                mt="0.4rem"
+            >  
+                <AddBoxIcon 
+                    sx={{color:"#2ECC71"}}
+                />
+                <Typography
+                    fontWeight={"500"}
+                >
+                    添加Excel輸出功能
+                </Typography>
+            </FlexBetween>
+            <FlexBetween
+                mt="0.4rem"
+            >  
+                <HandymanIcon 
+                    sx={{color:"#E74C3C"}}
+                />
+                <Typography
+                    fontWeight={"500"}
+                >
+                    修正Jira Number 資料庫編輯後不更新問題
+                </Typography>
+            </FlexBetween>
+            
             
         </Box>
     )

@@ -114,7 +114,7 @@ export const PostBody = ({
     const cardcolor = theme.palette.other.card;
     const linkcolor = theme.palette.other.link;
     const body = []; 
-    for (const key in data['data']){
+    for (const key in formmodel){
         const {label,field,fulldata,logo} = formmodel[key]
         
         if (field === 'select-color'){

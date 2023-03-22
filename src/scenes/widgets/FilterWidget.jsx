@@ -30,10 +30,70 @@ import { simpleDateFormmat } from './PostBodyWidget';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../state/store';
+import * as XLSX from 'xlsx';
+
+function transformData(data,schema) {
+
+  
+    return data.map(({ data }) => {
+        const transformedData = {};
+        for (const key in data) {
+            const {fulldata,field} = schema[key]
+            if (field === 'select-color'){
+                var realdata = fulldata[data[key]]
+            }else{
+                var realdata = data[key]
+            }
+            if (key in schema) {
+
+                transformedData[schema[key]['label']] = realdata;
+            } else {
+                transformedData[key] =realdata;
+            }
+        }
+        return transformedData;
+    });
+  }
+
+function exportToExcel(data,schema) {
+    // const newValue = transformData(data,schema)
+    // const worksheet = XLSX.utils.json_to_sheet(newValue.reduce((acc, item) => {
+    //     return [...acc, {...item}];
+    // }, []));
+
+
+    // const workbook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(workbook, worksheet, 'AutoServices');
+    // XLSX.writeFile(workbook, 'AutoServices.xlsx');
+    const newValue = transformData(data, schema);
+    const worksheet = XLSX.utils.json_to_sheet(
+        newValue.reduce((acc, item) => {
+        return [...acc, { ...item }];
+        }, [])
+    );
+
+   // Get column data as array of arrays
+    const columnData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+    // Determine length of longest string in each column
+    const columnLengths = columnData.map((column) => {
+    return column.reduce((maxLength, cell) => {
+        const cellLength = (cell || '').toString().length;
+        return Math.max(maxLength, cellLength);
+    }, 0);
+    });
+    // Add column lengths to worksheet
+    worksheet['!cols'] = columnLengths.map((length) => ({ width: length }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'AutoServices');
+    XLSX.writeFile(workbook, 'AutoServices.xlsx');
+}
+
 
 const FilterWidget = ({
     formname,
-    number=""
+    filterform=undefined
 }) =>{
     const {storeformmodels} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
@@ -56,10 +116,7 @@ const FilterWidget = ({
         if (formmodels.length>0){
             const thisformmodel = formmodels.filter((formmodel)=>formmodel['name'] === formname)[0];
             setSchema(thisformmodel['schema']);
-
-            getInitValue()
-
-   
+            getInitValue()   
         }
     }
 
@@ -213,11 +270,11 @@ const FilterWidget = ({
                                     <FlexBetween
                                         gap="1.5rem"
                                     >
-                                        {number !== ""&&(
+                                        {filterform !== undefined&&(
                                             <Typography
                                                 fontWeight={"600"}
                                             >
-                                                {number} 筆資料
+                                                {filterform.length} 筆資料
                                             </Typography>
                                         )}
                                        
@@ -414,24 +471,48 @@ const FilterWidget = ({
                                             />
                                         </FlexBetween>
                                     </Box>
-                                    
-                                    <Box
-                                        sx={{m:"1rem 0"}}
+                                    <FlexBetween
+                                        mt="1rem"
+                                    >
+                                        <Box></Box>
+                                        <FlexBetween
+                                            gap="1rem"
+                                        >
+                                            <Button
+                                                onClick={()=> exportToExcel(filterform,schema)}
+                                                type="submit"
+                                                sx={{
+                                                    backgroundColor:"#229954",
+                                                    color:"white",
+                                                    "&:hover":{
+                                                        color:"#229954"
+                                                    }
+                                                }}
+                                                mr="1rem"
+                                            >
+                                                Export
+                                            </Button>
+                                            <Button 
+                                                type="submit"
+                                                sx={{
+                                                    backgroundColor:palette.primary.main,
+                                                    color:"white",
+                                                    "&:hover":{
+                                                        color:palette.primary.main
+                                                    }
+                                                }}
+                                            >
+                                                Filter
+                                            </Button>
+                                        </FlexBetween>
+                                    </FlexBetween>
+                                    {/* <Box
+                                        sx={{m:"1rem 1rem"}}
                                         textAlign="end"
                                     >
-                                        <Button 
-                                            type="submit"
-                                            sx={{
-                                                backgroundColor:palette.primary.main,
-                                                color:"white",
-                                                "&:hover":{
-                                                    color:palette.primary.main
-                                                }
-                                            }}
-                                        >
-                                            Filter
-                                        </Button>
-                                    </Box>
+                                        
+                                        
+                                    </Box> */}
                                 </Box>
                             </Box>
                         </form>

@@ -39,7 +39,7 @@ const FormModelViewPage = () =>{
     const tableRef = useRef();
     const tablechildRef = useRef();
     const [screen,setScreen] = useState('part');
-    const [number,setNumber] = useState(undefined);
+    const [filterform,setFilterForm] = useState(undefined);
     const [x,setX] = useState(null);
     const [y,setY] = useState(null);
     const [copyvalue,setCopyvalue] = useState("");
@@ -50,8 +50,8 @@ const FormModelViewPage = () =>{
         setCopyvalue(value);
     }
 
-    const changeNumber = (value)=>{
-        setNumber(value)
+    const changeFilterForm = (value)=>{
+        setFilterForm(value)
     }
 
     const handleScroll = (element)=>{
@@ -121,7 +121,7 @@ const FormModelViewPage = () =>{
                                 <WidgetWrapper
                                     mt="1.1rem"
                                 >
-                                    <FilterWidget formname={formname} number= {number}/>
+                                    <FilterWidget formname={formname} filterform= {filterform}/>
                                 </WidgetWrapper>
                             </Box>
                         </Box>
@@ -139,7 +139,7 @@ const FormModelViewPage = () =>{
                             <PostList 
                                 formname = {formname}
                                 formlist = {forms}
-                                changeNumber={changeNumber}
+                                changeFilterForm={changeFilterForm}
                             />
                         }
                     </Box>
@@ -178,7 +178,7 @@ const FormModelViewPage = () =>{
                                             formlist = {forms}
                                             ref = {tablechildRef}
                                             WindowHeight= {WindowHeight}
-                                            changeNumber={changeNumber}
+                                            changeFilterForm={changeFilterForm}
                                             mousePosition= {mousePosition}
                                         />
                                     }
@@ -233,7 +233,7 @@ const FormModelViewPage = () =>{
                             right="3rem"
                             fontWeight={"600"}
                         >
-                            {number} 筆資料
+                            {filterform!==undefined&&filterform.length} 筆資料
                         </Box>
                         
                    </>

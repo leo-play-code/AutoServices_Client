@@ -76,9 +76,14 @@ export const DragComponents = ({compnonent,sx}) =>{
     )
 }
 export const extractUrlFromString =(value)=>{
-    var newvalue = value;
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return newvalue.replaceAll(urlRegex, '<a href="$&" target="_blank">$&</a>');
+    if (value !== undefined){
+        var newvalue = value;
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        return newvalue.replaceAll(urlRegex, '<a href="$&" target="_blank">$&</a>');
+    }else{
+        return ""
+    }
+   
 }
 
 
@@ -119,6 +124,7 @@ const TabelCellEditable = ({
             const form = UpdateFormData(token,temp['data'],_id,id);
         }
     }
+ 
     return (
         <TableCell
             onClick = {(e)=>{
@@ -159,7 +165,7 @@ const TabelCellEditable = ({
                     ):(
                         <span 
                             className="CkeditorInput"
-                            dangerouslySetInnerHTML={createMarkup(extractUrlFromString(data).replaceAll('\n','<br>'))}
+                            dangerouslySetInnerHTML={createMarkup(extractUrlFromString(value).replaceAll('\n','<br>'))}
                         ></span>
                     )
                 )
@@ -207,7 +213,7 @@ const TabelCellEditable = ({
 
 export const TableWidget = forwardRef(({
     formname,
-    changeNumber,
+    changeFilterForm,
     mousePosition
 },ref)=>{
     const [selectedCellId, setSelectedCellId] = useState(null);
@@ -310,7 +316,13 @@ export const TableWidget = forwardRef(({
                     if (field !== 'blank'){
                         if (field !== 'time'){
                             if (filter[key].replaceAll(" ","") !== ""){
-                                filterform = filterform.filter(form=>(form['data'][key].toLowerCase().replaceAll(" ","")).includes(filter[key].toLowerCase().replaceAll(" ","")))            
+                                // filterform = filterform.filter(form=>(form['data'][key].toLowerCase().replaceAll(" ","")).includes(filter[key].toLowerCase().replaceAll(" ","")))      
+                                filterform = filterform.filter(form=>{
+                                const value = form['data'][key]?.toLowerCase()?.replaceAll(" ","");
+                                if (value) {
+                                    return value.includes(filter[key].toLowerCase().replaceAll(" ",""));
+                                }
+                                return false;})          
                             }
                         }else{
                             if (typeof filter[key+"from"] === "number"){
@@ -335,7 +347,7 @@ export const TableWidget = forwardRef(({
                 }
                 UpdateShowlist(filterform)
                 
-                changeNumber(filterform.length)
+                changeFilterForm(filterform)
             }catch{
                 setFilterformfull(forms);
                 setShowlist(forms.slice(0,20))
@@ -345,7 +357,7 @@ export const TableWidget = forwardRef(({
                     setScrolltoTop(true)
                 }
                 UpdateShowlist(forms)
-                changeNumber(forms.length)
+                changeFilterForm(forms)
             }
             setLoadingbool(false)
         }
