@@ -75,7 +75,11 @@ export const DragComponents = ({compnonent,sx}) =>{
         
     )
 }
-
+export const extractUrlFromString =(value)=>{
+    var newvalue = value;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return newvalue.replaceAll(urlRegex, '<a href="$&" target="_blank">$&</a>');
+}
 
 
 const TabelCellEditable = ({
@@ -155,7 +159,7 @@ const TabelCellEditable = ({
                     ):(
                         <span 
                             className="CkeditorInput"
-                            dangerouslySetInnerHTML={createMarkup(value.replaceAll('\n','<br>'))}
+                            dangerouslySetInnerHTML={createMarkup(extractUrlFromString(data).replaceAll('\n','<br>'))}
                         ></span>
                     )
                 )

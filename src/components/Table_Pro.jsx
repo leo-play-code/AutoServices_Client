@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { NumberCovertLetter } from "../scenes/googlesheetviewPage/TableWidget";
 import { createMarkup } from "./CkeditorInput";
+import { extractUrlFromString } from "../scenes/formmodelviewpage/TableWidget2";
 
 // width 外面Box 控制 , 高度 TableContainer 控制
 const Table_Pro = ({
@@ -61,7 +62,7 @@ const Table_Pro = ({
                                 for(const num in value){
                                     var cell = (<span 
                                         className="CkeditorInput"
-                                        dangerouslySetInnerHTML={createMarkup(value[num].replaceAll('\n','<br />'))}
+                                        dangerouslySetInnerHTML={createMarkup(extractUrlFromString(value[num]).replaceAll('\n','<br />'))}
                                     >
                                     </span>)
                                     const item = (

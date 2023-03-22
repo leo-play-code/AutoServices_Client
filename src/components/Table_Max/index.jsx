@@ -11,6 +11,7 @@ import {
 
 import { createMarkup } from '../CkeditorInput';
 import { useSelector } from 'react-redux';
+import { extractUrlFromString } from '../../scenes/formmodelviewpage/TableWidget2';
 const Form_Table = ({
     formlist,
     sx,
@@ -62,7 +63,7 @@ const Form_Table = ({
                                                 >
                                                     <span 
                                                         className="CkeditorInput"
-                                                        dangerouslySetInnerHTML={createMarkup(value.replaceAll('\n','<br />'))}
+                                                        dangerouslySetInnerHTML={createMarkup(extractUrlFromString(value).replaceAll('\n','<br />'))}
                                                     ></span>
                                                 </TableCell>
                                             )

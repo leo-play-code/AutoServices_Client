@@ -13,7 +13,7 @@ html,body,#root,.app{
     margin-bottom: 0rem;
 }
 .CkeditorInput a{
-    color:inherit
+    color:#E67E22
 }
 .hidden {
     display: none;
@@ -30,3 +30,4 @@ html,body,#root,.app{
 .fixed {
     position: fixed;
 }
+

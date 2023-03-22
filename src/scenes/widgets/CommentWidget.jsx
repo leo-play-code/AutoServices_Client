@@ -21,6 +21,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { CreateComment, UpdateComment } from '../../api/formdata';
 import { StoreContext } from '../../state/store';
+import { extractUrlFromString } from "../formmodelviewpage/TableWidget2";
 export const CommentItem = ({
     num,
     comment,
@@ -99,7 +100,7 @@ export const CommentItem = ({
                                 >
                                     <span 
                                         className="CkeditorInput"
-                                        dangerouslySetInnerHTML={createMarkup(comment['comments'].replaceAll('\n','<br>'))}
+                                        dangerouslySetInnerHTML={createMarkup(extractUrlFromString(comment['comments']).replaceAll('\n','<br>'))}
                                     >
                                     </span>
                                     {comment['edit']&&<Typography>(已編輯)</Typography>}

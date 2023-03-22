@@ -86,6 +86,31 @@ const Helper = ()=>{
                     添加Clone Buglist 的功能 點擊此圖 <FileCopyIcon sx={{color:"#F5B041"}}/> 即可Clone
                 </Typography>
             </FlexBetween>
+            <FlexBetween
+                // mt="0.5rem"
+                mb="0.2rem"
+            >
+                <Typography
+                    fontSize={"1rem"}
+                    fontWeight={"500"}
+                
+                >
+                    2023/03/22
+                </Typography>
+            </FlexBetween>
+            {/* <Divider /> */}
+            <FlexBetween
+                mt="0.4rem"
+            >  
+                <AddBoxIcon 
+                    sx={{color:"#2ECC71"}}
+                />
+                <Typography
+                    fontWeight={"500"}
+                >
+                    網址可點擊(orange color)
+                </Typography>
+            </FlexBetween>
             
         </Box>
     )

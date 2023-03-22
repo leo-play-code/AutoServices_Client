@@ -20,6 +20,7 @@ import FormModel from '../formdataviewpage/Form';
 import FormDataViewPage from '../formdataviewpage/index';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import FormModelClone from '../clonePage/FormModel';
+import { extractUrlFromString } from '../formmodelviewpage/TableWidget2';
 const colorDict = {
     "red":"#E74C3C",
     "orange":"#E67E22",
@@ -129,7 +130,7 @@ export const PostBody = ({
         }else{
             var bodyitem = (<span 
                 className="CkeditorInput"
-                dangerouslySetInnerHTML={createMarkup(data['data'][key].replaceAll('\n','<br>'))}
+                dangerouslySetInnerHTML={createMarkup(extractUrlFromString(data['data'][key]).replaceAll('\n','<br>'))}
             >
             </span>)
         }

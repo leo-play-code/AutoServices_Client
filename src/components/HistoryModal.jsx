@@ -17,6 +17,7 @@ import { DateFormat } from "../scenes/widgets/PostBodyWidget";
 import FlexBetween from "./Flexbetween";
 import { createMarkup } from "./CkeditorInput";
 import FlexBetweenTop from './FlexBetweenTop';
+import { extractUrlFromString } from "../scenes/formmodelviewpage/TableWidget2";
 const Table_Model = ({
     sx,
     head,
@@ -105,7 +106,7 @@ const HistoryTable = ({
                                                             {field==='select-color'? <Box>{fulldata[value['orignal']]}</Box>:( <Box>
                                                                 <span 
                                                                     className="CkeditorInput"
-                                                                    dangerouslySetInnerHTML={createMarkup(value['orignal'].replaceAll('\n','<br />'))}
+                                                                    dangerouslySetInnerHTML={createMarkup(extractUrlFromString(value['now']).replaceAll('\n','<br>'))}
                                                                 ></span>
 
                                                             </Box>)}
@@ -120,7 +121,7 @@ const HistoryTable = ({
 
                                                                     <span 
                                                                         className="CkeditorInput"
-                                                                        dangerouslySetInnerHTML={createMarkup(value['now'].replaceAll('\n','<br />'))}
+                                                                        dangerouslySetInnerHTML={createMarkup(extractUrlFromString(value['now']).replaceAll('\n','<br />'))}
                                                                     ></span>
                                                                 </Box>)}
                                                             </Box>         
