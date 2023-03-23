@@ -117,6 +117,7 @@ const FormModel = ({
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
     const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
     const [forms,setForms] = storeforms;
+    // console.log('forms',forms)
     const [userforms,setUserforms] = storeuserforms;
     const [formmodels,setFormmodels] = storeformmodels;
 
@@ -222,6 +223,16 @@ const FormModel = ({
                 newValues[key] = values[key];
             }
         }
+        // 更新本地formmodel由於會重置filterwidget所以不跑
+        setForms(forms.map(obj => {
+            if (obj['_id'] === formdata['_id']) {
+                const newobj = {...obj};
+                newobj['data']=values;
+                return { ...obj, ...newobj};
+            } else {
+                return obj;
+            }
+        }));
         // 更新本地formmodel由於會重置filterwidget所以不跑
         setFormmodels(formmodels.map(obj => {
             if (obj.name === formdict['name']) {

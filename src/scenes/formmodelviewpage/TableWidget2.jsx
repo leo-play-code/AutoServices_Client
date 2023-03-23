@@ -124,7 +124,13 @@ const TabelCellEditable = ({
             const form = UpdateFormData(token,temp['data'],_id,id);
         }
     }
- 
+    
+    useEffect(()=>{
+        const newform = forms.filter(form=>form['_id']===id)[0]
+        if (newform['data'][name]!==value){
+            setValue(newform['data'][name])
+        }
+    },[forms])
     return (
         <TableCell
             onClick = {(e)=>{
@@ -269,7 +275,18 @@ export const TableWidget = forwardRef(({
         if (field !== "blank"){
             var len = sx['gridColumn']
             var len = parseInt(len.replaceAll('span ',''))
-            tempwidthdict[key] = len*100
+            if (len===1){
+                tempwidthdict[key] = len*50
+            }else{
+                if (key.includes('system')){
+                    tempwidthdict[key] = len*100
+                }else{  
+                    tempwidthdict[key] = len*200
+
+                }
+                
+            }
+            
             
         }
     }
