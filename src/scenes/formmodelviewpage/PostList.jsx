@@ -46,7 +46,23 @@ export const PostList= ({
 
     const FilterFormList = () =>{
         var thisfullformlist = formlist.filter(form=>form['form']['name']===formname)
-        var filterform = thisfullformlist
+        var filterform = thisfullformlist.sort((a, b) => {
+            const regex = /MDDM-(\d+)/; // regular expression to match "MDDM" followed by digits
+            const aMatch = a.data.pin.match(regex);
+            const bMatch = b.data.pin.match(regex);
+            const aNumber = aMatch ? parseInt(aMatch[1]) : Infinity;
+            const bNumber = bMatch ? parseInt(bMatch[1]) : Infinity;
+            if (isNaN(aNumber) && isNaN(bNumber)) {
+                return 0; // both have no MDDM, keep order unchanged
+            } else if (isNaN(aNumber)) {
+                return 1; // a has no MDDM, put after b
+            } else if (isNaN(bNumber)) {
+                return -1; // b has no MDDM, put after a
+            } else {
+                return aNumber - bNumber; // compare MDDM numbers
+            }
+          });
+        // var filterform = thisfullformlist
         if (filter){
             try{
                 for(const key in schema){
