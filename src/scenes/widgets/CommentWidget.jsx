@@ -95,16 +95,14 @@ export const CommentItem = ({
                                         top:"0px",
                                         left:"60px",
                                         maxWidth:windowWidth*0.15,
-                                        overflowWrap: 'break-word'
+                                        overflowWrap: 'break-word',
+                                        // color:"#3498DB"
+                                        color:(user['Name']===comment['user']['Name'])?"#28B463":"#3498DB"
                                     }}
                                 >
-                                    <span 
-                                        className="CkeditorInput"
-                                        dangerouslySetInnerHTML={createMarkup(extractUrlFromString(comment['comments']).replaceAll('\n','<br>'))}
-                                    >
-                                    </span>
-                                    {comment['edit']&&<Typography>(已編輯)</Typography>}
+                                    {comment['user']['Name']}
                                 </Box>
+                                
                             </FlexBetween>
                             <FlexBetween
                                 gap="0.01rem"
@@ -143,6 +141,25 @@ export const CommentItem = ({
                                     )
                                 }
                             </FlexBetween>
+                        </FlexBetween>
+
+                        <FlexBetween>
+                            <Box
+                                sx={{
+                                    position:"relative",
+                                    top:"0px",
+                                    left:"60px",
+                                    maxWidth:windowWidth*0.15,
+                                    overflowWrap: 'break-word'
+                                }}
+                            >
+                                <span 
+                                    className="CkeditorInput"
+                                    dangerouslySetInnerHTML={createMarkup(extractUrlFromString(comment['comments']).replaceAll('\n','<br>'))}
+                                >
+                                </span>
+                                {comment['edit']&&<Typography>(已編輯)</Typography>}
+                            </Box>
                         </FlexBetween>
                         <FlexBetween
                             mb="0.5rem"
