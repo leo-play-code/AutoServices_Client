@@ -329,8 +329,8 @@ export const TableWidget = forwardRef(({
             const regex = /MDDM-(\d+)/; // regular expression to match "MDDM" followed by digits
             const aMatch = a.data.pin.match(regex);
             const bMatch = b.data.pin.match(regex);
-            const aNumber = aMatch ? parseInt(aMatch[1]) : Infinity;
-            const bNumber = bMatch ? parseInt(bMatch[1]) : Infinity;
+            const aNumber = aMatch ? parseInt(aMatch[1]) : -Infinity;
+            const bNumber = bMatch ? parseInt(bMatch[1]) : -Infinity;
             if (isNaN(aNumber) && isNaN(bNumber)) {
                 return 0; // both have no MDDM, keep order unchanged
             } else if (isNaN(aNumber)) {
@@ -338,9 +338,10 @@ export const TableWidget = forwardRef(({
             } else if (isNaN(bNumber)) {
                 return -1; // b has no MDDM, put after a
             } else {
-                return aNumber - bNumber; // compare MDDM numbers
+                return bNumber - aNumber; // compare MDDM numbers in descending order
             }
-          });
+        });
+        
         // var filterform = thisfullformlist
         if (filter){
             try{
