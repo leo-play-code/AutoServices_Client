@@ -278,8 +278,11 @@ export const TableWidget = forwardRef(({
             if (len===1){
                 tempwidthdict[key] = len*50
             }else{
-                if (key.includes('system')){
+                if (key.includes('system')|| key.includes('link') || key.includes('testcase') ){
                     tempwidthdict[key] = len*100
+                }
+                else if(key.includes('chinese') || key.includes('title')){
+                    tempwidthdict[key] = len*150
                 }else{  
                     tempwidthdict[key] = len*200
 
@@ -290,6 +293,7 @@ export const TableWidget = forwardRef(({
             
         }
     }
+    console.log(tempwidthdict)
     const dropdowncolor = theme.palette.other.dropdown;
     const dropdownItemStyle = {
         "&:hover":{
@@ -503,21 +507,6 @@ export const TableWidget = forwardRef(({
                                 </FlexBetween>
 
                             </TableCell>
-                            {Object.entries(formmodel['schema']).map(([key,value])=>{
-                                const {field,label} = value;
-                                if (field !== 'blank'){
-                                    return  <TableCell key={key}
-                                                sx={{
-                                                    minWidth:tempwidthdict[key],
-                                                    
-                                                }}
-                                            >
-                                                <FlexBetween>
-                                                    <Box>{label}</Box>
-                                                </FlexBetween>
-                                            </TableCell>
-                                }
-                            })}
                             <TableCell>
                                 <FlexBetween>
                                     <Box>
@@ -533,6 +522,22 @@ export const TableWidget = forwardRef(({
                                     >|</Box>
                                 </FlexBetween>
                             </TableCell>
+                            {Object.entries(formmodel['schema']).map(([key,value])=>{
+                                const {field,label} = value;
+                                if (field !== 'blank'){
+                                    return  <TableCell key={key}
+                                                sx={{
+                                                    minWidth:tempwidthdict[key],
+                                                    Width:200
+                                                }}
+                                            >
+                                                <FlexBetween>
+                                                    <Box>{label}</Box>
+                                                </FlexBetween>
+                                            </TableCell>
+                                }
+                            })}
+                            
                             <TableCell>刪除</TableCell>
                         </TableRow>
                     </TableHead>
@@ -589,6 +594,7 @@ export const TableWidget = forwardRef(({
                                             />
                                             
                                         </TableCell>
+                                        
                                         <TableCell>
                                         <BasicModal
                                             ref={childRef}
@@ -644,23 +650,7 @@ export const TableWidget = forwardRef(({
                                                 />
                                             }
                                         />
-
                                         </TableCell>
-                                        {Object.entries(schema).map(([key,value])=>{
-                                            const cellvalue = rowdata['data'][key]
-                                            return (
-                                                <TabelCellEditable 
-                                                    key = {key}
-                                                    name={key}
-                                                    data = {cellvalue}
-                                                    id = {_id}
-                                                    schema = {formmodel['schema'][key]}
-                                                    handleCellClick={handleCellClick}
-                                                    selected={selectedCellId===(_id+'-'+formmodel['schema'][key]['label'])}
-                                                />
-                                            )
-                                        })}
-
                                         <TableCell
                                             key={_id+"_comment"}
                                         >
@@ -692,6 +682,22 @@ export const TableWidget = forwardRef(({
                                                 }
                                             />
                                         </TableCell>
+                                        {Object.entries(schema).map(([key,value])=>{
+                                            const cellvalue = rowdata['data'][key]
+                                            return (
+                                                <TabelCellEditable 
+                                                    key = {key}
+                                                    name={key}
+                                                    data = {cellvalue}
+                                                    id = {_id}
+                                                    schema = {formmodel['schema'][key]}
+                                                    handleCellClick={handleCellClick}
+                                                    selected={selectedCellId===(_id+'-'+formmodel['schema'][key]['label'])}
+                                                />
+                                            )
+                                        })}
+
+                                        
                                         <TableCell
                                             key = {_id+"_delete"}
                                         >

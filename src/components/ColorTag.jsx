@@ -7,6 +7,7 @@ import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 export const ColorTag = ({color,value,logo})=>{
 
     return (
+
         <FlexBetween>
             <FlexBetween
                 gap="1rem"
