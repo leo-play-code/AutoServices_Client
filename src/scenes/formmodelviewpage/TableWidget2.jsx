@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { maxHeight, width } from '@mui/system';
 import { createMarkup } from '../../components/CkeditorInput';
 import { ColorTag } from '../../components/ColorTag';
-import { useState, useEffect,useContext,useRef,useImperativeHandle,forwardRef } from 'react';
+import { useState, useEffect,useContext,useRef,useImperativeHandle,forwardRef ,useMemo} from 'react';
 import { useMediaQuery, Typography,Button, IconButton,Tooltip,Box ,Divider, InputBase} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,6 +33,11 @@ import { UserSearchDropdown } from '../../components/SearchDropdown';
 import { FormSelectColorDropdown } from '../../components/Select';
 import FormModelClone from '../clonePage/FormModel';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import TableMenu from './Menu';
+
+
+
+
 
 export const DragComponents = ({compnonent,sx}) =>{
     const [x, setX] = useState(0);
@@ -264,6 +269,14 @@ export const TableWidget = forwardRef(({
     const toggleScreen = (value)=>{
         setScreen(value);
     }
+    
+    // filter method
+    const [filtertable,setFiltertable] = useState(null);
+    const [scending,setScending] = useState(null)
+    const togglefiltertable = (key,scending)=>{
+        setFiltertable(key)
+        setScending(scending)
+    }
     // right click componenets
     
     // top ref
@@ -288,9 +301,7 @@ export const TableWidget = forwardRef(({
 
                 }
                 
-            }
-            
-            
+            }  
         }
     }
     console.log(tempwidthdict)
@@ -329,6 +340,7 @@ export const TableWidget = forwardRef(({
 
     const FilterFormList = () =>{
         var thisfullformlist = forms.filter(form=>form['form']['name']===formname)
+        console.log(filtertable,'filtertable','scending',scending)
         var filterform = thisfullformlist.sort((a, b) => {
             const regex = /MDDM-(\d+)/; // regular expression to match "MDDM" followed by digits
             const aMatch = a.data.pin.match(regex);
@@ -345,6 +357,8 @@ export const TableWidget = forwardRef(({
                 return bNumber - aNumber; // compare MDDM numbers in descending order
             }
         });
+
+
         
         // var filterform = thisfullformlist
         if (filter){
@@ -451,11 +465,13 @@ export const TableWidget = forwardRef(({
     }
 
     const childRef = useRef();
+    
     useEffect(()=>{
         UpdateShowlist(filterformfull)
         if (forms.length>0 ){
             FilterFormList()
         }
+        console.log('useeffect')
     },[forms,filter,shownum])
     return (
         
@@ -501,9 +517,16 @@ export const TableWidget = forwardRef(({
                             
                             >
                                 <FlexBetween>
-                                    <Box></Box>
                                     <Box
                                     >Clone</Box>
+                                    <Box
+                                        color="rgb(224, 224, 224)"
+                                        sx={{
+                                            // cursor:"col-resize",
+                                            position:"relative",
+                                            left:"1rem"
+                                        }}
+                                    >|</Box>
                                 </FlexBetween>
 
                             </TableCell>
@@ -531,8 +554,23 @@ export const TableWidget = forwardRef(({
                                                     Width:200
                                                 }}
                                             >
+
                                                 <FlexBetween>
                                                     <Box>{label}</Box>
+                                                    <FlexBetween
+                                                        gap="0.01rem"
+                                                    >
+                                                        {/* {(field === 'time' || key ==='pin')&&<TableMenu name={key} togglefiltertable={togglefiltertable}/>} */}
+                                                        <Box
+                                                            color="rgb(224, 224, 224)"
+                                                            sx={{
+                                                                // cursor:"col-resize",
+                                                                position:"relative",
+                                                                left:"1rem"
+                                                            }}
+                                                        >|</Box>
+                                                    </FlexBetween>
+                                                    
                                                 </FlexBetween>
                                             </TableCell>
                                 }
