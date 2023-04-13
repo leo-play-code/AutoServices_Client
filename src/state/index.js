@@ -100,7 +100,7 @@ export const {setMode,setLogin,setLogout,setLocalforms,setScreen,setFormModels,s
 export default authSlice.reducer;
 
 // export const urlpath = "http://localhost:6001/";
-export const urlpath = "https://3aaa-220-141-221-22.ngrok-free.app/"
+export const urlpath = "https://e17d-220-141-221-22.ngrok-free.app/"
 // export const urlpath = "https://autoservices-api.onrender.com/";
 
 
