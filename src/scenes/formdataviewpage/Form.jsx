@@ -214,36 +214,48 @@ const FormModel = ({
         setSchema(yup.object().shape(newschema));
     }
     const handleFormSubmit = async(values,onSubmitProps)=>{
-        updateFormModel(formdict,values,updateformdict);
-        const data = UpdateFormModel(token,formdict,formdict['name'])
-        const newValues = {}
-        for (const key in values){
-            if (!(key.includes("&:blank") || key.includes("selectdata-"))){
-                const {label,field} = formdict['schema'][key]
-                newValues[key] = values[key];
+        var sendbool = true
+        for (const item in values){
+            if (values[item].includes('<') && values[item].includes('>')){
+                console.log('invalid')
+                sendbool = false
             }
         }
-        // 更新本地formmodel由於會重置filterwidget所以不跑
-        setForms(forms.map(obj => {
-            if (obj['_id'] === formdata['_id']) {
-                const newobj = {...obj};
-                newobj['data']=values;
-                return { ...obj, ...newobj};
-            } else {
+        if (sendbool){
+            updateFormModel(formdict,values,updateformdict);
+            const data = UpdateFormModel(token,formdict,formdict['name'])
+            const newValues = {}
+            for (const key in values){
+                if (!(key.includes("&:blank") || key.includes("selectdata-"))){
+                    const {label,field} = formdict['schema'][key]
+                    newValues[key] = values[key];
+                }
+            }
+            // 更新本地formmodel由於會重置filterwidget所以不跑
+            setForms(forms.map(obj => {
+                if (obj['_id'] === formdata['_id']) {
+                    const newobj = {...obj};
+                    newobj['data']=values;
+                    return { ...obj, ...newobj};
+                } else {
+                    return obj;
+                }
+            }));
+            // 更新本地formmodel由於會重置filterwidget所以不跑
+            setFormmodels(formmodels.map(obj => {
+                if (obj.name === formdict['name']) {
+                return { ...obj, ...formdict};
+                } else {
                 return obj;
-            }
-        }));
-        // 更新本地formmodel由於會重置filterwidget所以不跑
-        setFormmodels(formmodels.map(obj => {
-            if (obj.name === formdict['name']) {
-              return { ...obj, ...formdict};
-            } else {
-              return obj;
-            }
-        }));
-        toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
-        setEditable(false)
-        toast.success('更新 Buglist 成功 !!')
+                }
+            }));
+            toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
+            setEditable(false)
+            toast.success('更新 Buglist 成功 !!')
+        }else{
+            toast.error('在Buglist 不能使用< > 請改為其他符號以代替')
+        }
+        
     }
 
     // FormMenu Function

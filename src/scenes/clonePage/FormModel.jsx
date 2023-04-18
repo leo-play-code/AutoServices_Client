@@ -195,37 +195,49 @@ const FormModelClone = ({formname,toggleScreen,screen,formdata,closeModal})=>{
         setSchema(yup.object().shape(newschema));
     }
     const handleFormSubmit = async(values,onSubmitProps)=>{
-        updateFormModel(formdict,values,updateformdict);
-        const tempformdict = {...formdict}
-        tempformdict['number'] = formdict['number']+=1
-        UpdateFormModel(token,tempformdict,formdict['name']);
-        CreateUser(values)
-        setFormmodels(formmodels.map(obj => {
-            if (obj.name === tempformdict['name']) {
-              return { ...obj, ...tempformdict};
-            } else {
-              return obj;
-            }
-          }));
-        const newValues = {}
-        for (const key in values){
-            if (key.includes("&:blank") || key.includes("selectdata-")){
-                delete values[key]
-            }else{
-                const {label,field} = formdict['schema'][key]
-                if (field !== 'ckeditor'){
-                    newValues[key] = values[key];
-                }else{
-                    newValues[key] = values[key];
-                }
-                
+        var sendbool = true
+        for (const item in values){
+            if (values[item].includes('<') && values[item].includes('>')){
+                console.log('invalid')
+                sendbool = false
             }
         }
+        if (sendbool){
+            updateFormModel(formdict,values,updateformdict);
+            const tempformdict = {...formdict}
+            tempformdict['number'] = formdict['number']+=1
+            UpdateFormModel(token,tempformdict,formdict['name']);
+            CreateUser(values)
+            setFormmodels(formmodels.map(obj => {
+                if (obj.name === tempformdict['name']) {
+                return { ...obj, ...tempformdict};
+                } else {
+                return obj;
+                }
+            }));
+            const newValues = {}
+            for (const key in values){
+                if (key.includes("&:blank") || key.includes("selectdata-")){
+                    delete values[key]
+                }else{
+                    const {label,field} = formdict['schema'][key]
+                    if (field !== 'ckeditor'){
+                        newValues[key] = values[key];
+                    }else{
+                        newValues[key] = values[key];
+                    }
+                    
+                }
+            }
 
-        createFormDataDB(newValues, user['_id'],formdict['_id'])
-        onSubmitProps.resetForm()
-        toast.success('Clone Buglist 成功 !!')
-        closeModal()
+            createFormDataDB(newValues, user['_id'],formdict['_id'])
+            onSubmitProps.resetForm()
+            toast.success('Clone Buglist 成功 !!')
+            closeModal()
+        }else{
+            toast.error('在Buglist 不能使用< > 請改為其他符號以代替')
+        }
+        
         // navigate("/home")
     }
 

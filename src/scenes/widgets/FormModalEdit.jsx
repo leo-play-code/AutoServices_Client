@@ -205,18 +205,30 @@ const FormModalEdit = ({
         setSchema(yup.object().shape(newschema));
     }
     const handleFormSubmit = async(values,onSubmitProps)=>{
-        updateFormModel(formdict,values,updateformdict);
-        const data = await UpdateFormModel(token,formdict,formdict['name'])
-        const newValues = {}
-        for (const key in values){
-            if (!(key.includes("&:blank") || key.includes("selectdata-"))){
-                const {label,field} = formdict['schema'][key]
-                newValues[key] = values[key];
+        var sendbool = true
+        for (const item in values){
+            if (values[item].includes('<') && values[item].includes('>')){
+                console.log('invalid')
+                sendbool = false
             }
         }
+        if (sendbool){
+            updateFormModel(formdict,values,updateformdict);
+            const data = await UpdateFormModel(token,formdict,formdict['name'])
+            const newValues = {}
+            for (const key in values){
+                if (!(key.includes("&:blank") || key.includes("selectdata-"))){
+                    const {label,field} = formdict['schema'][key]
+                    newValues[key] = values[key];
+                }
+            }
+            
+            toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
+            setEditable(false)
+        }else{
+            toast.error('在Buglist 不能使用< > 請改為其他符號以代替')
+        }
         
-        toggleupdatedata(newValues,token, user['_id'],formdata['_id'])
-        setEditable(false)
         
     }
 
