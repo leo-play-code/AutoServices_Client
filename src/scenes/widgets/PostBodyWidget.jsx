@@ -49,6 +49,15 @@ const betterFullTime = (y,m,d,h,M,s) =>{
     return fullTime;
 }
 
+function MyComponent({data}) {
+    const url = extractUrlFromString(data);
+    const escapedUrl = url.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const content = createMarkup(escapedUrl.replaceAll('\n', '<br>'));
+  
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+  
+  
 
 
 export const simpleDateFormmat = (rawdate,method="Date") =>{
@@ -116,7 +125,6 @@ export const PostBody = ({
     const body = []; 
     for (const key in formmodel){
         const {label,field,fulldata,logo} = formmodel[key]
-        
         if (field === 'select-color'){
             const color = data['data'][key]
             const value = fulldata[data['data'][key]]
