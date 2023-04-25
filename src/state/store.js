@@ -111,7 +111,8 @@ export const FetchToStore = ({children}) =>{
 
         const now = new Date();
         var currentTime = now.getTime();
-        setFetchtime(currentTime)
+        var newTime = currentTime-300000
+        setFetchtime(newTime)
         
 
     }
