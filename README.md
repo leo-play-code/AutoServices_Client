@@ -1,11 +1,17 @@
-# AutoServices
+# 快速開始：
 
-## Introduction:
+- 安裝環境
 
-- This Website is Used for Form Building and Searching
-- Goal is to build a large Data System for Company , and includes User System management
+```jsx
+npm install
+```
 
-## How to Start:
+- Run code
 
-- You will need to use Api for this project , but i will not provide the api for this project but i can provide the code in AutoServices-api
-- After setting up API you can start this project will `npm start`
+```jsx
+npm start
+```
+
+## Notice :
+
+- 此程式為前端,需要與AutoServices-Api 作為後端與MongoDB進行搭配
