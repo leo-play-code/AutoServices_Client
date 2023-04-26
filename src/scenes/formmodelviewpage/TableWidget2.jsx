@@ -367,7 +367,7 @@ export const TableWidget = forwardRef(({
                                 filterform = filterform.filter(form=>(Date.parse(form['data'][key])>=filter[key+"from"]))            
                             }
                             if (typeof filter[key+"to"] === "number"){
-                                filterform = filterform.filter(form=>(Date.parse(form['data'][key])<=filter[key+"to"]))  
+                                filterform = filterform.filter(form=>(Date.parse(form['data'][key])<=(filter[key+"to"]+86400000)))  
                             }
                         }
                         
