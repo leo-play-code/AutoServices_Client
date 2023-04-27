@@ -140,7 +140,12 @@ const FormModel = ({
     
     const getFormModel = async(data)=>{
         // const formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
-        setFormdict(data['form'])
+        if (formmodels.length>0){
+            var formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
+        }else{
+            var formmodel = await GetOneFormModel(token,formname)
+        }
+        setFormdict(formmodel)
         getInitValue(data)
     }
 
