@@ -125,25 +125,67 @@ export const PostBody = ({
     const body = []; 
     for (const key in formmodel){
         const {label,field,fulldata,logo} = formmodel[key]
-        if (field === 'select-color'){
-            const color = data['data'][key]
-            const value = fulldata[data['data'][key]]
-            var bodyitem = (
-                <ColorTag 
-                    color={color}
-                    value={value}
-                    logo={logo}
-                />
-            )
-        }else{
-            var bodyitem = (<span 
-                className="CkeditorInput"
-                dangerouslySetInnerHTML={createMarkup(extractUrlFromString(data['data'][key]).replaceAll('\n','<br>'))}
-            >
-            </span>)
-        }
-        if (showlimit){
-            if (viewsetup[key]){
+        if (field !=='blank'){
+            if (field === 'select-color'){
+                const color = data['data'][key]
+                const value = fulldata[data['data'][key]]
+                var bodyitem = (
+                    <ColorTag 
+                        color={color}
+                        value={value}
+                        logo={logo}
+                    />
+                )
+            }else{
+
+                var bodyitem = (<span 
+                    className="CkeditorInput"
+                    dangerouslySetInnerHTML={createMarkup(extractUrlFromString(data['data'][key]).replaceAll('\n','<br>'))}
+                >
+                </span>)
+            }
+            if (showlimit){
+                if (viewsetup[key]){
+                    const item = 
+                            <Box
+                                key = {key}
+                                sx={{
+                                    backgroundColor:cardcolor,
+                                    borderRadius:"5px"
+                                    
+                                }}
+                                mt="0.5rem"
+                                p="0.2rem 0.5rem"
+                            >
+                                <FlexBetween
+                                >
+                                    <FlexBetweenTop 
+                                        gap="1.5rem"
+                                    >
+                                        <Typography
+                                            fontWeight="700"
+                                            mb="0.25rem"
+                                        >
+                                            {label} :
+                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                "&>span>p>a":{
+                                                    color:linkcolor
+                                                }
+                                            }}
+                                        >
+                                            {bodyitem}
+                                            
+                                        </Box>
+                                    </FlexBetweenTop>
+                                </FlexBetween>
+                                
+                            </Box>
+                    body.push(item)
+                }
+            }else{
+
                 const item = 
                         <Box
                             key = {key}
@@ -181,49 +223,9 @@ export const PostBody = ({
                             
                         </Box>
                 body.push(item)
+                
             }
-        }else{
-
-            const item = 
-                    <Box
-                        key = {key}
-                        sx={{
-                            backgroundColor:cardcolor,
-                            borderRadius:"5px"
-                            
-                        }}
-                        mt="0.5rem"
-                        p="0.2rem 0.5rem"
-                    >
-                        <FlexBetween
-                        >
-                            <FlexBetweenTop 
-                                gap="1.5rem"
-                            >
-                                <Typography
-                                    fontWeight="700"
-                                    mb="0.25rem"
-                                >
-                                    {label} :
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        "&>span>p>a":{
-                                            color:linkcolor
-                                        }
-                                    }}
-                                >
-                                    {bodyitem}
-                                    
-                                </Box>
-                            </FlexBetweenTop>
-                        </FlexBetween>
-                        
-                    </Box>
-            body.push(item)
-            
         }
-        
     }
     return (
         <Box>
