@@ -189,8 +189,11 @@ const FormModel = ({
     const getInitValue = (data)=>{
         const newinitvalue = {};
         const newschema = {};
+        if (formmodels.length>0){
+            var formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
+        }
         for( const key in data['data']){
-            const {field,relation} = data['form']['schema'][key];
+            const {field,relation} = formmodel['schema'][key];
             const initvalue = data['data'][key];
             if(field !== 'blank'){
                 if (field === "text"){
@@ -204,7 +207,7 @@ const FormModel = ({
             }
             
             /* SCHEMA */
-            if (data['form']['schema'][key]['type']==='string' && data['form']['schema'][key]['required']===true){
+            if (formmodel['schema'][key]['type']==='string' && formmodel['schema'][key]['required']===true){
                 newschema[key]= yup.string().required("required");
             }else if(field !== 'blank'){
                 newschema[key]= yup.string()

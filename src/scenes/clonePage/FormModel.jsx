@@ -159,12 +159,15 @@ const FormModelClone = ({formname,toggleScreen,screen,formdata,closeModal})=>{
     const getInitValue = (data)=>{
         const newinitvalue = {};
         const newschema = {};
-        for( const key in data['schema']){
-            const {field,relation,initvalue} = data['schema'][key];
-            if (data['schema'][key]['auto']){
-                if (data['schema'][key]['field'] === 'user'){
+        if (formmodels.length>0){
+            var formmodel = formmodels.filter((formmodel)=>formmodel['name']===formname)[0]
+        }
+        for( const key in formmodel['schema']){
+            const {field,relation,initvalue} = formmodel['schema'][key];
+            if (formmodel['schema'][key]['auto']){
+                if (formmodel['schema'][key]['field'] === 'user'){
                     newinitvalue[key]=user.Name;
-                }else if (data['schema'][key]['field'] === 'time'){
+                }else if (formmodel['schema'][key]['field'] === 'time'){
                     const date = new Date();
                     const futureDate = date.getDate();
                     date.setDate(futureDate);
@@ -173,21 +176,21 @@ const FormModelClone = ({formname,toggleScreen,screen,formdata,closeModal})=>{
                 }
             }else if(field !== 'blank'){
                 if (stabledata.includes(key)){
-                    newinitvalue[key]=data['schema'][key]['initvalue'];
+                    newinitvalue[key]=formmodel['schema'][key]['initvalue'];
                 }else{
                     newinitvalue[key]=formdata[key]
                 }
                 
             }
             /* SCHEMA */
-            if (data['schema'][key]['type']==='string' && data['schema'][key]['required']===true){
+            if (formmodel['schema'][key]['type']==='string' && formmodel['schema'][key]['required']===true){
                 newschema[key]= yup.string().required("required");
             }else if(field !== 'blank'){
                 newschema[key]= yup.string()
             }
         }
-        for (const key in data['selectdata']){
-            const {initvalue} = data['selectdata'][key]
+        for (const key in formmodel['selectdata']){
+            const {initvalue} = formmodel['selectdata'][key]
             newinitvalue['selectdata-'+key] = initvalue;
             newschema['selectdata-'+key] = yup.string();
         }

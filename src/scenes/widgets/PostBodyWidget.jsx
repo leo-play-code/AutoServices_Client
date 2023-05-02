@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { setFormModels, setLocalforms, webpath } from '../../state';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModalWidget from './DeleteModalWidget';
-import { useEffect,useState,useRef } from 'react';
+import { useEffect,useState,useRef,useContext } from 'react';
 import { Collapse,Grow,Zoom} from '@mui/material';
 import { BasicModal } from '../../components/modal';
 import FormModel from '../formdataviewpage/Form';
@@ -21,6 +21,9 @@ import FormDataViewPage from '../formdataviewpage/index';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import FormModelClone from '../clonePage/FormModel';
 import { extractUrlFromString } from '../formmodelviewpage/TableWidget2';
+import { StoreContext } from '../../state/store';
+
+
 const colorDict = {
     "red":"#E74C3C",
     "orange":"#E67E22",
@@ -257,6 +260,8 @@ export const PostBodyWidget = ({
 })=>{
 
     // const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
+    const {storeformmodels} = useContext(StoreContext);
+    const [formmodels,setFormmodels] = storeformmodels;
     const localforms = useSelector((state)=>state.forms);
     const dispatch = useDispatch();
     const windowWidth = useSelector((state)=>state.width);
@@ -265,14 +270,12 @@ export const PostBodyWidget = ({
     const toggleScreen = (value)=>{
         setScreen(value);
     }
-    
-
     const mysetting = useSelector((state)=>state.settings);
     const navigate = useNavigate();
     const theme = useTheme();
     const windowheight = useSelector((state)=>state.height);
     const windowwidth = useSelector((state)=>state.width);
-    const formmodel = data['form']['schema'];
+    const formmodel = formmodels.filter(form=>form['_id']==data['form']['_id'])[0]['schema']
     const dark = theme.palette.neutral.dark;
     const alt = theme.palette.background.alt;
     const dropdowncolor = theme.palette.other.dropdown;

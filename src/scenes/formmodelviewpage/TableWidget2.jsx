@@ -293,7 +293,7 @@ export const TableWidget = forwardRef(({
             
         }
     }
-    console.log(tempwidthdict)
+    // console.log(tempwidthdict)
     const dropdowncolor = theme.palette.other.dropdown;
     const dropdownItemStyle = {
         "&:hover":{
@@ -436,7 +436,7 @@ export const TableWidget = forwardRef(({
         // 右鍵功能
         // console.log('e.nativeEvent.button',e.button)
         if (e.nativeEvent.button === 0) {
-            console.log('Left click');
+            // console.log('Left click');
         } else if (e.nativeEvent.button === 2) {
             // console.log('Right click',e.clientX,e.clientY);
             mousePosition(e.clientX,e.clientY,value)

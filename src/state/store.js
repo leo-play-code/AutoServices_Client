@@ -74,7 +74,7 @@ export const FetchToStore = ({children}) =>{
         data = data['data']
 
 
-
+        console.log(data)
         if (data!==0){
             const merged = [];
 
@@ -146,7 +146,11 @@ export const FetchToStore = ({children}) =>{
         // when the data is ready, save it to state
         userforms.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
         forms.sort((a, b) =>new Date(b['data']['time']) - new Date(a['data']['time']))
-
+        console.log('userforms =',userforms)
+        console.log('userlist =',userlist);
+        console.log('formmodels = ',formmodels);
+        console.log('forms=',forms)
+        console.log('googlelist =',googlelist)
         setUserforms(userforms);
         setUserlist(userlist);
         setFormmodels(formmodels);
