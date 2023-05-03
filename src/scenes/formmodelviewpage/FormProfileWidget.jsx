@@ -149,18 +149,14 @@ export const FormProfileWidget = ({
                         
                     </Typography>
                 </FlexBetween>
-                {(formmodels.length>0)&&(formmodel['number']>forms.length)&&(
+                {/* {(formmodels.length>0)&&(formmodel['number']>forms.length)&&(
                     <>
-                        {/* <Typography
-                            fontWeight="700"
-                        >
-                            加載中
-                        </Typography> */}
+
                         <CircularProgress color="success" size={30} />
                     </>
                    
                     
-                )}
+                )} */}
             </FlexBetween>
             <FlexBetween
                 p="0.1rem 0rem"

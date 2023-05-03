@@ -18,7 +18,8 @@ import FormModelPage from './scenes/formmodelPage/index';
 
 import FormDataViewPage from './scenes/formdataviewpage/index';
 import SettingPage from "./scenes/SettingPage";
-import FormModelViewPage from './scenes/formmodelviewpage/index';
+// import FormModelViewPage from './scenes/formmodelviewpage/index';
+import FormModelViewPage from './scenes/formmodelviewpage/test';
 import GooglesheetPage from "./scenes/googlesheetviewPage";
 import ImportgooglesheetPage from './scenes/importgooglesheetPage/index';
 import TablePage from './scenes/TablePage/index';

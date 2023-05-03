@@ -7,7 +7,7 @@ import RecentFormWidget from "../widgets/RecentFormWidget";
 import { useEffect,useState,useContext } from "react";
 import { urlpath } from "../../state";
 import { useDispatch } from "react-redux";
-
+import { GetOneFormData } from "../../api/formdata";
 
 import { useParams } from 'react-router-dom';
 import BodyBox from '../../components/bodyBox';
@@ -19,23 +19,30 @@ import FlexBetween from "../../components/Flexbetween";
 import FlexBetweenTop from '../../components/FlexBetweenTop';
 const FormDataViewPage = ({formdataid})=>{
     const { _id, Name, picturePath,allow } = useSelector((state) => state.user);
-    const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
+    const {storeformmodels} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
     const token = useSelector((state)=>state.token);
-    // const {formdataid} = useParams();
+    const [data,setData] = useState(undefined);
 
     const [screen,setScreen] = useState('part')
-    const [forms,setForms] = storeforms;
-    const data = forms.filter(form=>form["_id"]===formdataid)[0]
+
+    // const data = forms.filter(form=>form["_id"]===formdataid)[0]
+
+    
     const windowheight = useSelector((state)=>state.height);
     const windowwidth = useSelector((state)=>state.width);
     const toggleScreen = (value)=>{
         setScreen(value)
     }
+    const getData =async()=>{
+        var response  = await GetOneFormData(token,formdataid)
+        console.log(response)
+        setData(response)
+    }
     useEffect(()=>{
-
-    },[forms])
+        getData()
+    },[])
     return (
         // <Box>
         //     <Navbar />

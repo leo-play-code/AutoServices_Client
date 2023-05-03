@@ -151,6 +151,21 @@ export const GetFormDataCount = async(token,id) =>{
     return data
 }
 
+export const GetNewFormData = async(token,skip,limit,filter)=>{
+    console.log("GetNewFormData")
+    const response = await fetch(urlpath+`formdata/GetNewFormData/${skip}/${limit}`,{
+        method:"PATCH",
+        headers:{
+            Authorization:`Bearer ${token}`,
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(filter),
+    })
+    const data = await response.json()
+    // console.log('data',data)
+    return data
+
+}
 // temp
 export const Temp = async(token)=>{
     const response = await fetch(urlpath+`formdata/temp`,{

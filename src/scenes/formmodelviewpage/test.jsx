@@ -10,8 +10,8 @@ import { FormProfileWidget } from './FormProfileWidget';
 import { PostList } from './PostList';
 import WidgetWrapper from '../../components/WidgetWrapper';
 import FilterWidget from '../widgets/FilterWidget';
-import ReactVirtualizedTable from './TableWidget';
-import {TableWidget} from './TableWidget';
+// import ReactVirtualizedTable from './TableWidget';
+import {TableWidget} from './TableWidget3';
 import { GetAllUser } from '../../api/user';
 import { GetFormModelAll } from '../../api/formdata';
 import { StoreContext } from '../../state/store';
@@ -20,41 +20,64 @@ import { StoreContext } from '../../state/store';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import RightClick from '../../components/RightClick';
-import Form_Table from '../../components/Table_Max';
 
 
 
 const FormModelViewPage = () =>{
-    
     // useContext 
     const {storeforms,storeformmodels} = useContext(StoreContext);
-    const [forms,setForms] = storeforms;
+
     const [formmodels,setFormmodels] = storeformmodels;
 
     const {formname} = useParams();
     const formmodel = formmodels.filter((form)=>form['name']===formname)[0];
     const isNonMobileScreens = useMediaQuery("(min-width:1230px)");
+    const WindowWidth = useSelector((state)=>state.width);
     const filtermode = useSelector((state)=>state.filtermode);
+    const WindowHeight = useSelector((state)=>state.height);
     const token = useSelector((state)=>state.token);
     const tableRef = useRef();
     const tablechildRef = useRef();
     const [screen,setScreen] = useState('part');
-    const [number,setNumber] = useState(undefined);
+    const [filterform,setFilterForm] = useState(undefined);
     const [x,setX] = useState(null);
     const [y,setY] = useState(null);
     const [copyvalue,setCopyvalue] = useState("");
-    console.log('formmodel',formmodel)
 
-    const changeNumber = (value)=>{
-        setNumber(value)
+
+
+    const changeFilterForm = (value)=>{
+        setFilterForm(value)
     }
-    console.log('formmodelviewpage')
 
+    const handleScroll = (element)=>{
+        // console.log('handle scroll')
+        try{
+            if (element.scrollTop+tableRef.current.offsetHeight>=element.scrollHeight*0.85){
+                tablechildRef.current.updateShownum();
+            }
+        }catch{}  
+    }
     useEffect(()=>{
+        if (filtermode !== "post"){
 
+            const scrollDemo = document.querySelector("#scrollDemo");
+            scrollDemo.addEventListener("scroll", event => {
+                handleScroll(scrollDemo)
+                // 
+
+            }, { passive: true });
+            return () => {
+                scrollDemo.removeEventListener('scroll', handleScroll(scrollDemo));
+            };
+ 
+        }else{
+            
+        }
 
         
-    },[screen,forms,filtermode])
+    },[screen,filtermode])
+
     return(
         <Box>
             <Navbar />
@@ -85,7 +108,7 @@ const FormModelViewPage = () =>{
                         >
                             <Box
                                 position={isNonMobileScreens?"fixed":""}
-                                width={isNonMobileScreens?(window.innerWidth*0.23):"inherit"}
+                                width={isNonMobileScreens?(WindowWidth*0.23):"inherit"}
                             >
                                 {(formmodel!==undefined)&&<FormProfileWidget 
                                     formname = {formname}
@@ -93,7 +116,7 @@ const FormModelViewPage = () =>{
                                 <WidgetWrapper
                                     mt="1.1rem"
                                 >
-                                    <FilterWidget formname={formname} number= {number}/>
+                                    <FilterWidget formname={formname} filterform= {filterform}/>
                                 </WidgetWrapper>
                             </Box>
                         </Box>
@@ -107,11 +130,11 @@ const FormModelViewPage = () =>{
                         mb="1.5rem"
                       
                     >
-                        {(forms.length>0 && formmodel!==undefined)&&
+                        {formmodel!==undefined&&
                             <PostList 
                                 formname = {formname}
-                                formlist = {forms}
-                                changeNumber={changeNumber}
+                                formlist = {[]}
+                                changeFilterForm={changeFilterForm}
                             />
                         }
                     </Box>
@@ -120,7 +143,7 @@ const FormModelViewPage = () =>{
                     >
                         <Box
                             position={isNonMobileScreens?"fixed":""}
-                            width={isNonMobileScreens?(window.innerWidth*0.23):"inherit"}
+                            width={isNonMobileScreens?(WindowWidth*0.23):"inherit"}
                         >
                         </Box>
                         
@@ -132,21 +155,25 @@ const FormModelViewPage = () =>{
                             flexBasis={isNonMobileScreens?((screen==="full")?"99%":"75%"):undefined}
                             mb="1.5rem"
                             
-                        >
-                            <Box
-                                width={(screen==="full")?window.innerWidth*0.95:window.innerWidth*0.70}
-                            >
-                                {formmodel !== undefined&&(
-                                    <Form_Table 
-                                        formlist={forms}
-                                        sx={{maxHeight:window.innerHeight*0.85}}
-                                        formmodel = {formmodel}
-                                    />
-                                )}
+                        > <Box>
+                                <Box
+                                    sx={{
+                                        maxHeight:WindowHeight*0.85,
+
+                                    }}
+                                    position={isNonMobileScreens?"fixed":""}
+                                    width={isNonMobileScreens?((screen==="full")?WindowWidth*0.95:WindowWidth*0.70):"inherit"}
+                                    ref = {tableRef}
+                                    id ={"scrollDemo"}
+                                >
+
+                                    {(formmodel!==undefined)&&
+                                        <TableWidget 
+                                            formname = {formname} 
+                                        />
+                                    }
+                                </Box>
                             </Box>
-                            
-                           
-     
                             
                             <Box
                                 sx={{
@@ -196,7 +223,7 @@ const FormModelViewPage = () =>{
                             right="3rem"
                             fontWeight={"600"}
                         >
-                            {number} 筆資料
+                            {filterform!==undefined&&filterform.length} 筆資料
                         </Box>
                         
                    </>

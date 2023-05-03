@@ -18,22 +18,18 @@ const DeleteModalWidget = ({
     title,
     otherfunc,
 }) =>{
-    const {storeforms,storeuserforms,storeformmodels} = useContext(StoreContext);
-    const [forms,setForms] = storeforms;
+    const {storeuserforms,storeformmodels} = useContext(StoreContext);
     const [formmodels,setFormmodels] = storeformmodels;
     const [userforms,setUserforms] = storeuserforms;
-    const formmodel = formmodels.filter((formmodel)=>formmodel.name === formdata['form']['name'])[0]
+    const formmodel = formmodels.filter((formmodel)=>formmodel['_id'] === formdata['form']['_id'])[0]
+    console.log('formmodel',formmodels,formmodel)
+    console.log('form name',formdata['form']['_id'])
     const schema = formmodel['schema'];
     // console.log('delete data',formdata)
     const token = useSelector((state)=>state.token);
     const windowheight = useSelector((state)=>state.height);
     const dispatch = useDispatch();
     const toggleDelete = async(id) =>{
-        // console.log('delete',formdata['_id'])   
-        const tempforms = forms.filter((form)=>form['_id']!==formdata['_id']);
-        const tempuserforms = userforms.filter((form)=>form['_id']!==formdata['_id']);
-        setForms(tempforms)
-        setUserforms(tempuserforms)
         const tempformmodel = {...formmodel}
         tempformmodel['number']= formmodel['number']-1
         UpdateFormModel(token,tempformmodel,formdata['form']['name']);
@@ -44,6 +40,7 @@ const DeleteModalWidget = ({
         try {
             otherfunc()
         } catch (error) {
+
         }
     }
     return (
