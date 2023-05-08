@@ -138,7 +138,6 @@ const FormModelViewPage = () =>{
                         {(forms.length>0 && formmodel!==undefined)&&
                             <PostList 
                                 formname = {formname}
-                                formlist = {forms}
                                 changeFilterForm={changeFilterForm}
                             />
                         }
