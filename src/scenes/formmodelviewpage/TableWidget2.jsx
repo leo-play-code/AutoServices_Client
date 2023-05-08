@@ -684,17 +684,22 @@ export const TableWidget = forwardRef(({
                                         </TableCell>
                                         {Object.entries(schema).map(([key,value])=>{
                                             const cellvalue = rowdata['data'][key]
-                                            return (
-                                                <TabelCellEditable 
-                                                    key = {key}
-                                                    name={key}
-                                                    data = {cellvalue}
-                                                    id = {_id}
-                                                    schema = {formmodel['schema'][key]}
-                                                    handleCellClick={handleCellClick}
-                                                    selected={selectedCellId===(_id+'-'+formmodel['schema'][key]['label'])}
-                                                />
-                                            )
+                                            const {field} = value
+                                            if (field !== 'blank'){
+                                                return (
+                                                
+                                                    <TabelCellEditable 
+                                                        key = {key}
+                                                        name={key}
+                                                        data = {cellvalue}
+                                                        id = {_id}
+                                                        schema = {formmodel['schema'][key]}
+                                                        handleCellClick={handleCellClick}
+                                                        selected={selectedCellId===(_id+'-'+formmodel['schema'][key]['label'])}
+                                                    />
+                                                )
+                                            }
+                                            
                                         })}
 
                                         
